@@ -1,7 +1,5 @@
 package cn.shenmuyan.mapper;
 
-import cn.shenmuyan.bean.UsersRoleMapping;
-
 /**
 * @author 50414
 * @description 针对表【users_role_mapping(账号角色映射表)】的数据库操作Mapper

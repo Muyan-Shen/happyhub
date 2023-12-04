@@ -3,10 +3,9 @@ package cn.shenmuyan.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
-import cn.shenmuyan.bean.Users;
-import cn.shenmuyan.service.UsersService;
-import cn.shenmuyan.vo.UsersInsertVO;
-import cn.shenmuyan.vo.UsersWhereVO;
+import cn.shenmuyan.service.UserService;
+import cn.shenmuyan.vo.UserInsertVO;
+import cn.shenmuyan.vo.UserWhereVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -32,16 +31,16 @@ import java.util.Map;
 public class UsersController {
 
     @Resource
-    private UsersService userService;
+    private UserService userService;
 
 
     @GetMapping
     @SaCheckPermission(value = "account::list",orRole = "admin")
-    public Map<String, Object> list(UsersWhereVO usersWhereVO,
+    public Map<String, Object> list(UserWhereVO userWhereVO,
                                     @RequestParam(defaultValue ="1")int page,
                                     @RequestParam(defaultValue ="10")int limit){
         PageHelper.startPage(page,limit);//在查询之前使用,会自动的对紧接着的第一个查询进行分页
-        List<Users> list = userService.findAll(usersWhereVO);
+        List<Users> list = userService.findAll(userWhereVO);
         PageInfo<Users> pageInfo=new PageInfo<>(list);
         Map<String,Object> map=new HashMap<>();
         map.put("code",200);
@@ -56,7 +55,7 @@ public class UsersController {
 
     @PutMapping
     @SaCheckPermission(value = "account::add",orRole = "admin")
-    public SaResult add(@RequestBody @Validated UsersInsertVO account){
+    public SaResult add(@RequestBody @Validated UserInsertVO account){
         userService.add(account);
         return SaResult.ok();
     }

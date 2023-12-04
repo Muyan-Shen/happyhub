@@ -9,5 +9,5 @@ package cn.shenmuyan.vo;
  *
  */
 
-public class UsersWhereVO {
+public class UserWhereVO {
 }

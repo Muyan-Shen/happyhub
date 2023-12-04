@@ -2,14 +2,16 @@ package cn.shenmuyan.bean;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
+
 import lombok.Data;
 
 /**
  * 用户表
- * @TableName users
+ * @TableName user
  */
 @Data
-public class Users implements Serializable {
+public class User implements Serializable {
     /**
      * 主键
      */
@@ -44,6 +46,7 @@ public class Users implements Serializable {
      * 是否删除 1：'deleted'，2： 'normal'
      */
     private Object isDelete;
+    private Set<Role> roles;
 
     private static final long serialVersionUID = 1L;
 
@@ -58,7 +61,7 @@ public class Users implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        Users other = (Users) that;
+        User other = (User) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getUsername() == null ? other.getUsername() == null : this.getUsername().equals(other.getUsername()))
             && (this.getEmail() == null ? other.getEmail() == null : this.getEmail().equals(other.getEmail()))

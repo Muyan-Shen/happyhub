@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.shenmuyan.mapper.UsersMapper">
+<mapper namespace="cn.shenmuyan.mapper.UserMapper">
 
-    <resultMap id="BaseResultMap" type="cn.shenmuyan.bean.Users">
+    <resultMap id="BaseResultMap" type="cn.shenmuyan.bean.User">
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="username" column="username" jdbcType="VARCHAR"/>
             <result property="email" column="email" jdbcType="VARCHAR"/>
@@ -23,16 +23,46 @@
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
-        from users
+        from user
         where  id = #{id,jdbcType=INTEGER} 
+    </select>
+    <select id="selectAll"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user
+        <where>
+            <if test="username!=null and username !=''">
+                and username like concat('%',#{username,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="status !=null">
+                and status = #{status,jdbcType=TINYINT}
+            </if>
+            <if test="createTime !=null and createTime.length>0">
+                <if test="createTime[0] !=null">
+                    and create_time &gt;= #{createTime[0],javaType=java.time.LocalDate,jdbcType=TIMESTAMP}
+                </if>
+                <if test="createTime[1] !=null and createTime.length>1 ">
+                    and create_time &lt;= #{createTime[1],javaType=java.time.LocalDate,jdbcType=TIMESTAMP}
+                </if>
+            </if>
+            <if test="updateTime !=null and updateTime.length>0">
+                <if test="updateTime[0] !=null">
+                    and update_time &gt;= #{updateTime[0],javaType=java.time.LocalDate,jdbcType=TIMESTAMP}
+                </if>
+                <if test="updateTime[1] !=null and updateTime.length>1 ">
+                    and update_time &lt;= #{updateTime[1],javaType=java.time.LocalDate,jdbcType=TIMESTAMP}
+                </if>
+            </if>
+
+        </where>
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from users
+        delete from user
         where  id = #{id,jdbcType=INTEGER} 
     </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.shenmuyan.bean.Users" useGeneratedKeys="true">
-        insert into users
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.shenmuyan.bean.User" useGeneratedKeys="true">
+        insert into user
         ( id,username,email
         ,password_hash,created_at,updated_at
         ,is_delete)
@@ -40,8 +70,8 @@
         ,#{passwordHash,jdbcType=VARCHAR},#{createdAt,jdbcType=TIMESTAMP},#{updatedAt,jdbcType=TIMESTAMP}
         ,#{isDelete,jdbcType=OTHER})
     </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.shenmuyan.bean.Users" useGeneratedKeys="true">
-        insert into users
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.shenmuyan.bean.User" useGeneratedKeys="true">
+        insert into user
         <trim prefix="(" suffix=")" suffixOverrides=",">
                 <if test="id != null">id,</if>
                 <if test="username != null">username,</if>
@@ -61,8 +91,8 @@
                 <if test="isDelete != null">#{isDelete,jdbcType=OTHER},</if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="cn.shenmuyan.bean.Users">
-        update users
+    <update id="updateByPrimaryKeySelective" parameterType="cn.shenmuyan.bean.User">
+        update user
         <set>
                 <if test="username != null">
                     username = #{username,jdbcType=VARCHAR},
@@ -85,8 +115,8 @@
         </set>
         where   id = #{id,jdbcType=INTEGER} 
     </update>
-    <update id="updateByPrimaryKey" parameterType="cn.shenmuyan.bean.Users">
-        update users
+    <update id="updateByPrimaryKey" parameterType="cn.shenmuyan.bean.User">
+        update user
         set 
             username =  #{username,jdbcType=VARCHAR},
             email =  #{email,jdbcType=VARCHAR},

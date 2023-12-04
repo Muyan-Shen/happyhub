@@ -5,10 +5,10 @@ import lombok.Data;
 
 /**
  * 账号角色映射表
- * @TableName users_role_mapping
+ * @TableName user_role_mapping
  */
 @Data
-public class UsersRoleMapping implements Serializable {
+public class UserRoleMapping implements Serializable {
     /**
      * 用户ID
      */
@@ -32,7 +32,7 @@ public class UsersRoleMapping implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        UsersRoleMapping other = (UsersRoleMapping) that;
+        UserRoleMapping other = (UserRoleMapping) that;
         return (this.getUsersId() == null ? other.getUsersId() == null : this.getUsersId().equals(other.getUsersId()))
             && (this.getRoleId() == null ? other.getRoleId() == null : this.getRoleId().equals(other.getRoleId()));
     }

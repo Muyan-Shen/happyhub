@@ -2,6 +2,8 @@ package cn.shenmuyan.bean;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
+
 import lombok.Data;
 
 /**
@@ -44,6 +46,7 @@ public class Role implements Serializable {
      * 状态 1:正常 2:禁用
      */
     private Integer status;
+    private Set<Permission> permissions;
 
     private static final long serialVersionUID = 1L;
 

@@ -101,16 +101,16 @@
                   <option name="tableName" value="seats" />
                 </TableUIInfo>
                 <TableUIInfo>
+                  <option name="className" value="User" />
+                  <option name="tableName" value="user" />
+                </TableUIInfo>
+                <TableUIInfo>
                   <option name="className" value="UserCoupons" />
                   <option name="tableName" value="user_coupons" />
                 </TableUIInfo>
                 <TableUIInfo>
-                  <option name="className" value="Users" />
-                  <option name="tableName" value="users" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="UsersRoleMapping" />
-                  <option name="tableName" value="users_role_mapping" />
+                  <option name="className" value="UserRoleMapping" />
+                  <option name="tableName" value="user_role_mapping" />
                 </TableUIInfo>
               </list>
             </option>
