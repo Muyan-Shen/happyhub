@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.shenmuyan.mapper.EventsMapper">
+
+    <resultMap id="BaseResultMap" type="cn.shenmuyan.bean.Events">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="location" column="location" jdbcType="VARCHAR"/>
+            <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+            <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
+            <result property="organizerId" column="organizer_id" jdbcType="INTEGER"/>
+            <result property="photoUrl" column="photo_url" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="OTHER"/>
+            <result property="statusDescription" column="status_description" jdbcType="VARCHAR"/>
+            <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+            <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,title,description,
+        location,start_time,end_time,
+        organizer_id,photo_url,status,
+        status_description,created_at,updated_at
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from events
+        where  id = #{id,jdbcType=INTEGER} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from events
+        where  id = #{id,jdbcType=INTEGER} 
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.shenmuyan.bean.Events" useGeneratedKeys="true">
+        insert into events
+        ( id,title,description
+        ,location,start_time,end_time
+        ,organizer_id,photo_url,status
+        ,status_description,created_at,updated_at
+        )
+        values (#{id,jdbcType=INTEGER},#{title,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR}
+        ,#{location,jdbcType=VARCHAR},#{startTime,jdbcType=TIMESTAMP},#{endTime,jdbcType=TIMESTAMP}
+        ,#{organizerId,jdbcType=INTEGER},#{photoUrl,jdbcType=VARCHAR},#{status,jdbcType=OTHER}
+        ,#{statusDescription,jdbcType=VARCHAR},#{createdAt,jdbcType=TIMESTAMP},#{updatedAt,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.shenmuyan.bean.Events" useGeneratedKeys="true">
+        insert into events
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">id,</if>
+                <if test="title != null">title,</if>
+                <if test="description != null">description,</if>
+                <if test="location != null">location,</if>
+                <if test="startTime != null">start_time,</if>
+                <if test="endTime != null">end_time,</if>
+                <if test="organizerId != null">organizer_id,</if>
+                <if test="photoUrl != null">photo_url,</if>
+                <if test="status != null">status,</if>
+                <if test="statusDescription != null">status_description,</if>
+                <if test="createdAt != null">created_at,</if>
+                <if test="updatedAt != null">updated_at,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id,jdbcType=INTEGER},</if>
+                <if test="title != null">#{title,jdbcType=VARCHAR},</if>
+                <if test="description != null">#{description,jdbcType=VARCHAR},</if>
+                <if test="location != null">#{location,jdbcType=VARCHAR},</if>
+                <if test="startTime != null">#{startTime,jdbcType=TIMESTAMP},</if>
+                <if test="endTime != null">#{endTime,jdbcType=TIMESTAMP},</if>
+                <if test="organizerId != null">#{organizerId,jdbcType=INTEGER},</if>
+                <if test="photoUrl != null">#{photoUrl,jdbcType=VARCHAR},</if>
+                <if test="status != null">#{status,jdbcType=OTHER},</if>
+                <if test="statusDescription != null">#{statusDescription,jdbcType=VARCHAR},</if>
+                <if test="createdAt != null">#{createdAt,jdbcType=TIMESTAMP},</if>
+                <if test="updatedAt != null">#{updatedAt,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.shenmuyan.bean.Events">
+        update events
+        <set>
+                <if test="title != null">
+                    title = #{title,jdbcType=VARCHAR},
+                </if>
+                <if test="description != null">
+                    description = #{description,jdbcType=VARCHAR},
+                </if>
+                <if test="location != null">
+                    location = #{location,jdbcType=VARCHAR},
+                </if>
+                <if test="startTime != null">
+                    start_time = #{startTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="endTime != null">
+                    end_time = #{endTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="organizerId != null">
+                    organizer_id = #{organizerId,jdbcType=INTEGER},
+                </if>
+                <if test="photoUrl != null">
+                    photo_url = #{photoUrl,jdbcType=VARCHAR},
+                </if>
+                <if test="status != null">
+                    status = #{status,jdbcType=OTHER},
+                </if>
+                <if test="statusDescription != null">
+                    status_description = #{statusDescription,jdbcType=VARCHAR},
+                </if>
+                <if test="createdAt != null">
+                    created_at = #{createdAt,jdbcType=TIMESTAMP},
+                </if>
+                <if test="updatedAt != null">
+                    updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+                </if>
+        </set>
+        where   id = #{id,jdbcType=INTEGER} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.shenmuyan.bean.Events">
+        update events
+        set 
+            title =  #{title,jdbcType=VARCHAR},
+            description =  #{description,jdbcType=VARCHAR},
+            location =  #{location,jdbcType=VARCHAR},
+            start_time =  #{startTime,jdbcType=TIMESTAMP},
+            end_time =  #{endTime,jdbcType=TIMESTAMP},
+            organizer_id =  #{organizerId,jdbcType=INTEGER},
+            photo_url =  #{photoUrl,jdbcType=VARCHAR},
+            status =  #{status,jdbcType=OTHER},
+            status_description =  #{statusDescription,jdbcType=VARCHAR},
+            created_at =  #{createdAt,jdbcType=TIMESTAMP},
+            updated_at =  #{updatedAt,jdbcType=TIMESTAMP}
+        where   id = #{id,jdbcType=INTEGER} 
+    </update>
+</mapper>
