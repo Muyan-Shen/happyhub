@@ -3,10 +3,10 @@ package cn.shenmuyan.config;
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.stp.StpInterface;
 import cn.hutool.core.convert.Convert;
-import cn.shenmuyan.bean.Account;
 import cn.shenmuyan.bean.Permission;
 import cn.shenmuyan.bean.Role;
-import cn.shenmuyan.service.AccountService;
+import cn.shenmuyan.bean.Users;
+import cn.shenmuyan.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -42,7 +42,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
     }
 
     @Bean
-    public StpInterface getStpInterface(AccountService accountService) {
+    public StpInterface getStpInterface(UserService userService) {
         return new StpInterface() {
             /**
              * 返回一个账号所拥有的权限码集合
@@ -54,9 +54,9 @@ public class SaTokenConfigure implements WebMvcConfigurer {
             public List<String> getPermissionList(Object o, String s) {
                 //得到当前登录用户的权限列表
                 Integer id = Convert.toInt(o);
-                if(id!=null){
-                    Account account = accountService.findById(id);
-                    Set<Role> roles = account.getRoles();
+                if (id != null) {
+                    Users user = userService.findById(id);
+                    Set<Role> roles = user.getRoles();
                     Set<String> permissions = new HashSet<>();
                     Set<Permission> permissions1 = new HashSet<>();
                     for (Role role : roles) {
@@ -74,9 +74,9 @@ public class SaTokenConfigure implements WebMvcConfigurer {
             public List<String> getRoleList(Object o, String s) {
                 //得到当前登录用户的权限列表
                 Integer id = Convert.toInt(o);
-                if(id!=null){
-                    Account account = accountService.findById(id);
-                    Set<Role> roles = account.getRoles();
+                if (id != null) {
+                    Users user = userService.findById(id);
+                    Set<Role> roles = user.getRoles();
                     Set<String> roleCodes = new HashSet<>();
                     for (Role role : roles) {
                         roleCodes.add(role.getCode());

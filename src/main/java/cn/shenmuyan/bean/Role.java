@@ -2,6 +2,8 @@ package cn.shenmuyan.bean;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
+
 import lombok.Data;
 
 /**
@@ -44,6 +46,7 @@ public class Role implements Serializable {
      * 状态 1:正常 2:禁用
      */
     private Integer status;
+    private Set<Permission> permissions;
 
     private static final long serialVersionUID = 1L;
 
@@ -60,12 +63,12 @@ public class Role implements Serializable {
         }
         Role other = (Role) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
-            && (this.getCode() == null ? other.getCode() == null : this.getCode().equals(other.getCode()))
-            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
-            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
-            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()));
+                && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
+                && (this.getCode() == null ? other.getCode() == null : this.getCode().equals(other.getCode()))
+                && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
+                && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+                && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
+                && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()));
     }
 
     @Override

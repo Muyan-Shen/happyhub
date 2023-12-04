@@ -1,7 +1,6 @@
 package cn.shenmuyan.mapper;
 
 import cn.shenmuyan.bean.Role;
-
 /**
 * @author 50414
 * @description 针对表【role(角色表)】的数据库操作Mapper

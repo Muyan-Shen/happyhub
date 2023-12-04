@@ -2,6 +2,8 @@ package cn.shenmuyan.bean;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
+
 import lombok.Data;
 
 /**
@@ -44,6 +46,7 @@ public class Users implements Serializable {
      * 是否删除 1：'deleted'，2： 'normal'
      */
     private Object isDelete;
+    private Set<Role> roles;
 
     private static final long serialVersionUID = 1L;
 
