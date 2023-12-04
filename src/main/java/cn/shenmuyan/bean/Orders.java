@@ -2,6 +2,7 @@ package cn.shenmuyan.bean;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -42,12 +43,12 @@ public class Orders implements Serializable {
     /**
      * 订单创建时间
      */
-    private Date createAt;
+    private LocalDateTime createAt;
 
     /**
      * 订单更新时间
      */
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
     private static final long serialVersionUID = 1L;
 

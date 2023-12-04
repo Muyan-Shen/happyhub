@@ -1,6 +1,7 @@
 package cn.shenmuyan.bean;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -38,7 +39,7 @@ public class Messages implements Serializable {
     /**
      * 消息发送时间
      */
-    private Date sentAt;
+    private LocalDateTime sentAt;
 
     private static final long serialVersionUID = 1L;
 

@@ -1,6 +1,7 @@
 package cn.shenmuyan.bean;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -35,12 +36,12 @@ public class Events implements Serializable {
     /**
      * 活动开始时间
      */
-    private Date startTime;
+    private LocalDateTime startTime;
 
     /**
      * 活动结束时间
      */
-    private Date endTime;
+    private LocalDateTime endTime;
 
     /**
      * 活动组织者
@@ -65,12 +66,12 @@ public class Events implements Serializable {
     /**
      * 创建时间
      */
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     /**
      * 更新时间
      */
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
     private static final long serialVersionUID = 1L;
 

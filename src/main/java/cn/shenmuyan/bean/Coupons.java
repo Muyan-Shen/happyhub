@@ -2,6 +2,7 @@ package cn.shenmuyan.bean;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -35,7 +36,7 @@ public class Coupons implements Serializable {
     /**
      * 截止日期
      */
-    private Date expiryDate;
+    private LocalDateTime expiryDate;
 
     /**
      * 已用数量

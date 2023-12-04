@@ -1,6 +1,7 @@
 package cn.shenmuyan.bean;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -35,12 +36,12 @@ public class User implements Serializable {
     /**
      * 用户创建时间
      */
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     /**
      * 用户更新时间
      */
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
     /**
      * 是否删除 1：'deleted'，2： 'normal'
