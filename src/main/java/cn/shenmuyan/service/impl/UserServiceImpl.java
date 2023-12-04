@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
         if(user == null){
             return null;
         }
-        user.setPasswordHash("");
+        user.setPasswordHash(null);
         return user;
     }
 
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
     public void add(UserInsertVO user) {
         //将UserInsertVO对象中的属性值拷贝到User对象中
         User user1 = BeanUtil.copyProperties(user, User.class);
-        user.setPasswordHash(MD5.create().digestHex(user1.getPasswordHash()));
+        user1.setPasswordHash(MD5.create().digestHex(user1.getPasswordHash()));
         int i = userMapper.insertSelective(user1);
         if (i>0){
             User user2 = userMapper.selectByUsernameAndPasswordHash(user1.getUsername(), user1.getPasswordHash());
