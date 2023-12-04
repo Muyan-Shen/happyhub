@@ -1,5 +1,7 @@
 package cn.shenmuyan.mapper;
 
+import cn.shenmuyan.bean.UserRoleMapping;
+
 /**
 * @author 50414
 * @description 针对表【users_role_mapping(账号角色映射表)】的数据库操作Mapper
@@ -10,14 +12,14 @@ public interface UsersRoleMappingMapper {
 
     int deleteByPrimaryKey(Integer id);
 
-    int insert(UsersRoleMapping record);
+    int insert(UserRoleMapping record);
 
-    int insertSelective(UsersRoleMapping record);
+    int insertSelective(UserRoleMapping record);
 
-    UsersRoleMapping selectByPrimaryKey(Integer id);
+    UserRoleMapping selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(UsersRoleMapping record);
+    int updateByPrimaryKeySelective(UserRoleMapping record);
 
-    int updateByPrimaryKey(UsersRoleMapping record);
+    int updateByPrimaryKey(UserRoleMapping record);
 
 }

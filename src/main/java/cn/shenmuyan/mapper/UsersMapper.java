@@ -1,5 +1,7 @@
 package cn.shenmuyan.mapper;
 
+import cn.shenmuyan.bean.User;
+
 /**
 * @author 50414
 * @description 针对表【users(用户表)】的数据库操作Mapper
@@ -10,14 +12,14 @@ public interface UsersMapper {
 
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Users record);
+    int insert(User record);
 
-    int insertSelective(Users record);
+    int insertSelective(User record);
 
-    Users selectByPrimaryKey(Integer id);
+    User selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(Users record);
+    int updateByPrimaryKeySelective(User record);
 
-    int updateByPrimaryKey(Users record);
+    int updateByPrimaryKey(User record);
 
 }

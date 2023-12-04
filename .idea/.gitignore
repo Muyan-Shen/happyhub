@@ -6,3 +6,6 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+/pom.xml
+/misc.xml
+/dataSources.xml

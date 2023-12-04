@@ -12,7 +12,7 @@ public class UserRoleMapping implements Serializable {
     /**
      * 用户ID
      */
-    private Integer usersId;
+    private Integer userId;
 
     /**
      * 角色ID
@@ -33,7 +33,7 @@ public class UserRoleMapping implements Serializable {
             return false;
         }
         UserRoleMapping other = (UserRoleMapping) that;
-        return (this.getUsersId() == null ? other.getUsersId() == null : this.getUsersId().equals(other.getUsersId()))
+        return (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
             && (this.getRoleId() == null ? other.getRoleId() == null : this.getRoleId().equals(other.getRoleId()));
     }
 
@@ -41,7 +41,7 @@ public class UserRoleMapping implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((getUsersId() == null) ? 0 : getUsersId().hashCode());
+        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
         result = prime * result + ((getRoleId() == null) ? 0 : getRoleId().hashCode());
         return result;
     }
@@ -52,7 +52,7 @@ public class UserRoleMapping implements Serializable {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", usersId=").append(usersId);
+        sb.append(", userId=").append(userId);
         sb.append(", roleId=").append(roleId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

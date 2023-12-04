@@ -2,6 +2,8 @@ package cn.shenmuyan.mapper;
 
 import cn.shenmuyan.bean.UserRoleMapping;
 
+import java.util.List;
+
 /**
 * @author 50414
 * @description 针对表【user_role_mapping(账号角色映射表)】的数据库操作Mapper
@@ -21,5 +23,7 @@ public interface UserRoleMappingMapper {
     int updateByPrimaryKeySelective(UserRoleMapping record);
 
     int updateByPrimaryKey(UserRoleMapping record);
+
+    List<UserRoleMapping> selectAll();
 
 }
