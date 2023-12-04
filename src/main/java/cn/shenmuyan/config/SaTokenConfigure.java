@@ -5,7 +5,8 @@ import cn.dev33.satoken.stp.StpInterface;
 import cn.hutool.core.convert.Convert;
 import cn.shenmuyan.bean.Permission;
 import cn.shenmuyan.bean.Role;
-import cn.shenmuyan.bean.Users;
+import cn.shenmuyan.bean.User;
+
 import cn.shenmuyan.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,7 +56,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                 //得到当前登录用户的权限列表
                 Integer id = Convert.toInt(o);
                 if (id != null) {
-                    Users user = userService.findById(id);
+                    User user = userService.findById(id);
                     Set<Role> roles = user.getRoles();
                     Set<String> permissions = new HashSet<>();
                     Set<Permission> permissions1 = new HashSet<>();
@@ -75,7 +76,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                 //得到当前登录用户的权限列表
                 Integer id = Convert.toInt(o);
                 if (id != null) {
-                    Users user = userService.findById(id);
+                    User user = userService.findById(id);
                     Set<Role> roles = user.getRoles();
                     Set<String> roleCodes = new HashSet<>();
                     for (Role role : roles) {

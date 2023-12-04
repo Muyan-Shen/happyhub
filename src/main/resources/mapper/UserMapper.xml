@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.shenmuyan.mapper.UsersMapper">
+<mapper namespace="cn.shenmuyan.mapper.UserMapper">
 
-    <resultMap id="BaseResultMap" type="cn.shenmuyan.bean.Users">
+    <resultMap id="BaseResultMap" type="cn.shenmuyan.bean.User">
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="username" column="username" jdbcType="VARCHAR"/>
             <result property="email" column="email" jdbcType="VARCHAR"/>
@@ -20,19 +20,25 @@
         is_delete
     </sql>
 
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey"  resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
-        from users
+        from user
         where  id = #{id,jdbcType=INTEGER} 
     </select>
 
+    <select id="selectAll"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from users
+        delete from user
         where  id = #{id,jdbcType=INTEGER} 
     </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.shenmuyan.bean.Users" useGeneratedKeys="true">
-        insert into users
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.shenmuyan.bean.User" useGeneratedKeys="true">
+        insert into user
         ( id,username,email
         ,password_hash,created_at,updated_at
         ,is_delete)
@@ -40,8 +46,8 @@
         ,#{passwordHash,jdbcType=VARCHAR},#{createdAt,jdbcType=TIMESTAMP},#{updatedAt,jdbcType=TIMESTAMP}
         ,#{isDelete,jdbcType=OTHER})
     </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.shenmuyan.bean.Users" useGeneratedKeys="true">
-        insert into users
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.shenmuyan.bean.User" useGeneratedKeys="true">
+        insert into user
         <trim prefix="(" suffix=")" suffixOverrides=",">
                 <if test="id != null">id,</if>
                 <if test="username != null">username,</if>
@@ -61,8 +67,8 @@
                 <if test="isDelete != null">#{isDelete,jdbcType=OTHER},</if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="cn.shenmuyan.bean.Users">
-        update users
+    <update id="updateByPrimaryKeySelective" parameterType="cn.shenmuyan.bean.User">
+        update user
         <set>
                 <if test="username != null">
                     username = #{username,jdbcType=VARCHAR},
@@ -85,8 +91,8 @@
         </set>
         where   id = #{id,jdbcType=INTEGER} 
     </update>
-    <update id="updateByPrimaryKey" parameterType="cn.shenmuyan.bean.Users">
-        update users
+    <update id="updateByPrimaryKey" parameterType="cn.shenmuyan.bean.User">
+        update user
         set 
             username =  #{username,jdbcType=VARCHAR},
             email =  #{email,jdbcType=VARCHAR},

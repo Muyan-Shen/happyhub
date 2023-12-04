@@ -1,6 +1,6 @@
 package cn.shenmuyan.service;
 
-import cn.shenmuyan.bean.Users;
+import cn.shenmuyan.bean.User;
 
 /**
  *
@@ -9,5 +9,5 @@ import cn.shenmuyan.bean.Users;
  * @date: 2023/12/04 14:58
  **/
 public interface UserService {
-    Users findById(Integer id);
+    User findById(Integer id);
 }

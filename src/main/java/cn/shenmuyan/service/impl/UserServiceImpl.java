@@ -1,6 +1,6 @@
 package cn.shenmuyan.service.impl;
 
-import cn.shenmuyan.bean.Users;
+import cn.shenmuyan.bean.User;
 import cn.shenmuyan.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
     @Override
-    public Users findById(Integer id) {
+    public User findById(Integer id) {
         return null;
     }
 }
