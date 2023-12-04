@@ -8,7 +8,7 @@ import lombok.Data;
 
 /**
  * 用户表
- * @TableName users
+ * @TableName user
  */
 @Data
 public class User implements Serializable {

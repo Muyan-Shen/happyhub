@@ -2,7 +2,7 @@ package cn.shenmuyan.vo;
 
 /**
  * 用户注册
- * @Title: UsersInsertVO
+ * @Title: UserInsertVO
  * @Author ShenMuyan
  * @Package cn.shenmuyan.vo
  * @Date 2023/12/4 15:32
