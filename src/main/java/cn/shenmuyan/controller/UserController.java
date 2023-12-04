@@ -34,6 +34,15 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    @PostMapping("/register")
+    public SaResult register(@Validated UserInsertVO userInsertVO){
+        User user = userService.findByUsernameAndPassword(userInsertVO.getUsername(), userInsertVO.getPasswordHash());
+        if (user != null){
+            return SaResult.error().setCode(400).setMsg("用户已存在");
+        }
+        userService.add(userInsertVO);
+        return SaResult.ok().setMsg("注册成功");
+    }
 
     @GetMapping
     @SaCheckPermission(value = "account::list",orRole = "admin")
@@ -68,6 +77,4 @@ public class UserController {
         userService.associationRole(StpUtil.getLoginIdAsInt(),roleIds);
         return SaResult.ok();
     }
-
-
 }

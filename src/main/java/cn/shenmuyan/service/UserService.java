@@ -26,7 +26,7 @@ public interface UserService {
 
     User findByUsernameAndPassword(String Username, String password);
 
-    void add(UserInsertVO account);
+    void add(UserInsertVO userInsertVO);
 
     void associationRole(int loginIdAsInt, Integer[] roleIds);
 }

@@ -63,7 +63,7 @@
         <include refid="Base_Column_List"/>
         from user
         where username = #{username,jdbcType=VARCHAR}
-        and password_hash = MD5(#{password,jdbcType=VARCHAR})
+        and password_hash = #{passwordHash,jdbcType=VARCHAR}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
