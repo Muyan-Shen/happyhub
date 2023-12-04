@@ -41,8 +41,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUsernameAndPassword(String username, String password) {
-        User user = userMapper.selectByUsernameAndPasswordHash(username, password);
+    public User findByUsernameAndPassword(String username, String passwordHash) {
+        User user = userMapper.selectByUsernameAndPasswordHash(username,MD5.create().digestHex(passwordHash));
         if(user == null){
             return null;
         }

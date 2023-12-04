@@ -24,7 +24,7 @@ public interface UserService {
 
     User findById(Integer id);
 
-    User findByUsernameAndPassword(String Username, String password);
+    User findByUsernameAndPassword(String Username, String passwordHash);
 
     void add(UserInsertVO userInsertVO);
 
