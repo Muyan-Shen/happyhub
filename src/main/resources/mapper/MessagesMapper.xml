@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.shenmuyan.mapper.MessagesMapper">
+
+    <resultMap id="BaseResultMap" type="cn.shenmuyan.bean.Messages">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="sessionId" column="session_id" jdbcType="INTEGER"/>
+            <result property="senderId" column="sender_id" jdbcType="INTEGER"/>
+            <result property="receiverId" column="receiver_id" jdbcType="INTEGER"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="sentAt" column="sent_at" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,session_id,sender_id,
+        receiver_id,content,sent_at
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from messages
+        where  id = #{id,jdbcType=INTEGER} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from messages
+        where  id = #{id,jdbcType=INTEGER} 
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.shenmuyan.bean.Messages" useGeneratedKeys="true">
+        insert into messages
+        ( id,session_id,sender_id
+        ,receiver_id,content,sent_at
+        )
+        values (#{id,jdbcType=INTEGER},#{sessionId,jdbcType=INTEGER},#{senderId,jdbcType=INTEGER}
+        ,#{receiverId,jdbcType=INTEGER},#{content,jdbcType=VARCHAR},#{sentAt,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.shenmuyan.bean.Messages" useGeneratedKeys="true">
+        insert into messages
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">id,</if>
+                <if test="sessionId != null">session_id,</if>
+                <if test="senderId != null">sender_id,</if>
+                <if test="receiverId != null">receiver_id,</if>
+                <if test="content != null">content,</if>
+                <if test="sentAt != null">sent_at,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id,jdbcType=INTEGER},</if>
+                <if test="sessionId != null">#{sessionId,jdbcType=INTEGER},</if>
+                <if test="senderId != null">#{senderId,jdbcType=INTEGER},</if>
+                <if test="receiverId != null">#{receiverId,jdbcType=INTEGER},</if>
+                <if test="content != null">#{content,jdbcType=VARCHAR},</if>
+                <if test="sentAt != null">#{sentAt,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.shenmuyan.bean.Messages">
+        update messages
+        <set>
+                <if test="sessionId != null">
+                    session_id = #{sessionId,jdbcType=INTEGER},
+                </if>
+                <if test="senderId != null">
+                    sender_id = #{senderId,jdbcType=INTEGER},
+                </if>
+                <if test="receiverId != null">
+                    receiver_id = #{receiverId,jdbcType=INTEGER},
+                </if>
+                <if test="content != null">
+                    content = #{content,jdbcType=VARCHAR},
+                </if>
+                <if test="sentAt != null">
+                    sent_at = #{sentAt,jdbcType=TIMESTAMP},
+                </if>
+        </set>
+        where   id = #{id,jdbcType=INTEGER} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.shenmuyan.bean.Messages">
+        update messages
+        set 
+            session_id =  #{sessionId,jdbcType=INTEGER},
+            sender_id =  #{senderId,jdbcType=INTEGER},
+            receiver_id =  #{receiverId,jdbcType=INTEGER},
+            content =  #{content,jdbcType=VARCHAR},
+            sent_at =  #{sentAt,jdbcType=TIMESTAMP}
+        where   id = #{id,jdbcType=INTEGER} 
+    </update>
+</mapper>
