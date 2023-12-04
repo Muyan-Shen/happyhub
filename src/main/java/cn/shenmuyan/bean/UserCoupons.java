@@ -1,6 +1,7 @@
 package cn.shenmuyan.bean;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -23,12 +24,12 @@ public class UserCoupons implements Serializable {
     /**
      * 领取时间
      */
-    private Date claimedDate;
+    private LocalDateTime claimedDate;
 
     /**
      * 使用时间
      */
-    private Date usedDate;
+    private LocalDateTime usedDate;
 
     private static final long serialVersionUID = 1L;
 

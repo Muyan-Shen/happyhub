@@ -2,6 +2,7 @@ package cn.shenmuyan.bean;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -39,7 +40,7 @@ public class Payments implements Serializable {
     /**
      * 支付时间
      */
-    private Date processedAt;
+    private LocalDateTime processedAt;
 
     private static final long serialVersionUID = 1L;
 

@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsernameAndPassword(String username, String password) {
-        User user = userMapper.selectByUsernameAndPassword(username, password);
+        User user = userMapper.selectByUsernameAndPasswordHash(username, password);
         if(user == null){
             return null;
         }

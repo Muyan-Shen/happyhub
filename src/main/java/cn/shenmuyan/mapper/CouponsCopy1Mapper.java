@@ -1,7 +1,5 @@
 package cn.shenmuyan.mapper;
 
-import cn.shenmuyan.bean.CouponsCopy1;
-
 /**
 * @author 50414
 * @description 针对表【coupons_copy1(优惠卷表)】的数据库操作Mapper

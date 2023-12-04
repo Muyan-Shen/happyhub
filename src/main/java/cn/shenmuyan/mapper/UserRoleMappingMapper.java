@@ -1,6 +1,7 @@
 package cn.shenmuyan.mapper;
 
 import cn.shenmuyan.bean.UserRoleMapping;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -24,6 +25,9 @@ public interface UserRoleMappingMapper {
 
     int updateByPrimaryKey(UserRoleMapping record);
 
+    void deleteByUserId(@Param(value = "userId")int userId);
+
+    void insertBatch(@Param("accountId") int accountId, @Param("roleIds") Integer[] roleIds);
     List<UserRoleMapping> selectAll();
 
 }
