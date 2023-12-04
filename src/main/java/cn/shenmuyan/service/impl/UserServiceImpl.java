@@ -1,12 +1,14 @@
 package cn.shenmuyan.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.crypto.digest.MD5;
 import cn.shenmuyan.bean.User;
 import cn.shenmuyan.mapper.UserMapper;
 import cn.shenmuyan.mapper.UserRoleMappingMapper;
 import cn.shenmuyan.service.UserService;
 import cn.shenmuyan.vo.UserInsertVO;
 import cn.shenmuyan.vo.UserWhereVO;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -19,7 +21,7 @@ import java.util.List;
  * @Date 2023/12/4 15:35
  * @description:
  */
-
+@Service
 public class UserServiceImpl implements UserService {
 
     @Resource
@@ -38,8 +40,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUsernameAndPassword(String username, String password) {
-        User user = userMapper.selectByUsernameAndPasswordHash(username, password);
+    public User findByUsernameAndPassword(String username, String passwordHash) {
+        User user = userMapper.selectByUsernameAndPasswordHash(username,MD5.create().digestHex(passwordHash));
         if(user == null){
             return null;
         }

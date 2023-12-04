@@ -12,6 +12,8 @@
             <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
             <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
             <result property="isDelete" column="is_delete" jdbcType="OTHER"/>
+        <collection property="roles" ofType="cn.shenmuyan.bean.Role"
+                    column="id" select="cn.shenmuyan.mapper.RoleMapper.selectByUserId"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -63,7 +65,7 @@
         <include refid="Base_Column_List"/>
         from user
         where username = #{username,jdbcType=VARCHAR}
-        and password_hash = MD5(#{password,jdbcType=VARCHAR})
+        and password_hash = #{passwordHash,jdbcType=VARCHAR}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
