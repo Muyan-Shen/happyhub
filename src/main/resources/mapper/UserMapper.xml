@@ -34,27 +34,36 @@
             <if test="username!=null and username !=''">
                 and username like concat('%',#{username,jdbcType=VARCHAR},'%')
             </if>
-            <if test="status !=null">
-                and status = #{status,jdbcType=TINYINT}
+            <if test="email !=null">
+                and email = #{status,jdbcType=TINYINT}
             </if>
-            <if test="createTime !=null and createTime.length>0">
-                <if test="createTime[0] !=null">
+            <if test="createdAt !=null and createTime.length>0">
+                <if test="createdAt[0] !=null">
                     and create_time &gt;= #{createTime[0],javaType=java.time.LocalDate,jdbcType=TIMESTAMP}
                 </if>
-                <if test="createTime[1] !=null and createTime.length>1 ">
+                <if test="createdAt[1] !=null and createTime.length>1 ">
                     and create_time &lt;= #{createTime[1],javaType=java.time.LocalDate,jdbcType=TIMESTAMP}
                 </if>
             </if>
-            <if test="updateTime !=null and updateTime.length>0">
-                <if test="updateTime[0] !=null">
+            <if test="updatedAt !=null and updateTime.length>0">
+                <if test="updatedAt[0] !=null">
                     and update_time &gt;= #{updateTime[0],javaType=java.time.LocalDate,jdbcType=TIMESTAMP}
                 </if>
-                <if test="updateTime[1] !=null and updateTime.length>1 ">
+                <if test="updatedAt[1] !=null and updateTime.length>1 ">
                     and update_time &lt;= #{updateTime[1],javaType=java.time.LocalDate,jdbcType=TIMESTAMP}
                 </if>
             </if>
-
+            <if test="isDelete !=null">
+                  and is_delete = #{isDelete,jdbcType=ENUM}
+            </if>
         </where>
+    </select>
+    <select id="selectByUsernameAndPasswordHash" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where username = #{username,jdbcType=VARCHAR}
+        and password_hash = MD5(#{password,jdbcType=VARCHAR})
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">

@@ -46,6 +46,7 @@ public class User implements Serializable {
      * 是否删除 1：'deleted'，2： 'normal'
      */
     private Object isDelete;
+
     private Set<Role> roles;
 
     private static final long serialVersionUID = 1L;

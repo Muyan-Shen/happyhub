@@ -29,6 +29,6 @@ public interface UserMapper {
 
     List<User> selectAll(UserWhereVO where);
 
-    User selectByUsernameAndPassword(@Param("username") String username, @Param("password")String password);
+    User selectByUsernameAndPasswordHash(@Param("username") String username, @Param("password")String password);
 
 }

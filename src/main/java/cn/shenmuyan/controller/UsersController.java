@@ -3,6 +3,7 @@ package cn.shenmuyan.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
+import cn.shenmuyan.bean.User;
 import cn.shenmuyan.service.UserService;
 import cn.shenmuyan.vo.UserInsertVO;
 import cn.shenmuyan.vo.UserWhereVO;
@@ -40,8 +41,8 @@ public class UsersController {
                                     @RequestParam(defaultValue ="1")int page,
                                     @RequestParam(defaultValue ="10")int limit){
         PageHelper.startPage(page,limit);//在查询之前使用,会自动的对紧接着的第一个查询进行分页
-        List<Users> list = userService.findAll(userWhereVO);
-        PageInfo<Users> pageInfo=new PageInfo<>(list);
+        List<User> list = userService.findAll(userWhereVO);
+        PageInfo<User> pageInfo=new PageInfo<>(list);
         Map<String,Object> map=new HashMap<>();
         map.put("code",200);
         map.put("msg","success");
