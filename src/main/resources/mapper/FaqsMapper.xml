@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.shenmuyan.mapper.FaqsMapper">
+
+    <resultMap id="BaseResultMap" type="cn.shenmuyan.bean.Faqs">
+            <id property="faqId" column="faq_id" jdbcType="INTEGER"/>
+            <result property="question" column="question" jdbcType="VARCHAR"/>
+            <result property="answer" column="answer" jdbcType="VARCHAR"/>
+            <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+            <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        faq_id,question,answer,
+        created_at,updated_at
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from faqs
+        where  faq_id = #{faqId,jdbcType=INTEGER} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from faqs
+        where  faq_id = #{faqId,jdbcType=INTEGER} 
+    </delete>
+    <insert id="insert" keyColumn="faq_id" keyProperty="faqId" parameterType="cn.shenmuyan.bean.Faqs" useGeneratedKeys="true">
+        insert into faqs
+        ( faq_id,question,answer
+        ,created_at,updated_at)
+        values (#{faqId,jdbcType=INTEGER},#{question,jdbcType=VARCHAR},#{answer,jdbcType=VARCHAR}
+        ,#{createdAt,jdbcType=TIMESTAMP},#{updatedAt,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" keyColumn="faq_id" keyProperty="faqId" parameterType="cn.shenmuyan.bean.Faqs" useGeneratedKeys="true">
+        insert into faqs
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="faqId != null">faq_id,</if>
+                <if test="question != null">question,</if>
+                <if test="answer != null">answer,</if>
+                <if test="createdAt != null">created_at,</if>
+                <if test="updatedAt != null">updated_at,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="faqId != null">#{faqId,jdbcType=INTEGER},</if>
+                <if test="question != null">#{question,jdbcType=VARCHAR},</if>
+                <if test="answer != null">#{answer,jdbcType=VARCHAR},</if>
+                <if test="createdAt != null">#{createdAt,jdbcType=TIMESTAMP},</if>
+                <if test="updatedAt != null">#{updatedAt,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.shenmuyan.bean.Faqs">
+        update faqs
+        <set>
+                <if test="question != null">
+                    question = #{question,jdbcType=VARCHAR},
+                </if>
+                <if test="answer != null">
+                    answer = #{answer,jdbcType=VARCHAR},
+                </if>
+                <if test="createdAt != null">
+                    created_at = #{createdAt,jdbcType=TIMESTAMP},
+                </if>
+                <if test="updatedAt != null">
+                    updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+                </if>
+        </set>
+        where   faq_id = #{faqId,jdbcType=INTEGER} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.shenmuyan.bean.Faqs">
+        update faqs
+        set 
+            question =  #{question,jdbcType=VARCHAR},
+            answer =  #{answer,jdbcType=VARCHAR},
+            created_at =  #{createdAt,jdbcType=TIMESTAMP},
+            updated_at =  #{updatedAt,jdbcType=TIMESTAMP}
+        where   faq_id = #{faqId,jdbcType=INTEGER} 
+    </update>
+</mapper>
