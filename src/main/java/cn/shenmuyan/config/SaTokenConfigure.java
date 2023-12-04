@@ -3,7 +3,6 @@ package cn.shenmuyan.config;
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.stp.StpInterface;
 import cn.hutool.core.convert.Convert;
-import cn.shenmuyan.bean.Account;
 import cn.shenmuyan.bean.Permission;
 import cn.shenmuyan.bean.Role;
 import cn.shenmuyan.service.AccountService;
