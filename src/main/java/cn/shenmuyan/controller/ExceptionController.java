@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 异常处理controller
  * @className: ExceptionController
  * @author: 叶宝谦
  * @date: 2023/12/04 19:33

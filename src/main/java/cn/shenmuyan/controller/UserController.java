@@ -3,8 +3,6 @@ package cn.shenmuyan.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
-import cn.shenmuyan.bean.Permission;
-import cn.shenmuyan.bean.Role;
 import cn.shenmuyan.bean.User;
 import cn.shenmuyan.service.UserService;
 import cn.shenmuyan.vo.UserInsertVO;
@@ -16,7 +14,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 账号controller
@@ -52,14 +52,6 @@ public class UserController {
                 .set("count", pageInfo.getTotal());
     }
 
-
-    @PutMapping
-    @SaCheckPermission(value = "account::add", orRole = "admin")
-    public SaResult add(@RequestBody @Validated UserInsertVO account) {
-        userService.add(account);
-        return SaResult.ok();
-    }
-
     //关联角色
     @PostMapping("/role")
     @SaCheckPermission(value = "account::role", orRole = "admin")
@@ -82,7 +74,7 @@ public class UserController {
 
         StpUtil.login(user.getId());
         return SaResult.ok().set("token",StpUtil.getTokenValue())
-                .set("users",user);
+                .set("user",user);
     }
 
     @PostMapping("/register")

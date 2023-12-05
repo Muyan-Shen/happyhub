@@ -7,10 +7,7 @@ import cn.shenmuyan.bean.Permission;
 import cn.shenmuyan.bean.Role;
 import cn.shenmuyan.bean.User;
 import cn.shenmuyan.service.UserService;
-import cn.shenmuyan.service.UserService;
-import cn.shenmuyan.bean.User;
-
-import cn.shenmuyan.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -26,7 +23,7 @@ import java.util.*;
  * @Date 2023/11/28 14:12
  * @description:
  */
-
+@Slf4j
 @Configuration
 public class SaTokenConfigure implements WebMvcConfigurer {
     // 注册 Sa-Token 拦截器，打开注解式鉴权功能
@@ -64,10 +61,12 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                     Set<String> permissions = new HashSet<>();
                     Set<Permission> permissions1 = new HashSet<>();
                     for (Role role : roles) {
-                        permissions1 = role.getPermissions();
+                        permissions1.addAll(role.getPermissions());
                     }
                     for (Permission permission : permissions1) {
+                        log.info(permission.getCode());
                         permissions.add(permission.getCode());
+
                     }
                     return new ArrayList<>(permissions);
                 }

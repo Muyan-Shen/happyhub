@@ -12,6 +12,8 @@
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="status" column="status" jdbcType="TINYINT"/>
+        <collection property="permissions" ofType="cn.shenmuyan.bean.Permission"
+                    column="id" select="cn.shenmuyan.mapper.PermissionMapper.selectByRoleId"/>
     </resultMap>
 
 
@@ -21,7 +23,7 @@
         status
     </sql>
 
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from role
@@ -36,7 +38,7 @@
         id in(select role_id from user_role_mapping where user_id=#{id,jdbcType=INTEGER})
     </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from role
         where  id = #{id,jdbcType=INTEGER} 
     </delete>

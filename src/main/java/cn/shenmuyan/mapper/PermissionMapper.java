@@ -1,6 +1,9 @@
 package cn.shenmuyan.mapper;
 
 import cn.shenmuyan.bean.Permission;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.Set;
 
 /**
 * @author 50414
@@ -21,5 +24,7 @@ public interface PermissionMapper {
     int updateByPrimaryKeySelective(Permission record);
 
     int updateByPrimaryKey(Permission record);
+
+    Set<Permission> selectByRoleId(@Param("roleId") Integer roleId);
 
 }
