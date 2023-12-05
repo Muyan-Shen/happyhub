@@ -34,7 +34,7 @@
         select
         <include refid="Base_Column_List" />
         from role
-            where
+        where
         id in(select role_id from user_role_mapping where user_id=#{id,jdbcType=INTEGER})
     </select>
 
