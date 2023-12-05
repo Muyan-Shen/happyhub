@@ -66,9 +66,12 @@
                     and end_time &lt;= #{endTime[1],javaType=java.time.LocalDateTime,jdbcType=TIMESTAMP}
                 </if>
             </if>
-            <!--<if test="organizerId != null and organizer_id != ''">-->
-            <!--    and organizer_id = #{organizer_id,jdbcType=INTEGER}-->
-            <!--</if>-->
+            <if test="organizerId != null and organizerId.length>0">
+                and organizer_id in
+                <foreach collection="organizerId" item="id" open="and (" close=")" separator=",">
+                    #{id,jdbcType=INTEGER}
+                </foreach>
+            </if>
             <if test="status != null and status != ''">
                 and status = #{status,jdbcType=INTEGER}
             </if>

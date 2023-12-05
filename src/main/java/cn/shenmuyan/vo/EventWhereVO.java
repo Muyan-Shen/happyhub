@@ -18,6 +18,10 @@ public class EventWhereVO {
     private String location;
     private LocalDateTime[] startTime;
     private LocalDateTime[] endTime;
-    private Integer organizerId;
+    /**
+     * 活动组织人
+     */
+    private String organizer;
+    private Integer[] organizerId;
     private Integer status;
 }
