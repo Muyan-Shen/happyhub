@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.Set;
 
 /**
+ * 权限表Mapper
 * @author 50414
 * @description 针对表【permission(权限表)】的数据库操作Mapper
 * @createDate 2023-12-04 15:45:24

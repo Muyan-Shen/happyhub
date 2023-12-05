@@ -3,6 +3,7 @@ package cn.shenmuyan.mapper;
 import cn.shenmuyan.bean.Faqs;
 
 /**
+ * 常见问题表Mapper
 * @author 50414
 * @description 针对表【faqs(常见问题表)】的数据库操作Mapper
 * @createDate 2023-12-04 15:45:24

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
+ * 用户表Mapper
 * @author 50414
 * @description 针对表【user(用户表)】的数据库操作Mapper
 * @createDate 2023-12-04 15:45:24

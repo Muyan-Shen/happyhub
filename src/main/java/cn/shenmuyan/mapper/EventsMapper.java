@@ -3,6 +3,7 @@ package cn.shenmuyan.mapper;
 import cn.shenmuyan.bean.Events;
 
 /**
+ * 活动表Mapper
 * @author 50414
 * @description 针对表【events(活动表
 )】的数据库操作Mapper
