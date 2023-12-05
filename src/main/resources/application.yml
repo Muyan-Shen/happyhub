@@ -6,15 +6,9 @@ spring:
     url: jdbc:mysql://43.138.143.147:3306/happyhub?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: admin
     password: Smy123456.
-    #以下为连接池的相关参数配置
-    primary.max-idle: 10
-    primary.max-wait: 10000
-    primary.min-idle: 5
-    primary.initial-size: 5
-    primary.validation-query: SELECT 1
-    primary.test-on-borrow: false
-    primary.test-while-idle: true
-    primary.time-between-eviction-runs-millis: 18800
+    hikari:
+      max-lifetime: 1800000 # 设置为30分钟，单位是毫秒
+      connection-timeout: 60000 # 设置为60秒，单位是毫秒
 
   sql:
     init:
