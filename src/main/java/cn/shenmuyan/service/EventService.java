@@ -2,6 +2,7 @@ package cn.shenmuyan.service;
 
 import cn.shenmuyan.bean.Events;
 import cn.shenmuyan.vo.EventWhereVO;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

@@ -6,6 +6,7 @@ import cn.shenmuyan.bean.User;
 import cn.shenmuyan.mapper.EventsMapper;
 import cn.shenmuyan.mapper.UserMapper;
 import cn.shenmuyan.service.EventService;
+import org.springframework.stereotype.Service;
 import cn.shenmuyan.vo.EventWhereVO;
 import cn.shenmuyan.vo.UserWhereVO;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- *
+ * 活动接口实现类
  * @className: EventServiceImpl
  * @author: 叶宝谦
  * @date: 2023/12/05 9:23

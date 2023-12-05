@@ -3,6 +3,7 @@ package cn.shenmuyan.mapper;
 import cn.shenmuyan.bean.Orders;
 
 /**
+ * 订单表Mapper
 * @author 50414
 * @description 针对表【orders(订单)】的数据库操作Mapper
 * @createDate 2023-12-04 15:45:24

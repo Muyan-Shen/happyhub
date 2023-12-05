@@ -3,6 +3,7 @@ package cn.shenmuyan.mapper;
 import cn.shenmuyan.bean.Seats;
 
 /**
+ * 座位表Mapper
 * @author 50414
 * @description 针对表【seats(座位表)】的数据库操作Mapper
 * @createDate 2023-12-04 15:45:24

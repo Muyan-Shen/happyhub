@@ -34,9 +34,34 @@
         where
         id in(select permission_id from role_permission_mapping where role_id=#{roleId,javaType=INTEGER})
     </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from permission
+        <where>
+            <if test="name != null and name != ''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="code != null and code != ''">
+                and code like concat('%',#{code},'%')
+            </if>
+        </where>
+    </select>
+    <select id="selectByCode" resultType="cn.shenmuyan.bean.Permission">
+        select <include refid="Base_Column_List"/>
+        from permission
+        where code = #{code,jdbcType=VARCHAR}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from permission
         where  id = #{id,jdbcType=INTEGER} 
+    </delete>
+    <delete id="deleteByIds">
+        delete from permission
+        where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id,jdbcType=INTEGER}
+        </foreach>
     </delete>
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.shenmuyan.bean.Permission" useGeneratedKeys="true">
         insert into permission
