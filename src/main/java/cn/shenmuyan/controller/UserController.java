@@ -79,7 +79,6 @@ public class UserController {
         if (user == null) {
             return SaResult.error("用户名或者密码错误");
         }
-
         StpUtil.login(user.getId());
         return SaResult.ok().set("token",StpUtil.getTokenValue())
                 .set("users",user);
@@ -93,5 +92,14 @@ public class UserController {
         }
         userService.add(userInsertVO);
         return SaResult.ok().setMsg("注册成功");
+    }
+
+    @GetMapping("/logout")
+    public SaResult logout() {
+        if (!StpUtil.isLogin()) {
+            return SaResult.error("未登录，注销失败");
+        }
+        StpUtil.logout();
+        return SaResult.ok("注销成功");
     }
 }

@@ -64,7 +64,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                     Set<String> permissions = new HashSet<>();
                     Set<Permission> permissions1 = new HashSet<>();
                     for (Role role : roles) {
-                        permissions1 = role.getPermissions();
+                        permissions1.addAll(role.getPermissions());
                     }
                     for (Permission permission : permissions1) {
                         permissions.add(permission.getCode());
