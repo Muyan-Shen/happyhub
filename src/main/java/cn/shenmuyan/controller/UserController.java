@@ -61,7 +61,7 @@ public class UserController {
     }
 
     /**
-     * 用户登录
+     * 前台用户登录
      * @param userWhereVO
      * @return
      */
@@ -75,6 +75,46 @@ public class UserController {
         return SaResult.ok().set("token",StpUtil.getTokenValue())
                 .set("user",user);
     }
+    /**
+     * 前台用户登出
+     * @return
+     */
+    @GetMapping("/logout")
+    public SaResult logout() {
+        if (!StpUtil.isLogin()) {
+            return SaResult.error("未登录，注销失败");
+        }
+        StpUtil.logout();
+        return SaResult.ok("注销成功");
+    }
+
+    /**
+     * 后台用户登录
+     * @param userWhereVO
+     * @return
+     */
+    @PostMapping("/login2")
+    public SaResult login2(@Validated UserWhereVO userWhereVO) {
+        User user = userService.findByUsernameAndPassword(userWhereVO.getUsername(), userWhereVO.getPasswordHash());
+        if (user == null) {
+            return SaResult.error("用户名或者密码错误");
+        }
+        StpUtil.login(user.getId());
+        return SaResult.ok().set("token",StpUtil.getTokenValue())
+                .set("user",user);
+    }
+    /**
+     * 前台用户登出
+     * @return
+     */
+    @GetMapping("/logout2")
+    public SaResult logout2() {
+        if (!StpUtil.isLogin()) {
+            return SaResult.error("未登录，注销失败");
+        }
+        StpUtil.logout();
+        return SaResult.ok("注销成功");
+    }
 
     @PostMapping("/register")
     public SaResult register(@Validated UserInsertVO userInsertVO){
@@ -86,12 +126,5 @@ public class UserController {
         return SaResult.ok().setMsg("注册成功");
     }
 
-    @GetMapping("/logout")
-    public SaResult logout() {
-        if (!StpUtil.isLogin()) {
-            return SaResult.error("未登录，注销失败");
-        }
-        StpUtil.logout();
-        return SaResult.ok("注销成功");
-    }
+
 }
