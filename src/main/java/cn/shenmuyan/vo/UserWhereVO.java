@@ -24,7 +24,7 @@ public class UserWhereVO{
     @Pattern(regexp = "^[a-zA-Z0-9_]{3,15}$", message = "用户名格式不正确,必须是3-15位字母数字下划线")
     private String passwordHash;
     private String email;
-    private LocalDateTime[] createdTime;
-    private LocalDateTime[] updatedTime;
-    private Integer status;
+    private LocalDateTime[] createdAt;
+    private LocalDateTime[] updatedAt;
+    private Integer isDelete;
 }

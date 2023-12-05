@@ -96,7 +96,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/login2")
-    public SaResult login2(@Validated UserWhereVO userWhereVO) {
+    public SaResult login2(@Validated @RequestBody UserWhereVO userWhereVO) {
         User user = userService.findByUsernameAndPassword(userWhereVO.getUsername(), userWhereVO.getPasswordHash());
         if (user == null) {
             return SaResult.error("用户名或者密码错误");
