@@ -3,8 +3,10 @@ package cn.shenmuyan.service.impl;
 import cn.hutool.core.util.ArrayUtil;
 import cn.shenmuyan.bean.Events;
 import cn.shenmuyan.bean.User;
+import cn.shenmuyan.bean.Orders;
 import cn.shenmuyan.mapper.EventsMapper;
 import cn.shenmuyan.mapper.UserMapper;
+import cn.shenmuyan.mapper.OrdersMapper;
 import cn.shenmuyan.service.EventService;
 import org.springframework.stereotype.Service;
 import cn.shenmuyan.vo.EventWhereVO;
@@ -23,9 +25,9 @@ import java.util.List;
 @Service
 public class EventServiceImpl implements EventService {
     @Resource
-    EventsMapper eventsMapper;
+    private EventsMapper eventsMapper;
     @Resource
-    UserMapper userMapper;
+    private UserMapper userMapper;
     @Override
     public List<Events> findAll(EventWhereVO eventWhereVO) {
         if (!eventWhereVO.getOrganizer().isEmpty()){
@@ -44,7 +46,8 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Events findById(Integer eventId) {
-        return null;
+        Events event = eventsMapper.selectByPrimaryKey(eventId);
+        return event;
     }
 
     @Override
@@ -55,5 +58,14 @@ public class EventServiceImpl implements EventService {
     @Override
     public void addEvent(Events events) {
         eventsMapper.insertSelective(events);
+    }
+
+    @Override
+    public String findOrganizerUsername(Integer organizerId) {
+        User user = userMapper.selectByPrimaryKey(organizerId);
+        if(user!=null){
+           return user.getUsername();
+        }
+       return null;
     }
 }
