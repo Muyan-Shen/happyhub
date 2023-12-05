@@ -16,6 +16,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
+ * 用户接口实现类
  * @Title: UserServiceImpl
  * @Author ShenMuyan
  * @Package cn.shenmuyan.service.Impl

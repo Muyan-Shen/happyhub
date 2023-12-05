@@ -5,6 +5,7 @@ import cn.shenmuyan.bean.Events;
 import java.util.List;
 
 /**
+ * 活动接口
  * @className: EventService
  * @author: 叶宝谦
  * @date: 2023/12/05 9:23

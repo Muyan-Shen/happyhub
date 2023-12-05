@@ -6,6 +6,7 @@ import cn.shenmuyan.service.EventService;
 import java.util.List;
 
 /**
+ * 活动接口实现类
  * @className: EventServiceImpl
  * @author: 叶宝谦
  * @date: 2023/12/05 9:23
@@ -30,4 +31,5 @@ public class EventServiceImpl implements EventService {
     public void addEvent(Events events) {
 
     }
+
 }
