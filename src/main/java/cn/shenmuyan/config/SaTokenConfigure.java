@@ -9,6 +9,7 @@ import cn.shenmuyan.bean.User;
 import cn.shenmuyan.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -25,6 +26,7 @@ import java.util.*;
  */
 @Slf4j
 @Configuration
+@ComponentScan("cn.shenmuyan.config")
 public class SaTokenConfigure implements WebMvcConfigurer {
     // 注册 Sa-Token 拦截器，打开注解式鉴权功能
     @Override

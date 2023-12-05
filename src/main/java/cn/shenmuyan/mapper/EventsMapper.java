@@ -1,6 +1,9 @@
 package cn.shenmuyan.mapper;
 
 import cn.shenmuyan.bean.Events;
+import cn.shenmuyan.vo.EventWhereVO;
+
+import java.util.List;
 
 /**
 * @author 50414
@@ -18,6 +21,8 @@ public interface EventsMapper {
     int insertSelective(Events record);
 
     Events selectByPrimaryKey(Integer id);
+
+    List<Events> selectAll(EventWhereVO eventWhereVO);
 
     int updateByPrimaryKeySelective(Events record);
 

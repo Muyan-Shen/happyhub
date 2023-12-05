@@ -33,6 +33,48 @@
         where  id = #{id,jdbcType=INTEGER} 
     </select>
 
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from events
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="title != null and title != ''">
+                and title like concat('%', #{title,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="description != null and description != ''">
+                and description like concat('%', #{description,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="location != null and location != ''">
+                and location like concat('%',#{description,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="startTime != null and startTime.length > 0">
+                <if test="startTime[0] != null">
+                    start_time &gt;= #{startTime[0],javaType=java.time.LocalDateTime,jdbcType=TIMESTAMP}
+                </if>
+                <if test="startTime.length>1">
+                    and start_time &lt;= #{startTime[1],javaType=java.time.LocalDateTime,jdbcType=TIMESTAMP}
+                </if>
+            </if>
+            <if test="endTime != null and endTime.length > 0">
+                <if test="endTime[0] !=null">
+                    end_time &gt;= #{endTime[0],javaType=java.time.LocalDateTime,jdbcType=TIMESTAMP}
+                </if>
+                <if test="endTime.length>1">
+                    and end_time &lt;= #{endTime[1],javaType=java.time.LocalDateTime,jdbcType=TIMESTAMP}
+                </if>
+            </if>
+            <!--<if test="organizerId != null and organizer_id != ''">-->
+            <!--    and organizer_id = #{organizer_id,jdbcType=INTEGER}-->
+            <!--</if>-->
+            <if test="status != null and status != ''">
+                and status = #{status,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from events
         where  id = #{id,jdbcType=INTEGER} 
