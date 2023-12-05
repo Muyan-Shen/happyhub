@@ -21,8 +21,6 @@ public class EventServiceImpl implements EventService {
     EventsMapper eventsMapper;
     @Override
     public List<Events> findAll(EventWhereVO eventWhereVO) {
-        System.out.println("eventWhereVO"+eventWhereVO);
-        System.out.println("length+"+eventWhereVO.getStartTime().length);
         List<Events> events = eventsMapper.selectAll(eventWhereVO);
         return events;
     }
