@@ -30,7 +30,7 @@ public class EventServiceImpl implements EventService {
     private UserMapper userMapper;
     @Override
     public List<Events> findAll(EventWhereVO eventWhereVO) {
-        if (!eventWhereVO.getOrganizer().isEmpty()){
+        if (eventWhereVO.getOrganizer()!=null){
             UserWhereVO userWhereVO = new UserWhereVO();
             userWhereVO.setUsername(eventWhereVO.getOrganizer());
             List<User> users = userMapper.selectAll(userWhereVO);

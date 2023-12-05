@@ -5,6 +5,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.time.LocalDateTime;
 
 /**
  * 用户登录视图
@@ -22,4 +23,8 @@ public class UserWhereVO{
     @NotBlank(message = "密码不能为空")
     @Pattern(regexp = "^[a-zA-Z0-9_]{3,15}$", message = "用户名格式不正确,必须是3-15位字母数字下划线")
     private String passwordHash;
+    private String email;
+    private LocalDateTime[] createdTime;
+    private LocalDateTime[] updatedTime;
+    private Integer status;
 }
