@@ -25,4 +25,9 @@ public class EventServiceImpl implements EventService {
     public void updateById(Events events) {
 
     }
+
+    @Override
+    public void addEvent(Events events) {
+
+    }
 }

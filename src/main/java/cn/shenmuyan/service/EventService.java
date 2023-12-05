@@ -13,5 +13,5 @@ public interface EventService {
     public List<Events> findAll(Events events);
     public Events findById(Integer eventId);
     void updateById(Events events);
-
+    void addEvent(Events events);
 }
