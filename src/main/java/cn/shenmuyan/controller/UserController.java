@@ -3,6 +3,7 @@ package cn.shenmuyan.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
+import cn.shenmuyan.bean.Orders;
 import cn.shenmuyan.bean.User;
 import cn.shenmuyan.service.UserService;
 import cn.shenmuyan.vo.UserInsertVO;
@@ -14,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,5 +95,34 @@ public class UserController {
         }
         StpUtil.logout();
         return SaResult.ok("注销成功");
+    }
+
+    /**
+     * 点击购买后(价格类型未解决 BigDecimal)生成一个状态挂起的订单
+     *
+     * @param eventId 活动id
+     * @param price   价格
+     * @return
+     */
+    @PutMapping("/beforePaid")
+    public SaResult beforePaid(Integer eventId, BigDecimal price) {
+
+        int userId = Integer.parseInt((String) StpUtil.getLoginId());
+        Orders orders = new Orders();
+        orders.setUserId(userId);
+        orders.setEventId(eventId);
+        orders.setStatus("pending");
+        orders.setTotalPrice(price);
+        int i=userService.insertOrder(orders);
+        if(i>0) {
+            return SaResult.ok("订单发起成功").setData(orders);
+        }
+        return SaResult.error("订单发起失败");
+    }
+
+    @GetMapping("/cancel")
+    public SaResult cancelOrders( Integer eventId) {
+        Integer userId = (Integer) StpUtil.getLoginId();
+        return SaResult.ok().setMsg("订单取消成功");
     }
 }

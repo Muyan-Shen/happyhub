@@ -72,6 +72,10 @@ public class Events implements Serializable {
      * 更新时间
      */
     private LocalDateTime updatedAt;
+    /**
+     * 活动组织者用户名
+     */
+    private String organizerUsername;
 
     private static final long serialVersionUID = 1L;
 
@@ -117,6 +121,7 @@ public class Events implements Serializable {
         result = prime * result + ((getStatusDescription() == null) ? 0 : getStatusDescription().hashCode());
         result = prime * result + ((getCreatedAt() == null) ? 0 : getCreatedAt().hashCode());
         result = prime * result + ((getUpdatedAt() == null) ? 0 : getUpdatedAt().hashCode());
+        result = prime * result + ((getOrganizerUsername() == null) ? 0 : getOrganizerUsername().hashCode());
         return result;
     }
 
@@ -138,6 +143,7 @@ public class Events implements Serializable {
         sb.append(", statusDescription=").append(statusDescription);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
+//        sb.append(", organizerUsername=").append(organizerUsername);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
