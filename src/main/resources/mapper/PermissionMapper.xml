@@ -21,14 +21,20 @@
         update_time,status
     </sql>
 
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from permission
         where  id = #{id,jdbcType=INTEGER} 
     </select>
-
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <select id="selectByRoleId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from permission
+        where
+        id in(select permission_id from role_permission_mapping where role_id=#{roleId,javaType=INTEGER})
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from permission
         where  id = #{id,jdbcType=INTEGER} 
     </delete>

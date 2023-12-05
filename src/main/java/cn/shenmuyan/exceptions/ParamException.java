@@ -3,6 +3,7 @@ package cn.shenmuyan.exceptions;
 import lombok.Data;
 
 /**
+ * 异常返回
  * @Title: ParamException
  * @Author ShenMuyan
  * @Package cn.shenmuyan.exceptions
