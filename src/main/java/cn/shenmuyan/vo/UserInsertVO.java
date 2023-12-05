@@ -8,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 /**
- * 用户注册
+ * 用户注册视图
  * @Title: UserInsertVO
  * @Author ShenMuyan
  * @Package cn.shenmuyan.vo

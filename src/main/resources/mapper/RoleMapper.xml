@@ -37,10 +37,35 @@
         where
         id in(select role_id from user_role_mapping where user_id=#{id,jdbcType=INTEGER})
     </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from role
+        <where>
+            <if test="name != null and name != ''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="code != null and code != ''">
+                and code like concat('%',#{code},'%')
+            </if>
+        </where>
+    </select>
+    <select id="selectByCode" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from role
+        where code = #{code,jdbcType=VARCHAR}
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from role
         where  id = #{id,jdbcType=INTEGER} 
+    </delete>
+    <delete id="deleteByIds">
+        delete from role
+        where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id,jdbcType=INTEGER}
+        </foreach>
     </delete>
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.shenmuyan.bean.Role" useGeneratedKeys="true">
         insert into role

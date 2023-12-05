@@ -3,7 +3,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://43.138.143.147:3306/happyhub?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
+    url: jdbc:mysql://43.138.143.147:3306/happyhub?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: admin
     password: Smy123456.
     #以下为连接池的相关参数配置

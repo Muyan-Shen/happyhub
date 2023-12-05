@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 /**
- * 权限参数视图
+ * 新增权限视图
  * @Title: RoleInsertVO
  * @Author ShenMuyan
  * @Package cn.shenmuyan.vo

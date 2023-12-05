@@ -1,6 +1,10 @@
 package cn.shenmuyan.mapper;
 
 import cn.shenmuyan.bean.Role;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
 /**
  * 角色表Mapper
 * @author 50414
@@ -23,5 +27,8 @@ public interface RoleMapper {
     int updateByPrimaryKey(Role record);
 
 
+    List<Role> selectAll(@Param("name")String name,@Param("code")String code);
 
+    void deleteByIds(@Param("ids") Integer[] ids);
+    Role selectByCode(String code);
 }

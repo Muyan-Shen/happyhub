@@ -3,6 +3,7 @@ package cn.shenmuyan.mapper;
 import cn.shenmuyan.bean.Permission;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -26,6 +27,8 @@ public interface PermissionMapper {
 
     int updateByPrimaryKey(Permission record);
 
-    Set<Permission> selectByRoleId(@Param("roleId") Integer roleId);
+    List<Permission> selectAll(@Param("name")String name, @Param("code")String code);
 
+    void deleteByIds(Integer[] ids);
+    Permission selectByCode(String code);
 }

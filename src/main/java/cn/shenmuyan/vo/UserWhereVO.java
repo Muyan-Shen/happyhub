@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 /**
- * 用户登录
+ * 用户登录视图
  * @Title: AccountWhereVO
  * @Author ShenMuyan
  * @Package cn.shenmuyan.vo

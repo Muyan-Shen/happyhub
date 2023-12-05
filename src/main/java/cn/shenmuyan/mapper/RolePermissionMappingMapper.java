@@ -1,6 +1,7 @@
 package cn.shenmuyan.mapper;
 
 import cn.shenmuyan.bean.RolePermissionMapping;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 角色权限映射表Mapper
@@ -23,4 +24,7 @@ public interface RolePermissionMappingMapper {
 
     int updateByPrimaryKey(RolePermissionMapping record);
 
+    void deleteByRoleId(Integer roleId);
+
+    void insertBatch(@Param("roleId") Integer roleId, @Param("permissionIds") Integer[] permissionIds);
 }

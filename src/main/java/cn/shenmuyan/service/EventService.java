@@ -1,6 +1,7 @@
 package cn.shenmuyan.service;
 
 import cn.shenmuyan.bean.Events;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * @author: 叶宝谦
  * @date: 2023/12/05 9:23
  **/
+@Service
 public interface EventService {
     public List<Events> findAll(Events events);
     public Events findById(Integer eventId);
