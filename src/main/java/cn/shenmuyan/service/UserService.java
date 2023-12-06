@@ -30,5 +30,4 @@ public interface UserService {
     void add(UserInsertVO userInsertVO);
 
     void associationRole(int loginIdAsInt, Integer[] roleIds);
-    int insertOrder(Orders orders);
 }

@@ -30,8 +30,6 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private UserMapper userMapper;
-    @Resource
-    private OrdersMapper ordersMapper;
 
     @Resource
     private UserRoleMappingMapper userRoleMappingMapper;
@@ -72,15 +70,8 @@ public class UserServiceImpl implements UserService {
     @Transactional  //开启事务
     public void associationRole(int userId, Integer[] roleIds) {
         //先删除之前的关联
-        userRoleMappingMapper
-                .deleteByUserId(userId);
+        userRoleMappingMapper.deleteByUserId(userId);
         //再添加新的关联
         userRoleMappingMapper.insertBatch(userId,roleIds);
-    }
-
-    @Override
-    public int insertOrder(Orders orders) {
-        int i = ordersMapper.insertSelective(orders);
-        return i;
     }
 }

@@ -127,33 +127,4 @@ public class UserController {
         userService.add(userInsertVO);
         return SaResult.ok().setMsg("注册成功");
     }
-
-    /**
-     * 点击购买后(价格类型未解决 BigDecimal)生成一个状态挂起的订单
-     *
-     * @param eventId 活动id
-     * @param price   价格
-     * @return
-     */
-    @PutMapping("/beforePaid")
-    public SaResult beforePaid(Integer eventId, BigDecimal price) {
-
-        int userId = Integer.parseInt((String) StpUtil.getLoginId());
-        Orders orders = new Orders();
-        orders.setUserId(userId);
-        orders.setEventId(eventId);
-        orders.setStatus("pending");
-        orders.setTotalPrice(price);
-        int i=userService.insertOrder(orders);
-        if(i>0) {
-            return SaResult.ok("订单发起成功").setData(orders);
-        }
-        return SaResult.error("订单发起失败");
-    }
-
-    @GetMapping("/cancel")
-    public SaResult cancelOrders( Integer eventId) {
-        Integer userId = (Integer) StpUtil.getLoginId();
-        return SaResult.ok().setMsg("订单取消成功");
-    }
 }
