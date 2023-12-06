@@ -9,4 +9,7 @@ import cn.shenmuyan.bean.Orders;
  **/
 public interface OrderService {
     int addOrder(Orders orders);
+
+
+    int updateOrdersStatus(Integer ordersId);
 }

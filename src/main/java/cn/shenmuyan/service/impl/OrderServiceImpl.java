@@ -15,10 +15,21 @@ import javax.annotation.Resource;
 @Service
 public class OrderServiceImpl implements OrderService {
     @Resource
-    OrdersMapper ordersMapper;
+    private OrdersMapper ordersMapper;
     @Override
     public int addOrder(Orders orders) {
         int i = ordersMapper.insert(orders);
         return i;
     }
+
+    @Override
+    public int updateOrdersStatus(Integer ordersId) {
+        Orders order=new Orders();
+        order.setId(ordersId);
+        order.setStatus("cancelled");
+        int i = ordersMapper.updateByPrimaryKeySelective(order);
+        return i;
+    }
+
+
 }
