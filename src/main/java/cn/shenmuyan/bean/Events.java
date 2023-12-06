@@ -76,6 +76,10 @@ public class Events implements Serializable {
      * 活动组织者用户名
      */
     private String organizerUsername;
+    /**
+     * 最高档位
+     */
+    private Integer topGear;
 
     private static final long serialVersionUID = 1L;
 

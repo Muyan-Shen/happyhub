@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 
 /**
- * 订单控制器，
+ * 订单控制器
  * @className: PayController
  * @author: 叶宝谦
  * @date: 2023/12/05 20:43

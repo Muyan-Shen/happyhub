@@ -1,12 +1,13 @@
 package cn.shenmuyan.mapper;
 
 import cn.shenmuyan.bean.Seats;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 /**
- * 座位表Mapper
-* @author 50414
+* @author 86136
 * @description 针对表【seats(座位表)】的数据库操作Mapper
-* @createDate 2023-12-04 15:45:24
+* @createDate 2023-12-06 09:25:25
 * @Entity cn.shenmuyan.bean.Seats
 */
 public interface SeatsMapper {
@@ -17,10 +18,17 @@ public interface SeatsMapper {
 
     int insertSelective(Seats record);
 
+    void insertSeats(List<Seats> seats);
+
     Seats selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(Seats record);
 
     int updateByPrimaryKey(Seats record);
 
+    List<Seats> selectAll();
+
+    int getLastSeatNum(@Param("eventId") int eventId,@Param("gear") int gear,@Param("direction")String direction,@Param("status") Integer status);
+
+    Seats selectByEventIdAndGearAndDirection(@Param("eventId") int eventId,@Param("gear") int gear,@Param("direction")String direction);
 }

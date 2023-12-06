@@ -5,6 +5,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import cn.shenmuyan.bean.Events;
 import cn.shenmuyan.service.EventService;
+import cn.shenmuyan.vo.EventInsertVO;
 import cn.shenmuyan.vo.EventWhereVO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -62,5 +63,14 @@ public class EventController {
         return SaResult.ok().setData(event);
     }
 
-
+    /**
+     * 创建活动
+     * @param event
+     * @return
+     */
+    @PostMapping("/create")
+    public SaResult create(@Validated @RequestBody EventInsertVO event) {
+        eventService.addEvent(event);
+        return SaResult.ok("创建成功");
+    }
 }
