@@ -3,6 +3,7 @@ package cn.shenmuyan.service;
 import cn.shenmuyan.bean.Seats;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @className: SeatService
@@ -12,76 +13,93 @@ import java.math.BigDecimal;
 public interface SeatService {
     /**
      * 创建所有档次的座位
+     *
      * @param eventId   活动id
      * @param topGear   最高档次
      * @param direction 座位朝向
      * @param maxRow    一行最多有多少座位
      * @param gearSum   每个档次的座位数
-     * @param gearPrice   每个档次的价格
+     * @param gearPrice 每个档次的价格
      */
     void setSeat(int eventId, int topGear, String direction, int maxRow, int[] gearSum, BigDecimal[] gearPrice);
 
     /**
      * 得到某个活动还有多少座位
-     * @param eventId
-     * @param status    座位状态，-1：所有，1：空座，2：预约
-     * @return
+     *
+     * @param eventId 活动id
+     * @param status  座位状态，-1：所有，1：空座，2：预约
+     * @return  还有多少座位
      */
     Integer getLastSeatNum(int eventId, Integer status);
 
     /**
      * 得到某个档次还有多少座位
-     * @param eventId
-     * @param gear
-     * @param status    座位状态，-1：所有，1：空座，2：预约
-     * @return
+     *
+     * @param eventId 活动id
+     * @param gear    档次，-1：所有
+     * @param status  座位状态，-1：所有，1：空座，2：预约
+     * @return  还有多少座位
      */
-    Integer getLastSeatNum(int eventId,int gear, Integer status);
+    Integer getLastSeatNum(int eventId, int gear, Integer status);
 
     /**
      * 得到某个方位还有多少座位
-     * @param eventId
-     * @param direction
+     *
+     * @param eventId   活动id
+     * @param direction 方位，null为所有
      * @param status    座位状态，-1：所有，1：空座，2：预约
-     * @return
+     * @return  还有多少座位
      */
-    Integer getLastSeatNum(int eventId,String direction, Integer status);
-    /**
-     * 得到特定方位的某个档次还有多少座位
-     * @param eventId
-     * @param gear
-     * @param direction
-     * @param status    座位状态，-1：所有，1：空座，2：预约
-     * @return
-     */
-    Integer getLastSeatNum(int eventId,int gear,String direction,Integer status);
+    Integer getLastSeatNum(int eventId, String direction, Integer status);
 
     /**
-     * 根据活动id获得1个空座位
-     * @param eventId
-     * @return
+     * 得到特定方位的某个档次还有多少座位
+     *
+     * @param eventId   活动id
+     * @param gear      档次，-1：所有
+     * @param direction 方位，null为所有
+     * @param status    座位状态，-1：所有，1：空座，2：预约
+     * @return  还有多少座位
      */
-    Seats getSeat(int eventId);
+    Integer getLastSeatNum(int eventId, int gear, String direction, Integer status);
+
     /**
-     * 根据活动id和座位等级获得1个空座位
-     * @param eventId
-     * @param gear
-     * @return
+     * 根据活动id获得num个空座位
+     *
+     * @param eventId 活动id
+     * @param num 要多少个座位
+     * @return num个空座位
      */
-    Seats getSeat(int eventId,int gear);
+    List<Seats> getSeat(int eventId, int num);
+
     /**
-     * 根据活动id和方位等级获得1个空座位
-     * @param eventId
-     * @param direction
-     * @return
+     * 根据活动id和座位等级获得num个空座位
+     *
+     * @param eventId   活动id
+     * @param gear  档次，-1为所有
+     * @param num   要多少个座位
+     * @return num个空座位
      */
-    Seats getSeat(int eventId,String direction);
+    List<Seats> getSeat(int eventId, int gear, int num);
+
     /**
-     * 根据活动id，档次和方位座位等级获得1个空座位
-     * @param eventId
-     * @param gear
-     * @param direction
-     * @return
+     * 根据活动id和方位等级获得num个空座位
+     *
+     * @param eventId   活动id
+     * @param direction 方位，null为所有
+     * @param num 要多少个座位
+     * @return num个空座位
      */
-    Seats getSeat(int eventId,int gear,String direction);
+    List<Seats> getSeat(int eventId, String direction, int num);
+
+    /**
+     * 根据活动id，档次和方位座位等级获得num个空座位
+     *
+     * @param eventId   活动id
+     * @param gear      档次，-1为所有
+     * @param direction 方位，null为所有
+     * @param num 要多少个座位
+     * @return num个空座位
+     */
+    List<Seats> getSeat(int eventId, int gear, String direction, int num);
 }

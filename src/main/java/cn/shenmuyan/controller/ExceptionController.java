@@ -1,6 +1,7 @@
 package cn.shenmuyan.controller;
 
 import cn.dev33.satoken.util.SaResult;
+import cn.shenmuyan.exceptions.SeatsNumOutOfBoundsException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -41,5 +42,15 @@ public class ExceptionController {
             o.add(fieldError.getDefaultMessage());
         }
         return result.setData(errors);
+    }
+
+    /**
+     * 订座大于当前剩余座位数异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler
+    public SaResult handle(SeatsNumOutOfBoundsException e){
+        return SaResult.error(e.getMessage()).setCode(400);
     }
 }

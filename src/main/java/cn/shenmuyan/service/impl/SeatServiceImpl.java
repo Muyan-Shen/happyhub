@@ -1,6 +1,7 @@
 package cn.shenmuyan.service.impl;
 
 import cn.shenmuyan.bean.Seats;
+import cn.shenmuyan.exceptions.SeatsNumOutOfBoundsException;
 import cn.shenmuyan.mapper.SeatsMapper;
 import org.springframework.stereotype.Service;
 
@@ -51,42 +52,45 @@ public class SeatServiceImpl implements cn.shenmuyan.service.SeatService {
 
     @Override
     public Integer getLastSeatNum(int eventId, Integer status) {
-        return seatsMapper.getLastSeatNum(eventId, -1, null,status);
+        return seatsMapper.getLastSeatNum(eventId, -1, null, status);
     }
 
     @Override
     public Integer getLastSeatNum(int eventId, int gear, Integer status) {
-        return seatsMapper.getLastSeatNum(eventId, gear, null,status);
+        return seatsMapper.getLastSeatNum(eventId, gear, null, status);
     }
 
     @Override
     public Integer getLastSeatNum(int eventId, String direction, Integer status) {
-        return getLastSeatNum(eventId, -1, direction,status);
+        return getLastSeatNum(eventId, -1, direction, status);
     }
 
     @Override
     public Integer getLastSeatNum(int eventId, int gear, String direction, Integer status) {
-        return seatsMapper.getLastSeatNum(eventId, gear, direction,status);
+        return seatsMapper.getLastSeatNum(eventId, gear, direction, status);
     }
 
     @Override
-    public Seats getSeat(int eventId) {
-        return getSeat(eventId, -1, null);
+    public List<Seats> getSeat(int eventId, int num) {
+        return getSeat(eventId, -1, null, num);
     }
 
     @Override
-    public Seats getSeat(int eventId, int gear) {
-        return getSeat(eventId, gear, null);
+    public List<Seats> getSeat(int eventId, int gear, int num) {
+        return getSeat(eventId, gear, null, num);
     }
 
     @Override
-    public Seats getSeat(int eventId, String direction) {
-        return getSeat(eventId, -1, direction);
+    public List<Seats> getSeat(int eventId, String direction, int num) {
+        return getSeat(eventId, -1, direction, num);
     }
 
     @Override
-    public Seats getSeat(int eventId, int gear, String direction) {
-        Seats seat = seatsMapper.selectByEventIdAndGearAndDirection(eventId, gear, direction);
-        return seat;
+    public List<Seats> getSeat(int eventId, int gear, String direction, int num) {
+        if (getLastSeatNum(eventId,gear,direction,1)<num){
+            throw new SeatsNumOutOfBoundsException("订座大于当前剩余座位数",400);
+        }
+        List<Seats> seats = seatsMapper.selectByEventIdAndGearAndDirection(eventId, gear, direction, num);
+        return seats;
     }
 }

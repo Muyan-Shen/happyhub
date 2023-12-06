@@ -30,5 +30,5 @@ public interface SeatsMapper {
 
     int getLastSeatNum(@Param("eventId") int eventId,@Param("gear") int gear,@Param("direction")String direction,@Param("status") Integer status);
 
-    Seats selectByEventIdAndGearAndDirection(@Param("eventId") int eventId,@Param("gear") int gear,@Param("direction")String direction);
+    List<Seats> selectByEventIdAndGearAndDirection(@Param("eventId") int eventId,@Param("gear") int gear,@Param("direction")String direction,@Param("num")int num);
 }

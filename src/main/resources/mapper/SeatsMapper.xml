@@ -48,7 +48,7 @@
             and status=#{status,jdbcType=INTEGER}
         </if>
     </select>
-    <select id="selectByEventIdAndGearAndDirection" resultType="cn.shenmuyan.bean.Seats">
+    <select id="selectByEventIdAndGearAndDirection" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from seats
@@ -59,7 +59,7 @@
         <if test="direction != null and direction != ''">
             and direction=#{direction,jdbcType=VARCHAR}
         </if>
-        and status=1 limit 1
+        and status=1 limit #{num,jdbcType=INTEGER}
     </select>
 
     <delete id="deleteByPrimaryKey">
