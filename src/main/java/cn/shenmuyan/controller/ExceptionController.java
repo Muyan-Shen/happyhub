@@ -1,16 +1,16 @@
 package cn.shenmuyan.controller;
 
 import cn.dev33.satoken.util.SaResult;
+import org.hibernate.validator.internal.engine.path.PathImpl;
 import cn.shenmuyan.exceptions.SeatsNumOutOfBoundsException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.util.*;
 
 /**
  * 异常处理controller
@@ -40,6 +40,27 @@ public class ExceptionController {
                 errors.put(fieldError.getField(),o);
             }
             o.add(fieldError.getDefaultMessage());
+        }
+        return result.setData(errors);
+    }
+    @ExceptionHandler
+    public SaResult handle(ConstraintViolationException e){
+        SaResult result = SaResult.error();
+        result.setCode(400);
+        result.setMsg("参数校验失败");
+        Map<String,List<String>> errors=new HashMap<>();
+        Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+        for (ConstraintViolation<?> constraintViolation : constraintViolations) {
+            PathImpl propertyPath = (PathImpl) constraintViolation.getPropertyPath();
+            String PropertyPath = propertyPath.getLeafNode().toString();
+            String message = constraintViolation.getMessage();
+            List<String> list =errors.get(PropertyPath);
+            if(list==null){
+                list=new ArrayList<>();
+                errors.put(PropertyPath,list);
+            }
+            list.add(message);
+
         }
         return result.setData(errors);
     }

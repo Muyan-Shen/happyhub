@@ -29,9 +29,7 @@ public class Orders implements Serializable {
 
     /**
      * 订单状态 
-挂起：pending
-已确认：confirmed
-已取消：cancelled'
+挂起：pending 已确认：confirmed 已取消：cancelled'
      */
     private Object status;
 
