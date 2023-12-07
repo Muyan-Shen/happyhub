@@ -20,4 +20,7 @@ public interface OrderService {
     int addPayment(Payments payment);
 
     Payments findPaymentByOrderId(Integer id);
+
+
+    int updatePayment(Payments payment);
 }

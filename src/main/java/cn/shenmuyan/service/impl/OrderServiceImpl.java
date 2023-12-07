@@ -56,5 +56,11 @@ public class OrderServiceImpl implements OrderService {
         return null;
     }
 
+    @Override
+    public int updatePayment(Payments payment) {
+        int i = paymentsMapper.updateByPrimaryKeySelective(payment);
+        return i;
+    }
+
 
 }
