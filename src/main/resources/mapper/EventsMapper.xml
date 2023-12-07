@@ -12,6 +12,7 @@
             <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
             <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
             <result property="organizerId" column="organizer_id" jdbcType="INTEGER"/>
+            <result property="topGear" column="top_gear" jdbcType="INTEGER"/>
             <result property="photoUrl" column="photo_url" jdbcType="VARCHAR"/>
             <result property="status" column="status" jdbcType="OTHER"/>
             <result property="statusDescription" column="status_description" jdbcType="VARCHAR"/>
@@ -22,7 +23,7 @@
     <sql id="Base_Column_List">
         id,title,description,
         location,start_time,end_time,
-        organizer_id,photo_url,status,
+        organizer_id,top_gear,photo_url,status,
         status_description,created_at,updated_at
     </sql>
 
@@ -105,6 +106,7 @@
                 <if test="startTime != null">start_time,</if>
                 <if test="endTime != null">end_time,</if>
                 <if test="organizerId != null">organizer_id,</if>
+                <if test="topGear != null">photo_url,</if>
                 <if test="photoUrl != null">photo_url,</if>
                 <if test="status != null">status,</if>
                 <if test="statusDescription != null">status_description,</if>
@@ -119,6 +121,7 @@
                 <if test="startTime != null">#{startTime,jdbcType=TIMESTAMP},</if>
                 <if test="endTime != null">#{endTime,jdbcType=TIMESTAMP},</if>
                 <if test="organizerId != null">#{organizerId,jdbcType=INTEGER},</if>
+                <if test="topGear != null">#{topGear,jdbcType=INTEGER},</if>
                 <if test="photoUrl != null">#{photoUrl,jdbcType=VARCHAR},</if>
                 <if test="status != null">#{status,jdbcType=OTHER},</if>
                 <if test="statusDescription != null">#{statusDescription,jdbcType=VARCHAR},</if>

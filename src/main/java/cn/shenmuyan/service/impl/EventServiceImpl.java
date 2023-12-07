@@ -1,5 +1,6 @@
 package cn.shenmuyan.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.shenmuyan.bean.Events;
 import cn.shenmuyan.bean.User;
@@ -8,6 +9,7 @@ import cn.shenmuyan.mapper.EventsMapper;
 import cn.shenmuyan.mapper.UserMapper;
 import cn.shenmuyan.mapper.OrdersMapper;
 import cn.shenmuyan.service.EventService;
+import cn.shenmuyan.vo.EventInsertVO;
 import org.springframework.stereotype.Service;
 import cn.shenmuyan.vo.EventWhereVO;
 import cn.shenmuyan.vo.UserWhereVO;
@@ -56,7 +58,8 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void addEvent(Events events) {
+    public void addEvent(EventInsertVO vo) {
+        Events events = BeanUtil.copyProperties(vo, Events.class);
         eventsMapper.insertSelective(events);
     }
 
