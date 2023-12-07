@@ -18,8 +18,7 @@ import javax.annotation.Resource;
 public class OrderServiceImpl implements OrderService {
     @Resource
     private OrdersMapper ordersMapper;
-    @Resource
-    private PaymentsMapper paymentsMapper;
+
     @Override
     public int addOrder(Orders orders) {
         int i = ordersMapper.insert(orders);
@@ -41,26 +40,6 @@ public class OrderServiceImpl implements OrderService {
         return null;
     }
 
-    @Override
-    public int addPayment(Payments payment) {
-        int i = paymentsMapper.insertSelective(payment);
-        return i;
-    }
-
-    @Override
-    public Payments findPaymentByOrderId(Integer orderId) {
-        Payments payments=paymentsMapper.findPaymentByOrderId(orderId);
-        if (payments!=null){
-            return payments;
-        }
-        return null;
-    }
-
-    @Override
-    public int updatePayment(Payments payment) {
-        int i = paymentsMapper.updateByPrimaryKeySelective(payment);
-        return i;
-    }
 
 
 }

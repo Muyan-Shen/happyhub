@@ -7,6 +7,7 @@ import cn.shenmuyan.bean.Orders;
 import cn.shenmuyan.bean.Payments;
 import cn.shenmuyan.service.CouponService;
 import cn.shenmuyan.service.OrderService;
+import cn.shenmuyan.service.PaymentService;
 import cn.shenmuyan.service.UserService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +36,8 @@ public class OrderController {
 
     @Resource
     CouponService couponService;
+    @Resource
+    PaymentService paymentService;
 
     /**
      * 点击购买后(价格类型未解决 BigDecimal)生成一个状态挂起的订单
@@ -104,9 +107,9 @@ public class OrderController {
                 payment.setOrderId(order1.getId());
                 payment.setAmount(order1.getTotalPrice());
                 payment.setStatus("process");
-                int i1 = orderService.addPayment(payment);
+                int i1 = paymentService.addPayment(payment);
                 if (i1 > 0) {
-                    Payments payment1 = orderService.findPaymentByOrderId(order1.getId());
+                    Payments payment1 =paymentService.findPaymentByOrderId(order1.getId());
                     if (payment1 != null) {
                         return SaResult.ok("支付信息").setData(payment1);
                     }
@@ -159,6 +162,7 @@ public class OrderController {
                                      @NotNull(message = "优惠券id不能为空") Integer couponsId) {
         //通过couponsId查到使用的优惠券
         //通过paymentId查到支付信息
+
         //通过payment中的orderId查到该订单
         //通过couponsId修改用户优惠券关联表中used_date
         //修改订单和支付信息价格
@@ -166,7 +170,7 @@ public class OrderController {
 
         //理论上在插入数据库之前要判断钱是否到账但是不知道怎么弄 支付方式那一块
         //多线程的处理
-        int i = orderService.updatePayment(payment);
+        int i = paymentService.updatePayment(payment);
         if (i > 0) {
             //分配座位     在座位表中根据档位查出该档位所有空座的位置,随机分配后，拿到座位，给座位添加用户id,修改座位状态为已预约
             //生成票务返回  封装成一个VO类返回

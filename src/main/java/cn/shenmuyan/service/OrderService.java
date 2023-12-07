@@ -17,10 +17,5 @@ public interface OrderService {
     Orders findOrdersById(Integer id);
 
 
-    int addPayment(Payments payment);
 
-    Payments findPaymentByOrderId(Integer id);
-
-
-    int updatePayment(Payments payment);
 }
