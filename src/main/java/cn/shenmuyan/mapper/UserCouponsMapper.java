@@ -1,6 +1,7 @@
 package cn.shenmuyan.mapper;
 
 import cn.shenmuyan.bean.UserCoupons;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -26,4 +27,6 @@ public interface UserCouponsMapper {
     int updateByPrimaryKey(UserCoupons record);
 
     List<Integer> selectAllByUserId(int userId);
+
+    int updateCouponUsedDateById(@Param("couponId") Integer couponId);
 }

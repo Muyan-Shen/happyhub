@@ -11,6 +11,7 @@ import java.util.List;
 
 
 /**
+ * 优惠券接口实现类
  * @Author 李诚林
  * @Version V1.0.0
  * @Since 1.0
@@ -44,5 +45,21 @@ public class CouponServiceImpl implements CouponService {
             return null;
         }
         return coupons;
+    }
+
+    @Override
+    public Coupons selectCouponById(Integer couponId) {
+        Coupons coupons = couponsMapper.selectByPrimaryKey(couponId);
+        if(coupons==null){
+            return null;
+        }
+        return  coupons;
+
+    }
+
+    @Override
+    public int updateCouponUsedDate(Integer couponId) {
+        int i=userCouponsMapper.updateCouponUsedDateById(couponId);
+        return i;
     }
 }

@@ -14,4 +14,8 @@ public interface CouponService {
     List<Integer> selectAllByUserId(int userId);
 
     List<Coupons> selectCoupons(List<Integer> couponsIds);
+
+    Coupons selectCouponById(Integer couponId);
+
+    int updateCouponUsedDate(Integer couponId);
 }

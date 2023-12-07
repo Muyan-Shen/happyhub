@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 /**
+ * 订单接口实现类
  * @className: OrderServiceImpl
  * @author: 叶宝谦
  * @date: 2023/12/05 20:27
@@ -40,6 +41,11 @@ public class OrderServiceImpl implements OrderService {
         return null;
     }
 
+    @Override
+    public int updateOrder(Orders order) {
+        int i = ordersMapper.updateByPrimaryKeySelective(order);
+        return i;
+    }
 
 
 }

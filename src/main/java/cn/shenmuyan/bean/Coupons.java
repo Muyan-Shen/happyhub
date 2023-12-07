@@ -39,9 +39,10 @@ public class Coupons implements Serializable {
     private LocalDateTime expiryDate;
 
     /**
-     * 已用数量
+     * 折扣率
      */
-    private Integer usedCount;
+    private Object discount;
+
 
     private static final long serialVersionUID = 1L;
 
@@ -62,7 +63,7 @@ public class Coupons implements Serializable {
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
             && (this.getDiscountAmount() == null ? other.getDiscountAmount() == null : this.getDiscountAmount().equals(other.getDiscountAmount()))
             && (this.getExpiryDate() == null ? other.getExpiryDate() == null : this.getExpiryDate().equals(other.getExpiryDate()))
-            && (this.getUsedCount() == null ? other.getUsedCount() == null : this.getUsedCount().equals(other.getUsedCount()));
+            && (this.getDiscount() == null ? other.getDiscount() == null : this.getDiscount().equals(other.getDiscount()));
     }
 
     @Override
@@ -74,7 +75,7 @@ public class Coupons implements Serializable {
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getDiscountAmount() == null) ? 0 : getDiscountAmount().hashCode());
         result = prime * result + ((getExpiryDate() == null) ? 0 : getExpiryDate().hashCode());
-        result = prime * result + ((getUsedCount() == null) ? 0 : getUsedCount().hashCode());
+        result = prime * result + ((getDiscount() == null) ? 0 : getDiscount().hashCode());
         return result;
     }
 
@@ -89,7 +90,7 @@ public class Coupons implements Serializable {
         sb.append(", description=").append(description);
         sb.append(", discountAmount=").append(discountAmount);
         sb.append(", expiryDate=").append(expiryDate);
-        sb.append(", usedCount=").append(usedCount);
+        sb.append(", usedCount=").append(discount);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

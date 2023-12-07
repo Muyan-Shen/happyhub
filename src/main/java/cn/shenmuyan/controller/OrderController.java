@@ -2,6 +2,8 @@ package cn.shenmuyan.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.shenmuyan.bean.Coupons;
 import cn.shenmuyan.bean.Orders;
 import cn.shenmuyan.bean.Payments;
@@ -11,6 +13,7 @@ import cn.shenmuyan.service.OrderService;
 import cn.shenmuyan.service.SeatService;
 import cn.shenmuyan.service.PaymentService;
 import cn.shenmuyan.service.UserService;
+import cn.shenmuyan.vo.PaymentConfirmedVO;
 import cn.shenmuyan.vo.SeatTypeVO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +22,8 @@ import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * 订单控制器
@@ -39,6 +44,7 @@ public class OrderController {
     CouponService couponService;
     @Resource
     PaymentService paymentService;
+
 
     @PostMapping("/getPrice")
     public SaResult getPrice(SeatTypeVO vo){
@@ -78,14 +84,14 @@ public class OrderController {
     /**
      * 根据订单id修改订单状态为cancelled状态
      *
-     * @param ordersId 订单id
+     * @param orderId 订单id
      * @return
      */
     @GetMapping("/orderCancel")
-    public SaResult cancelOrders(@NotNull(message = "订单id不能为空") Integer ordersId) {
+    public SaResult cancelOrders(@NotNull(message = "订单id不能为空") Integer orderId) {
         StpUtil.checkLogin();
         Orders order = new Orders();
-        order.setId(ordersId);
+        order.setId(orderId);
         order.setStatus("cancelled");
         int i = orderService.updateOrdersStatus(order);
         if (i > 0) {
@@ -158,36 +164,72 @@ public class OrderController {
      * @param couponsId
      * @return
      */
-    @GetMapping("/useCoupons")
+    @PostMapping("/useCoupons")
     public SaResult useCoupons(@NotNull(message = "支付id不能为空") Integer paymentId,
                                @NotNull(message = "优惠券id不能为空") Integer couponsId) {
         //1.通过couponsId查到使用的优惠券
+         Coupons coupon=couponService.selectCouponById(couponsId);
         //2.通过paymentId查到支付信息
-        //3.获取订单价格和优惠券折扣 ，计算最后的价格 setprice但不修改数据库
+        Payments payment = paymentService.selectPaymentById(paymentId);
+        System.out.println(payment);
+        //3.获取支付信息价格和优惠券折扣 ，计算最后的价格 setprice但不修改数据库
+        BigDecimal price=null;
+        if(payment!=null) {
+            price= payment.getAmount();
+        }
+        if(coupon!=null) {
+            if (ObjectUtil.isNotNull(coupon.getDiscountAmount())) {
+                price = price.subtract(coupon.getDiscountAmount());
+            }
+            if (ObjectUtil.isNotNull(coupon.getDiscount())) {
+                 switch (String.valueOf(coupon.getDiscount())){
+                     case "5折":price=price.multiply(new BigDecimal(0.5));break;
+                     case "6折":price=price.multiply(new BigDecimal(0.6));break;
+                     case "7折":price=price.multiply(new BigDecimal(0.7));break;
+                     case "8折":price=price.multiply(new BigDecimal(0.8));break;
+                     case "9折":price=price.multiply(new BigDecimal(0.9));break;
+                 }
+            }
+            payment.setAmount(price);
+        }
         //4.返回支付信息
-        return SaResult.ok();
+        return SaResult.ok().setData(payment);
     }
 
-    @GetMapping("/paymentConfirmed")
-    public SaResult PaymentConfirmed(@NotNull(message = "支付id不能为空") Integer paymentId,
-                                     @NotNull(message = "优惠券id不能为空") Integer couponsId) {
+    @PostMapping("/paymentConfirmed")
+    public SaResult PaymentConfirmed(@RequestBody @Validated PaymentConfirmedVO paymentConfirmedVO) {
         //通过couponsId查到使用的优惠券
+        Coupons coupon=couponService.selectCouponById(paymentConfirmedVO.getCouponsId());
         //通过paymentId查到支付信息
-
+        Payments payment = paymentService.selectPaymentById(paymentConfirmedVO.getPaymentId());
         //通过payment中的orderId查到该订单
+        Orders order = orderService.findOrdersById(payment.getOrderId());
         //通过couponsId修改用户优惠券关联表中used_date
-        //修改订单和支付信息价格
-
-
+        int i=couponService.updateCouponUsedDate(paymentConfirmedVO.getCouponsId());
+        if(i<0){
+            return SaResult.error("使用日期更新失败");
+        }
+        //修改订单
+         order.setTotalPrice(paymentConfirmedVO.getPrice());
+         int i2=orderService.updateOrder(order);
+        if(i<0){
+            return SaResult.error("订单更新失败");
+        }
         //理论上在插入数据库之前要判断钱是否到账但是不知道怎么弄 支付方式那一块
+        //修改支付信息价格
         //多线程的处理
-        int i = paymentService.updatePayment(payment);
-        if (i > 0) {
+        payment.setAmount(paymentConfirmedVO.getPrice());
+        payment.setStatus("success");
+        int i1 = paymentService.updatePayment(payment);
+        if (i1 > 0) {
             //分配座位     在座位表中根据档位查出该档位所有空座的位置,随机分配后，拿到座位，给座位添加用户id,修改座位状态为已预约
+            List<Seats> seat = seatService.getSeat(order.getEventId(), paymentConfirmedVO.getGear(), paymentConfirmedVO.getNum());
+            if (seat.size()>0) {
+                List<Seats> randomSeats = RandomUtil.randomEleList(seat, paymentConfirmedVO.getNum());
+            }
             //生成票务返回  封装成一个VO类返回
             return SaResult.ok("支付成功");
         }
         return SaResult.error("支付失败");
-        return SaResult.ok();
     }
 }
