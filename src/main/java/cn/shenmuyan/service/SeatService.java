@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * 座位接口
+ *
  * @className: SeatService
  * @author: 叶宝谦
  * @date: 2023/12/06 9:04
@@ -27,16 +28,18 @@ public interface SeatService {
 
     /**
      * 获得活动各个档次座位的价格
+     *
      * @param eventId
      * @return
      */
     BigDecimal[] getGearPrices(int eventId);
+
     /**
      * 得到某个活动还有多少座位
      *
      * @param eventId 活动id
      * @param status  座位状态，-1：所有，1：空座，2：预约
-     * @return  还有多少座位
+     * @return 还有多少座位
      */
     Integer getLastSeatNum(int eventId, Integer status);
 
@@ -46,7 +49,7 @@ public interface SeatService {
      * @param eventId 活动id
      * @param gear    档次，-1：所有
      * @param status  座位状态，-1：所有，1：空座，2：预约
-     * @return  还有多少座位
+     * @return 还有多少座位
      */
     Integer getLastSeatNum(int eventId, int gear, Integer status);
 
@@ -56,7 +59,7 @@ public interface SeatService {
      * @param eventId   活动id
      * @param direction 方位，null为所有
      * @param status    座位状态，-1：所有，1：空座，2：预约
-     * @return  还有多少座位
+     * @return 还有多少座位
      */
     Integer getLastSeatNum(int eventId, String direction, Integer status);
 
@@ -67,7 +70,7 @@ public interface SeatService {
      * @param gear      档次，-1：所有
      * @param direction 方位，null为所有
      * @param status    座位状态，-1：所有，1：空座，2：预约
-     * @return  还有多少座位
+     * @return 还有多少座位
      */
     Integer getLastSeatNum(int eventId, int gear, String direction, Integer status);
 
@@ -75,7 +78,7 @@ public interface SeatService {
      * 根据活动id获得num个空座位
      *
      * @param eventId 活动id
-     * @param num 要多少个座位
+     * @param num     要多少个座位
      * @return num个空座位
      */
     List<Seats> getSeat(int eventId, int num);
@@ -83,9 +86,9 @@ public interface SeatService {
     /**
      * 根据活动id和座位等级获得num个空座位
      *
-     * @param eventId   活动id
-     * @param gear  档次，-1为所有
-     * @param num   要多少个座位
+     * @param eventId 活动id
+     * @param gear    档次，-1为所有
+     * @param num     要多少个座位
      * @return num个空座位
      */
     List<Seats> getSeat(int eventId, int gear, int num);
@@ -95,7 +98,7 @@ public interface SeatService {
      *
      * @param eventId   活动id
      * @param direction 方位，null为所有
-     * @param num 要多少个座位
+     * @param num       要多少个座位
      * @return num个空座位
      */
     List<Seats> getSeat(int eventId, String direction, int num);
@@ -106,15 +109,17 @@ public interface SeatService {
      * @param eventId   活动id
      * @param gear      档次，-1为所有
      * @param direction 方位，null为所有
-     * @param num 要多少个座位
+     * @param num       要多少个座位
      * @return num个空座位
      */
     List<Seats> getSeat(int eventId, int gear, String direction, int num);
 
     /**
      * 设置座位状态
+     *
      * @param seatIds 座位id
-     * @param status    座位状态：1、空座，2、已预约
+     * @param userId  用户id
+     * @param status  座位状态：1、空座，2、已预约
      */
-    void updateSeat(int[] seatIds,int status);
+    void updateSeat(int[] seatIds, int userId, int status);
 }

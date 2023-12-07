@@ -25,7 +25,7 @@ public class SeatServiceImpl implements cn.shenmuyan.service.SeatService {
 
     @Override
     public void setSeat(int eventId, int topGear, String direction, int maxCol, int[] gearSum, BigDecimal[] gearPrice) {
-        if (getLastSeatNum(eventId,-1)>0){
+        if (getLastSeatNum(eventId, -1) > 0) {
             throw new SeatAlreadyExistedException();
         }
         List<Seats> seats = new ArrayList<>();
@@ -97,15 +97,15 @@ public class SeatServiceImpl implements cn.shenmuyan.service.SeatService {
 
     @Override
     public List<Seats> getSeat(int eventId, int gear, String direction, int num) {
-        if (getLastSeatNum(eventId,gear,direction,1)<num){
-            throw new SeatsNumOutOfBoundsException("订座大于当前剩余座位数",400);
+        if (getLastSeatNum(eventId, gear, direction, 1) < num) {
+            throw new SeatsNumOutOfBoundsException("订座大于当前剩余座位数", 400);
         }
         List<Seats> seats = seatsMapper.selectByEventIdAndGearAndDirection(eventId, gear, direction, num);
         return seats;
     }
 
     @Override
-    public void updateSeat(int[] seatIds, int status) {
-        seatsMapper.updateStatusByPrimaryKey(seatIds, status);
+    public void updateSeat(int[] seatIds, int userId, int status) {
+        seatsMapper.updateStatusByPrimaryKey(seatIds, userId, status);
     }
 }
