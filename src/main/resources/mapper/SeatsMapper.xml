@@ -165,7 +165,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateStatusByPrimaryKey">
-        update seats set status = #{status,jdbcType=INTEGER}
+        update seats set status = #{status,jdbcType=INTEGER},user_id=#{userId,jdbcType=INTEGER}
         where id in
         <foreach collection="ids" item="id" separator="," open="(" close=")">
             #{id,jdbcType=INTEGER}
