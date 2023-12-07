@@ -33,7 +33,7 @@ public interface SeatsMapper {
 
     List<Seats> selectByEventIdAndGearAndDirection(@Param("eventId") int eventId,@Param("gear") int gear,@Param("direction")String direction,@Param("num")int num);
 
-    void updateStatusByPrimaryKey(@Param("ids") int[] seatIds,@Param("status") int status);
+    void updateStatusByPrimaryKey(@Param("ids") int[] seatIds,@Param("userId")int userId,@Param("status") int status);
 
     BigDecimal[] getGearPrices(@Param("eventId") int eventId);
 }
