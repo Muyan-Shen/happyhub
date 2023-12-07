@@ -4,17 +4,18 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import cn.shenmuyan.bean.Orders;
 import cn.shenmuyan.bean.Payments;
+import cn.shenmuyan.bean.Seats;
 import cn.shenmuyan.service.OrderService;
+import cn.shenmuyan.service.SeatService;
 import cn.shenmuyan.service.UserService;
+import cn.shenmuyan.vo.SeatTypeVO;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 订单控制器
@@ -28,9 +29,21 @@ import java.math.BigDecimal;
 public class OrderController {
     @Resource
     OrderService orderService;
+    @Resource
+    SeatService seatService;
 
+    @PostMapping("/getPrice")
+    public SaResult getPrice(SeatTypeVO vo){
+        List<Seats> seats = seatService.getSeat(vo.getEventId(), vo.getGear(), vo.getDirection(), vo.getNum());
+        BigDecimal price = new BigDecimal("0");
+        for (Seats seat : seats) {
+            price.add(seat.getPrice());
+        }
+        // TODO:可以在这里计算折扣，优惠券之类，也可以返回用了什么优惠卷
+        return SaResult.ok().set("price",price);
+    }
     /**
-     * 点击购买后(价格类型未解决 BigDecimal)生成一个状态挂起的订单
+     * 点击购买后生成一个状态挂起的订单
      *
      * @param eventId 活动id
      * @param price   价格

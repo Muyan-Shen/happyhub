@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
+ * Event新增vo
  * @className: EventInsertVO
  * @author: 叶宝谦
  * @date: 2023/12/06 9:21

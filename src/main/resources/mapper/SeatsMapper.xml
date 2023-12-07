@@ -61,6 +61,11 @@
         </if>
         and status=1 limit #{num,jdbcType=INTEGER}
     </select>
+    <select id="getGearPrices" resultType="java.math.BigDecimal">
+        select distinct price
+        from seats
+        where event_id = #{eventId,jdbcType=INTEGER}
+    </select>
 
     <delete id="deleteByPrimaryKey">
         delete
@@ -158,5 +163,12 @@
             row         = #{row,jdbcType=INTEGER},
             col         = #{col,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateStatusByPrimaryKey">
+        update seats set status = #{status,jdbcType=INTEGER}
+        where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id,jdbcType=INTEGER}
+        </foreach>
     </update>
 </mapper>

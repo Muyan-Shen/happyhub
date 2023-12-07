@@ -3,6 +3,7 @@ package cn.shenmuyan.mapper;
 import cn.shenmuyan.bean.Seats;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 /**
 * @author 86136
@@ -31,4 +32,8 @@ public interface SeatsMapper {
     int getLastSeatNum(@Param("eventId") int eventId,@Param("gear") int gear,@Param("direction")String direction,@Param("status") Integer status);
 
     List<Seats> selectByEventIdAndGearAndDirection(@Param("eventId") int eventId,@Param("gear") int gear,@Param("direction")String direction,@Param("num")int num);
+
+    void updateStatusByPrimaryKey(@Param("ids") int[] seatIds,@Param("status") int status);
+
+    BigDecimal[] getGearPrices(@Param("eventId") int eventId);
 }

@@ -1,11 +1,13 @@
 package cn.shenmuyan.service;
 
 import cn.shenmuyan.bean.Seats;
+import cn.shenmuyan.vo.SeatInsertVO;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 /**
+ * 座位接口
  * @className: SeatService
  * @author: 叶宝谦
  * @date: 2023/12/06 9:04
@@ -17,12 +19,18 @@ public interface SeatService {
      * @param eventId   活动id
      * @param topGear   最高档次
      * @param direction 座位朝向
-     * @param maxRow    一行最多有多少座位
+     * @param maxCol    一行最多有多少座位
      * @param gearSum   每个档次的座位数
      * @param gearPrice 每个档次的价格
      */
-    void setSeat(int eventId, int topGear, String direction, int maxRow, int[] gearSum, BigDecimal[] gearPrice);
+    void setSeat(int eventId, int topGear, String direction, int maxCol, int[] gearSum, BigDecimal[] gearPrice);
 
+    /**
+     * 获得活动各个档次座位的价格
+     * @param eventId
+     * @return
+     */
+    BigDecimal[] getGearPrices(int eventId);
     /**
      * 得到某个活动还有多少座位
      *
@@ -102,4 +110,11 @@ public interface SeatService {
      * @return num个空座位
      */
     List<Seats> getSeat(int eventId, int gear, String direction, int num);
+
+    /**
+     * 设置座位状态
+     * @param seatIds 座位id
+     * @param status    座位状态：1、空座，2、已预约
+     */
+    void updateSeat(int[] seatIds,int status);
 }

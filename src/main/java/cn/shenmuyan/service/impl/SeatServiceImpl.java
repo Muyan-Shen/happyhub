@@ -1,6 +1,7 @@
 package cn.shenmuyan.service.impl;
 
 import cn.shenmuyan.bean.Seats;
+import cn.shenmuyan.exceptions.SeatAlreadyExistedException;
 import cn.shenmuyan.exceptions.SeatsNumOutOfBoundsException;
 import cn.shenmuyan.mapper.SeatsMapper;
 import org.springframework.stereotype.Service;
@@ -22,14 +23,17 @@ public class SeatServiceImpl implements cn.shenmuyan.service.SeatService {
     SeatsMapper seatsMapper;
 
     @Override
-    public void setSeat(int eventId, int topGear, String direction, int maxRow, int[] gearSum, BigDecimal[] gearPrice) {
+    public void setSeat(int eventId, int topGear, String direction, int maxCol, int[] gearSum, BigDecimal[] gearPrice) {
+        if (getLastSeatNum(eventId,-1)>0){
+            throw new SeatAlreadyExistedException();
+        }
         List<Seats> seats = new ArrayList<>();
         int sum = Arrays.stream(gearSum).sum();
-        int maxCol = ((sum % maxRow) == 0) ? sum / maxRow : sum / maxRow + 1;
+        int maxRow = ((sum % maxCol) == 0) ? sum / maxCol : sum / maxCol + 1;
         //已安排的座位数
         int seatSum = 0;
-        for (int row = 1; row <= maxRow; row++) {
-            for (int col = 1; col <= maxCol; col++) {
+        for (int col = 1; col <= maxCol; col++) {
+            for (int row = 1; row <= maxRow; row++) {
                 Seats seat = new Seats();
                 seat.setEventId(eventId);
                 seat.setDirection(direction);
@@ -48,6 +52,11 @@ public class SeatServiceImpl implements cn.shenmuyan.service.SeatService {
             }
         }
         seatsMapper.insertSeats(seats);
+    }
+
+    @Override
+    public BigDecimal[] getGearPrices(int eventId) {
+        return seatsMapper.getGearPrices(eventId);
     }
 
     @Override
@@ -92,5 +101,10 @@ public class SeatServiceImpl implements cn.shenmuyan.service.SeatService {
         }
         List<Seats> seats = seatsMapper.selectByEventIdAndGearAndDirection(eventId, gear, direction, num);
         return seats;
+    }
+
+    @Override
+    public void updateSeat(int[] seatIds, int status) {
+        seatsMapper.updateStatusByPrimaryKey(seatIds, status);
     }
 }

@@ -1,24 +1,18 @@
 package cn.shenmuyan.controller;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import cn.shenmuyan.bean.Events;
 import cn.shenmuyan.service.EventService;
+import cn.shenmuyan.service.SeatService;
 import cn.shenmuyan.vo.EventInsertVO;
 import cn.shenmuyan.vo.EventWhereVO;
+import cn.shenmuyan.vo.SeatInsertVO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import cn.hutool.db.sql.Order;
-import cn.shenmuyan.bean.Events;
-import cn.shenmuyan.bean.Orders;
-import cn.shenmuyan.service.EventService;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -32,7 +26,8 @@ import java.util.List;
 public class EventController {
     @Resource
     private EventService eventService;
-
+    @Resource
+    private SeatService seatService;
     @GetMapping
     public SaResult getAll() {
         return SaResult.ok();
@@ -72,5 +67,37 @@ public class EventController {
     public SaResult create(@Validated @RequestBody EventInsertVO event) {
         eventService.addEvent(event);
         return SaResult.ok("创建成功");
+    }
+
+    /**
+     * 生成座位
+     * @param vo
+     * @return
+     */
+    @PostMapping("/generateSeats")
+    public SaResult generateSeat(@Validated @RequestBody SeatInsertVO vo){
+        String[] directions = vo.getDirection();
+        for (String direction : directions) {
+            seatService.setSeat(vo.getEventId(),vo.getTopGear(),direction,vo.getMaxCol(),vo.getGearSum(), vo.getGearPrice());
+        }
+        return SaResult.ok("创建成功");
+    }
+
+    /**
+     * 获得剩下的座位信息
+     * @param eventId   活动id
+     * @return
+     */
+    @GetMapping ("/getAllSeatsInfo")
+    public SaResult getAllSeats(@NotNull Integer eventId){
+        Events event = eventService.findById(eventId);
+        Integer topGear = event.getTopGear();
+        BigDecimal[] gearPrices = seatService.getGearPrices(eventId);
+        Integer[] gearSeatNum = new Integer[topGear];
+        for (int i = 0; i < gearSeatNum.length; i++) {
+            Integer num = seatService.getLastSeatNum(eventId, i + 1, 1);
+            gearSeatNum[i] = num;
+        }
+        return SaResult.ok().set("topGear",topGear).set("gearPrices",gearPrices).set("gearSeatNum",gearSeatNum);
     }
 }

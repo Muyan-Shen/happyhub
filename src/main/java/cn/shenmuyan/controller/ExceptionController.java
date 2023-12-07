@@ -1,6 +1,7 @@
 package cn.shenmuyan.controller;
 
 import cn.dev33.satoken.util.SaResult;
+import cn.shenmuyan.exceptions.SeatAlreadyExistedException;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import cn.shenmuyan.exceptions.SeatsNumOutOfBoundsException;
 import org.springframework.validation.BindException;
@@ -72,6 +73,15 @@ public class ExceptionController {
      */
     @ExceptionHandler
     public SaResult handle(SeatsNumOutOfBoundsException e){
+        return SaResult.error(e.getMessage()).setCode(400);
+    }
+    /**
+     * 活动座位已创建异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler
+    public SaResult handle(SeatAlreadyExistedException e){
         return SaResult.error(e.getMessage()).setCode(400);
     }
 }
