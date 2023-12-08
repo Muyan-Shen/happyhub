@@ -4,6 +4,7 @@ import cn.shenmuyan.bean.Orders;
 import cn.shenmuyan.bean.Payments;
 
 /**
+ * 订单接口
  * @className: OrderService
  * @author: 叶宝谦
  * @date: 2023/12/05 20:27
@@ -17,5 +18,5 @@ public interface OrderService {
     Orders findOrdersById(Integer id);
 
 
-
+    int updateOrder(Orders order);
 }
