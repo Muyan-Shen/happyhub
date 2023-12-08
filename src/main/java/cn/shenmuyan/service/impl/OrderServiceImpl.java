@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 /**
+ * 订单接口实现类
  * @className: OrderServiceImpl
  * @author: 叶宝谦
  * @date: 2023/12/05 20:27
@@ -18,8 +19,7 @@ import javax.annotation.Resource;
 public class OrderServiceImpl implements OrderService {
     @Resource
     private OrdersMapper ordersMapper;
-    @Resource
-    private PaymentsMapper paymentsMapper;
+
     @Override
     public int addOrder(Orders orders) {
         int i = ordersMapper.insert(orders);
@@ -42,18 +42,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public int addPayment(Payments payment) {
-        int i = paymentsMapper.insertSelective(payment);
+    public int updateOrder(Orders order) {
+        int i = ordersMapper.updateByPrimaryKeySelective(order);
         return i;
-    }
-
-    @Override
-    public Payments findPaymentByOrderId(Integer orderId) {
-        Payments payments=paymentsMapper.findPaymentByOrderId(orderId);
-        if (payments!=null){
-            return payments;
-        }
-        return null;
     }
 
 

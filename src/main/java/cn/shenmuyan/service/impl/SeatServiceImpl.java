@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * 座位信息实现类
  * @className: SeatService
  * @author: 叶宝谦
  * @date: 2023/12/06 9:04

@@ -24,4 +24,6 @@ public interface PaymentsMapper {
     int updateByPrimaryKey(Payments record);
 
     Payments findPaymentByOrderId(Integer orderId);
+
+
 }

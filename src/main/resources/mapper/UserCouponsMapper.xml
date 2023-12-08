@@ -16,17 +16,15 @@
         used_date
     </sql>
 
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+
+    <select id="selectAllByUserId" resultType="java.lang.Integer">
         select
-        <include refid="Base_Column_List" />
+        coupon_id
         from user_coupons
-        where 
+        where user_id=#{userId,jdbcType=INTEGER} and used_date is null
     </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from user_coupons
-        where 
-    </delete>
+
     <insert id="insert">
         insert into user_coupons
         ( user_id,coupon_id,claimed_date
@@ -75,5 +73,11 @@
             claimed_date =  #{claimedDate,jdbcType=DATE},
             used_date =  #{usedDate,jdbcType=DATE}
         where  
+    </update>
+    <update id="updateCouponUsedDateById" >
+        update user_coupons
+        set
+            used_date =NOW()
+        where coupon_id=#{couponId,jdbcType=INTEGER}
     </update>
 </mapper>

@@ -1,6 +1,9 @@
 package cn.shenmuyan.mapper;
 
 import cn.shenmuyan.bean.Coupons;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 优惠卷表Mapper
@@ -22,5 +25,9 @@ public interface CouponsMapper {
     int updateByPrimaryKeySelective(Coupons record);
 
     int updateByPrimaryKey(Coupons record);
+
+
+    List<Coupons> selectByCouponIds(@Param("couponsIds") List<Integer> couponsIds);
+
 
 }
