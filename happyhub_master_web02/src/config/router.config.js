@@ -14,23 +14,16 @@ const routes = [
         path:'/home',
         name:'home',
         component:() => import('../pages/layout/Layout.vue'),
-        children:[
-            {
-                path:'account',
-                name:'account',
-                component:() => import('../pages/account/Account.vue'),
-            },
-            {
-                path:'role',
-                name:'role',
-                component:() => import('../pages/role/Role.vue'),
-            },
-            {
-                path:'permission',
-                name:'permission',
-                component:() => import('../pages/permission/Permission.vue'),
-            },
-        ]
+    },
+    {
+        path:'/userInfo',
+        name:'userInfo',
+        component:() => import('../pages/user/userInfo.vue'),
+    },
+    {
+        path:'/eventInfo',
+        name:'eventInfo',
+        component:() => import('../pages/event/EventInfo.vue'),
     },
     {
         path:'/:patchMatch(.*)*',
@@ -51,14 +44,15 @@ const router = createRouter({
 
 router.beforeEach((to,from)=>{
     const profileStore = useProfileStore();
-    if(to.meta && 'noLogin' in to.meta){
-        if (to.meta.noLogin){
-            return true;
-        }
-    }
-    if (!profileStore.IsLogin){
-        return {name:'login'}
-    }
+    // TODO 方便开发先把登录判断去掉
+    // if(to.meta && 'noLogin' in to.meta){
+    //     if (to.meta.noLogin){
+    //         return true;
+    //     }
+    // }
+    // if (!profileStore.IsLogin){
+    //     return {name:'login'}
+    // }
 })
 
 export default router;

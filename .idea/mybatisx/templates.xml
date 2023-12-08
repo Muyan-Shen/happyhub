@@ -49,68 +49,8 @@
             <option name="tableUIInfoList">
               <list>
                 <TableUIInfo>
-                  <option name="className" value="Coupons" />
-                  <option name="tableName" value="coupons" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="CouponsCopy1" />
-                  <option name="tableName" value="coupons_copy1" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="Events" />
-                  <option name="tableName" value="events" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="Faqs" />
-                  <option name="tableName" value="faqs" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="Messages" />
-                  <option name="tableName" value="messages" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="Notifications" />
-                  <option name="tableName" value="notifications" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="Orders" />
-                  <option name="tableName" value="orders" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="Payments" />
-                  <option name="tableName" value="payments" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="Permission" />
-                  <option name="tableName" value="permission" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="Reviews" />
-                  <option name="tableName" value="reviews" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="Role" />
-                  <option name="tableName" value="role" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="RolePermissionMapping" />
-                  <option name="tableName" value="role_permission_mapping" />
-                </TableUIInfo>
-                <TableUIInfo>
                   <option name="className" value="Seats" />
                   <option name="tableName" value="seats" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="User" />
-                  <option name="tableName" value="user" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="UserCoupons" />
-                  <option name="tableName" value="user_coupons" />
-                </TableUIInfo>
-                <TableUIInfo>
-                  <option name="className" value="UserRoleMapping" />
-                  <option name="tableName" value="user_role_mapping" />
                 </TableUIInfo>
               </list>
             </option>
