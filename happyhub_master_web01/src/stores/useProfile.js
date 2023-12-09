@@ -6,7 +6,8 @@ export const useProfileStore = defineStore("profile", {
         userId:-1,
         roles:[],
         permissions:[],
-        profile:{}
+        profile:{},
+        eventList:[]
     }),
     getters:{
         IsLogin(){
@@ -31,6 +32,9 @@ export const useProfileStore = defineStore("profile", {
             this.roles = roles;
             this.permissions = permissions;
             this.profile = profile;
+        },
+        saveEventList(eventList){
+            this.eventList = eventList;
         }
     },
     persist:{
