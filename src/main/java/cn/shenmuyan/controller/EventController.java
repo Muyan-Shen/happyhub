@@ -45,7 +45,7 @@ public class EventController {
     }
 
     /**
-     * 获取活动详情（档位未显示）
+     * 获取活动详情
      *
      * @param eventId 活动id
      * @return

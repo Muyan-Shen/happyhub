@@ -3,6 +3,7 @@ package cn.shenmuyan.vo;
 import lombok.Data;
 
 /**
+ * 票务视图
  * @Author 李诚林
  * @Version V1.0.0
  * @Since 1.0
