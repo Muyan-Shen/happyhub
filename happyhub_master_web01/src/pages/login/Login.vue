@@ -126,7 +126,6 @@ const onLogin = (e, form) => {
         background: 'rgba(0, 0, 0, 0.4)'
       })
       $http.post('/user/login', user,).then(res => {
-        console.log(res)
         if (res.user){
           ElMessage.success({
             message: "登录成功",
@@ -153,7 +152,6 @@ const onRegister = (e, form) => {
         background: 'rgba(0, 0, 0, 0.4)'
       })
       $http.post('/user/register', user).then(res => {
-        console.log(res)
         if (res.msg === "注册成功") {
           ElMessage.success({
             message: "注册成功，请登录",
