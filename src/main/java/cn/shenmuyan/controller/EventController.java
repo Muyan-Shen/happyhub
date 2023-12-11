@@ -50,8 +50,9 @@ public class EventController {
      * @param eventId 活动id
      * @return
      */
-    @GetMapping("/eventId")
-    public SaResult getEventById(Integer eventId) {
+    @GetMapping("/{eventId}")
+    public SaResult getEventById(@PathVariable Integer eventId) {
+        System.out.println(eventId);
         Events event = eventService.findById(eventId);
         if (event == null) {
             return SaResult.error("获取失败");

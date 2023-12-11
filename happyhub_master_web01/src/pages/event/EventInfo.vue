@@ -5,16 +5,18 @@
         <top-header/>
       </el-header>
       <el-main>
-        <div class="eventInfoDiv">
-          <div class="eventPhotoDiv">活动图片</div>
+        <div class="eventInfoDiv" >
+          <div class="eventPhotoDiv" >
+<!--            <img :src=eventInfo.photoUrl alt="">-->
+          </div>
           <div class="eventMessage">
             <el-card class="eventMessage" style="width: 100%">
-              <div class="eventTitle">活动标题:</div>
-              <div class="eventTime">活动时间:</div>
-              <div class="eventLocation">活动地点:</div>
+              <div class="eventTitle" >活动标题：{{eventInfo.title}}</div>
+              <div class="eventTime">活动时间:{{eventInfo.startTime}}-{{eventInfo.endTime}}</div>
+              <div class="eventLocation">活动地点:{{eventInfo.location}}</div>
               <div class="eventGear">活动档位:
-                <el-radio-group v-model="gear1"  size="small" @change="change">
-                  <el-radio-button v-for="gear of gears" :label="gear.value" ></el-radio-button>
+                <el-radio-group v-model="gear1" size="small" @change="change">
+                  <el-radio-button v-for="gear of gears" :label="gear"></el-radio-button>
                 </el-radio-group>
               </div>
             </el-card>
@@ -51,33 +53,53 @@
 
 <script setup>
 import topHeader from '../component/header.vue'
-import {CircleClose,CircleCheck} from "@element-plus/icons-vue";
-import {reactive, ref} from "vue";
+import {CircleClose, CircleCheck} from "@element-plus/icons-vue";
+import {onMounted, reactive, ref} from "vue";
 import {getCurrentInstance} from "vue";
 
-const eventInfo=reactive([
+const eventInfo = ref(
+    {title:"",},
+    {id:"",},
+    {location:"",},
+    {startTime:"",},
+    {endTime:"",},
+    {description:"",},
+    {organizerUsername:"",},
+    {status:"",},
+    {statusDescription:"",},
+)
 
-])
-const gear1= ref({
-  value:'',
-  visiable:false,
+const gear1 = ref({
+  value: '',
+  visible: false,
 })
-const gears=reactive([
-  {
-    value:1,
-  },
-  {
-    value:2,
-  },
-  {
-    value:3,
-  }
-])
-function change(){
+const gears = ref([])
+
+function change() {
   console.log(gear1)
 }
 
-const  $http=getCurrentInstance().appContext.config.globalProperties.$http
+const eventId = ref(1001);
+const $http = getCurrentInstance().appContext.config.globalProperties.$http
+
+const getEventInfo = async (eventId) => {
+  await $http.get('/event/' + eventId)
+      .then(res => {
+        // eventId.value = this.$route.params.eventId;获取前端传过来的活动id
+        gears.value = res.gearPrices;
+        eventInfo.value = res.data;
+        console.log(eventInfo.value)
+      }).catch(err => {
+        console.error('获取活动信息时出错：', err);
+      });
+}
+
+onMounted(
+    () => {
+      // eventId.value = this.$route.params.eventId;
+      getEventInfo(eventId.value);
+    }
+)
 
 </script>
 
@@ -102,25 +124,31 @@ const  $http=getCurrentInstance().appContext.config.globalProperties.$http
       background-color: #ff4949;
       flex-direction: row;
       border: solid 1px black;
+
       .eventPhotoDiv {
         width: 40%;
       }
-      .eventMessage{
-         border: 0px  solid black;
-         .eventTitle{
-           margin-bottom: 10px;
-           font-size: 25px;
-           font-weight: bold;
-         }
-        .eventTime{
+
+      .eventMessage {
+        border: 0px solid black;
+
+        .eventTitle {
+          margin-bottom: 10px;
+          font-size: 25px;
+          font-weight: bold;
+        }
+
+        .eventTime {
           margin-bottom: 10px;
           font-size: 14px;
         }
-        .eventLocation{
+
+        .eventLocation {
           margin-bottom: 10px;
           font-size: 14px;
         }
-        .eventGear{
+
+        .eventGear {
           margin-bottom: 10px;
           font-size: 14px;
         }
@@ -143,10 +171,12 @@ const  $http=getCurrentInstance().appContext.config.globalProperties.$http
       background-color: #f8f4f4;
       position: absolute;
       border: solid 1px black;
-      .notice{
-        padding:10px;
+
+      .notice {
+        padding: 10px;
         border: solid 1px black;
       }
+
       .content {
         text-align: center;
       }
