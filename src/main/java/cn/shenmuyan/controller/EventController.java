@@ -7,6 +7,7 @@ import cn.shenmuyan.service.SeatService;
 import cn.shenmuyan.vo.EventInsertVO;
 import cn.shenmuyan.vo.EventWhereVO;
 import cn.shenmuyan.vo.SeatInsertVO;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,12 +30,14 @@ public class EventController {
     @Resource
     private SeatService seatService;
     @GetMapping("getAll")
-    public SaResult getAll(@RequestParam("keyword") String keyword) {
+    public SaResult getAll(@RequestParam(value = "keyword",defaultValue = "",required = false) String keyword) {
         EventWhereVO vo = new EventWhereVO();
-        vo.setOrganizer(keyword);
-        vo.setDescription(keyword);
-        vo.setTitle(keyword);
-        vo.setLocation(keyword);
+        if (!keyword.isEmpty()){
+            vo.setOrganizer(keyword);
+            vo.setDescription(keyword);
+            vo.setTitle(keyword);
+            vo.setLocation(keyword);
+        }
         List<Events> all = eventService.findAll(vo);
         return SaResult.ok().setData(all);
     }
