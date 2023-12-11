@@ -11,6 +11,14 @@ const routes = [
         }
     },
     {
+        path:'/register',
+        name:'register',
+        component:() => import('../pages/login/Login.vue'),
+        meta:{
+            noLogin:true
+        }
+    },
+    {
         path:'/home',
         name:'home',
         component:() => import('../pages/layout/Layout.vue'),

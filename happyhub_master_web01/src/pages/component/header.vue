@@ -1,7 +1,9 @@
 <template>
   <div class="header">
     <div class="headerLeft">
-      <span>我是LOGO!</span>
+      <el-image src="LOGO_v2.png" fit="cover"/>
+      <a href="/#/home">首页</a>
+      <a href="/#/eventList">分类</a>
     </div>
     <div class="headRight">
       <el-input
@@ -17,13 +19,15 @@
           </el-button>
         </template>
       </el-input>
-      <el-button v-if="userId < 0" type="info" @click="">
+      <el-button v-if="!userId"
+                 type="info"
+                 @click="jumpToLogin">
         <el-icon style="margin-right: 5px">
           <UserFilled/>
         </el-icon>
         登录/注册
       </el-button>
-      <el-image v-if="userId > 0" src="vite.svg" index="/userInfo" @click="jumpTo"/>
+      <el-image v-if="userId" src="vite.svg" index="/userInfo" @click="jumpToUser"/>
     </div>
   </div>
 </template>
@@ -32,12 +36,11 @@
 import router from "../../config/router.config.js";
 import {useProfileStore} from "../../stores/useProfile.js";
 import {UserFilled,Search} from "@element-plus/icons-vue";
-import {getCurrentInstance, ref} from "vue";
+import {getCurrentInstance, ref, onMounted, reactive} from "vue";
 
 const keyword = ref('');
 const profileStore = useProfileStore();
-// const userId = 1001;
-const userId = profileStore.userId;
+const userId = profileStore.profile.id;
 const $http = getCurrentInstance().appContext.config.globalProperties.$http;
 
 const OnSearch = (e)=>{
@@ -50,9 +53,14 @@ const OnSearch = (e)=>{
     }
   })
 }
-const jumpTo = () => {
+const jumpToUser = () => {
   router.push("/userInfo")
 }
+const jumpToLogin = ()=>{
+  router.push("/login")
+}
+onMounted(()=>{
+})
 </script>
 
 <style scoped lang="scss">
@@ -70,17 +78,36 @@ const jumpTo = () => {
   align-items: center;
 
   .headerLeft {
-    margin-left: 4%;
+    margin-left: 8%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .el-image{
+      height: 45px;
+      padding: 1px;
+      margin-top: 5px;
+    }
+    a{
+      margin-left: 15px;
+
+      color: #fff;
+      font-weight: 750;
+      text-decoration: none;
+    }
+    a:hover{
+      color: pink;
+    }
   }
 
   .headRight {
     margin-left: auto;
     margin-right: 4%;
-
+    align-items: center;
     display: flex;
     .searchBox{
       height: 18%;
-      margin-right: 4%;
+      margin-right: 8%;
+      box-shadow: 1px 1px 1px #ffffff;
 
       border-radius: 3px;
       .el-button{
@@ -88,14 +115,14 @@ const jumpTo = () => {
         color: white;
         background-color: pink;
         border-radius: 0px 3px 3px 0px;
-        box-shadow: #cccccc 1px 1px 1px;
+        box-shadow: hotpink 1px 1px 1px;
       }
     }
     .el-button {
 
-      margin-bottom: 2%;
       background-color: #fdb5c1;
       border: none;
+      box-shadow: 1px 1px 1px #ffffff;
     }
   }
 }

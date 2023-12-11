@@ -3,7 +3,6 @@ import {defineStore} from "pinia";
 export const useProfileStore = defineStore("profile", {
     state:()=>({
         token:'',
-        userId:-1,
         roles:[],
         permissions:[],
         profile:{},
