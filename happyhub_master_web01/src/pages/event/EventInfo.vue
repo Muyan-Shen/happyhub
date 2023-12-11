@@ -7,13 +7,17 @@
       <el-main>
         <div class="eventInfoDiv">
           <div class="eventPhotoDiv">活动图片</div>
-          <div>
-            <el-form class="event">
-              <el-form-item label="活动标题" class="changeItem"></el-form-item>
-              <el-form-item label="活动时间"></el-form-item>
-              <el-form-item label="活动地点"></el-form-item>
-              <el-form-item label="活动档位"></el-form-item>
-            </el-form>
+          <div class="eventMessage">
+            <el-card class="eventMessage" style="width: 100%">
+              <div class="eventTitle">活动标题:</div>
+              <div class="eventTime">活动时间:</div>
+              <div class="eventLocation">活动地点:</div>
+              <div class="eventGear">活动档位:
+                <el-radio-group v-model="gear1"  size="small" @change="change">
+                  <el-radio-button v-for="gear of gears" :label="gear.value" ></el-radio-button>
+                </el-radio-group>
+              </div>
+            </el-card>
           </div>
         </div>
         <div class="eventHtmlDiv">
@@ -47,13 +51,34 @@
 
 <script setup>
 import topHeader from '../component/header.vue'
-import {CircleClose} from "@element-plus/icons-vue";
-import {CircleCheck} from "@element-plus/icons-vue";
-import {reactive} from "vue";
+import {CircleClose,CircleCheck} from "@element-plus/icons-vue";
+import {reactive, ref} from "vue";
+import {getCurrentInstance} from "vue";
 
 const eventInfo=reactive([
 
 ])
+const gear1= ref({
+  value:'',
+  visiable:false,
+})
+const gears=reactive([
+  {
+    value:1,
+  },
+  {
+    value:2,
+  },
+  {
+    value:3,
+  }
+])
+function change(){
+  console.log(gear1)
+}
+
+const  $http=getCurrentInstance().appContext.config.globalProperties.$http
+
 </script>
 
 <style scoped lang="scss">
@@ -80,8 +105,25 @@ const eventInfo=reactive([
       .eventPhotoDiv {
         width: 40%;
       }
-      .changeItem .el-form-item__label {
-          font-size: 80px;
+      .eventMessage{
+         border: 0px  solid black;
+         .eventTitle{
+           margin-bottom: 10px;
+           font-size: 25px;
+           font-weight: bold;
+         }
+        .eventTime{
+          margin-bottom: 10px;
+          font-size: 14px;
+        }
+        .eventLocation{
+          margin-bottom: 10px;
+          font-size: 14px;
+        }
+        .eventGear{
+          margin-bottom: 10px;
+          font-size: 14px;
+        }
       }
     }
 

@@ -61,7 +61,8 @@ public class EventController {
             return SaResult.error("没有该活动组织者");
         }
         event.setOrganizerUsername(organizerUsername);
-        return SaResult.ok().setData(event);
+        BigDecimal[] gearPrices = seatService.getGearPrices(eventId);
+        return SaResult.ok().setData(event).set("gearPrices",gearPrices);
     }
 
     /**
