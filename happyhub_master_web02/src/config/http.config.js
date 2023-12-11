@@ -1,5 +1,5 @@
 import axios from 'axios'
-import router from "./router.config.js";
+import router from "../config/route.config.js";
 import {ElMessage} from "element-plus";
 import {useProfileStore} from "../stores/useProfile.js";
 
@@ -55,7 +55,8 @@ http.interceptors.response.use(resp => {
                 });
             }
         }
-        return Promise.reject(error);
+        console.error(error)
+        return Promise.resolve();
     })
 
 export const get = http.get

@@ -5,7 +5,7 @@
         <el-input v-model="role.name" disabled/>
       </el-form-item>
       <el-form-item label="角色编码">
-        <el-input v-model="role.name" disabled/>
+        <el-input v-model="role.code" disabled/>
       </el-form-item>
       <el-form-item label="权限列表">
         <el-scrollbar height="300">
@@ -24,7 +24,7 @@
     </el-form>
     <template #footer>
       <el-button @click="$emit('update:visible',false)">取消</el-button>
-      <el-button @click="onSave" type="primary">保存</el-button>
+      <el-button @click="onSave()" type="primary">保存</el-button>
     </template>
   </el-dialog>
 </template>

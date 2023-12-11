@@ -1,5 +1,5 @@
 import ElementPlusConfig from "./ElementPlus.config.js";
-import RouterConfig from "./router.config.js";
+import RouterConfig from "../config/route.config.js";
 import PiniaConfig from "./pinia.config.js";
 import HttpConfig from "@/config/http.config.js";
 export default {
