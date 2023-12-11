@@ -43,15 +43,16 @@
                 id = #{id,jdbcType=INTEGER}
             </if>
             <if test="title != null and title != ''">
-                and title like concat('%', #{title,jdbcType=VARCHAR}, '%')
+                or title like concat('%', #{title,jdbcType=VARCHAR}, '%')
             </if>
             <if test="description != null and description != ''">
-                and description like concat('%', #{description,jdbcType=VARCHAR}, '%')
+                or description like concat('%', #{description,jdbcType=VARCHAR}, '%')
             </if>
             <if test="location != null and location != ''">
-                and location like concat('%',#{description,jdbcType=VARCHAR}, '%')
+                or location = #{location,jdbcType=VARCHAR}
             </if>
             <if test="startTime != null and startTime.length > 0">
+                or
                 <if test="startTime[0] != null">
                     start_time &gt;= #{startTime[0],javaType=java.time.LocalDateTime,jdbcType=TIMESTAMP}
                 </if>
@@ -60,6 +61,7 @@
                 </if>
             </if>
             <if test="endTime != null and endTime.length > 0">
+                or
                 <if test="endTime[0] !=null">
                     end_time &gt;= #{endTime[0],javaType=java.time.LocalDateTime,jdbcType=TIMESTAMP}
                 </if>
@@ -68,13 +70,13 @@
                 </if>
             </if>
             <if test="organizerId != null and organizerId.length>0">
-                and organizer_id in
-                <foreach collection="organizerId" item="id" open="and (" close=")" separator=",">
+                or organizer_id in
+                <foreach collection="organizerId" item="id" open=" (" close=")" separator=",">
                     #{id,jdbcType=INTEGER}
                 </foreach>
             </if>
             <if test="status != null and status != ''">
-                and status = #{status,jdbcType=INTEGER}
+                or status = #{status,jdbcType=INTEGER}
             </if>
         </where>
     </select>

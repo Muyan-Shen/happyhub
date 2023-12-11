@@ -42,6 +42,7 @@ public class EventServiceImpl implements EventService {
                 eventWhereVO.setOrganizerId(ids);
             }
         }
+        System.out.println(eventWhereVO);
         List<Events> events = eventsMapper.selectAll(eventWhereVO);
         return events;
     }

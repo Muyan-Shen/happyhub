@@ -28,9 +28,15 @@ public class EventController {
     private EventService eventService;
     @Resource
     private SeatService seatService;
-    @GetMapping
-    public SaResult getAll() {
-        return SaResult.ok();
+    @GetMapping("getAll")
+    public SaResult getAll(@RequestParam("keyword") String keyword) {
+        EventWhereVO vo = new EventWhereVO();
+        vo.setOrganizer(keyword);
+        vo.setDescription(keyword);
+        vo.setTitle(keyword);
+        vo.setLocation(keyword);
+        List<Events> all = eventService.findAll(vo);
+        return SaResult.ok().setData(all);
     }
     @PostMapping("/getAll")
     public SaResult getAll(@Validated EventWhereVO eventWhereVO){

@@ -68,7 +68,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    public SaResult login(@Validated UserWhereVO userWhereVO) {
+    public SaResult login(@RequestBody @Validated UserWhereVO userWhereVO) {
         User user = userService.findByUsernameAndPassword(userWhereVO.getUsername(), userWhereVO.getPasswordHash());
         if (user == null) {
             return SaResult.error("用户名或者密码错误");
@@ -119,7 +119,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public SaResult register(@Validated UserInsertVO userInsertVO){
+    public SaResult register(@RequestBody @Validated UserInsertVO userInsertVO){
         User user = userService.findByUsernameAndPassword(userInsertVO.getUsername(), userInsertVO.getPasswordHash());
         if (user != null){
             return SaResult.error().setCode(400).setMsg("用户已存在");
