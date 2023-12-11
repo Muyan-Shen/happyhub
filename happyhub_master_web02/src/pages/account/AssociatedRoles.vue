@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import {computed, defineProps, getCurrentInstance, reactive, ref, onMounted, onActivated, watch} from 'vue'
+import {computed, getCurrentInstance, reactive, ref, onMounted, onActivated, watch} from 'vue'
 import {ElMessage} from "element-plus";
 
 

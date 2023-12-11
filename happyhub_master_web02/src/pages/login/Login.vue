@@ -45,48 +45,45 @@ const rules = reactive({
     {required: true, message: "请输入密码", trigger: "blur"}
   ]
 })
-const login = (user)=>{
-    $http.post('/user/login2',user).then(res=>{
-        // 保存登录状态，跳转到首页
-        profileStore.login(res.token,res.roles,res.permissions,res.account)
-        router.push({name:'home'})
-    })
+
+const onLogin = async (e, form) => {
+    e.preventDefault(); // 阻止默认刷新界面
+    try {
+        await form.validate(async (valid) => {
+            if (valid) {
+                // 提交表单
+                let service = ElLoading.service({
+                    lock: true,
+                    text: 'Loading...',
+                    background: 'rgba(0, 0, 0, 0.4)'
+                });
+
+                try {
+                    const loginResponse = await $http.post('/user/login2', user);
+                    if (loginResponse.code === 200) { // 登录成功
+                        resetRouters();
+                        // 保存登录状态，跳转到首页
+                        profileStore.login(loginResponse.token, loginResponse.roles, loginResponse.permissions, loginResponse.account);
+                        const menuResponse = await $http.get('/menu/' + loginResponse.user.username);
+                        // 存储菜单
+                        serverMenus.value = menuResponse.data.menuTree;
+                        // 添加路由
+                        addServerRoutes(menuResponse.data.routeList);
+                        // 跳转主页
+                        router.push({ name: 'home' });
+                    }
+                } catch (error) {
+                    console.error(error);
+                } finally {
+                    service.close();
+                }
+            }
+        });
+    } catch (e) {
+        console.error(e);
+    }
 }
 
-const onLogin = (e,form)=>{
-  e.preventDefault();//阻止默认刷新界面
-  try {
-      form.validate((valid) => {
-          if (valid) {
-              // 提交表单
-              let service = ElLoading.service({
-                  lock:true,
-                  text:'Loading...',
-                  background:'rgba(0, 0, 0, 0.4)'
-              })
-              $http.post('/user/login2',user).then(async res => {
-                  if(res.code===200){//登录成功
-                      resetRouters()
-                      // 保存登录状态，跳转到首页
-                      profileStore.login(res.token, res.roles, res.permissions, res.account)
-                      await $http.get('/menu/' + res.user.username).then(res => {
-                          //存储菜单
-                          serverMenus.value = res.data.menuTree;
-                          //添加路由
-                          addServerRoutes(res.data.routeList);
-                      })
-                      //跳转主页
-                      await router.push({name: 'home'});
-                  }
-              }).finally(()=>{
-                  service.close();
-              })
-          }
-      })
-  }catch (e){
-      console.log(e);
-  }
-}
 </script>
 
 <style scoped lang="scss">

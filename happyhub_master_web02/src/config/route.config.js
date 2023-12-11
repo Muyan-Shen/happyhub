@@ -15,7 +15,6 @@ const clientRoutes = [
         path:'/home',
         name:'home',
         component:()=> import('../pages/layout/Layout.vue'),
-        redirect:'/account',
     },
     {
         path:'/:patchMatch(.*)*',
@@ -46,7 +45,7 @@ addServerRoutes(serverRoutes.value)
 export function resetRouters() {
     for(const route of clientRoutes){
         //参数1：路由对象，（原始的路由对象）
-        router.addRoute(route);//替换掉同名的路由对象
+        router.addRoute(route)//替换掉同名的路由对象
     }
     serverRoutes.value = null;
 }
@@ -59,9 +58,13 @@ export function addServerRoutes(routerList) {
         router.addRoute(r.parentName,{
             path:r.path,
             name:r.name,
-            component:()=>import(r.component)
+            component:()=>import(r.component),
+            meta:{
+                parentName:r.parentName,
+                title:r.title
+            }
         })
-        serverRoutes.value=routerList;
+        serverRoutes.value=routerList
     }
 }
 

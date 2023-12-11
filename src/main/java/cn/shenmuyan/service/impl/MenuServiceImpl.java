@@ -57,7 +57,7 @@ public class MenuServiceImpl implements MenuService {
             }
             all.put(menu.getId(), menu);
             if (menu.getRoutePath() != null) {
-                routes.add(new Route(menu.getRoutePath(), menu.getRouteComponent(), menu.getRouteName(), menu.getRouteParentName()));
+                routes.add(new Route(menu.getRoutePath(), menu.getRouteComponent(), menu.getRouteName(), menu.getRouteParentName(),menu.getTitle()));
             }
         }
 

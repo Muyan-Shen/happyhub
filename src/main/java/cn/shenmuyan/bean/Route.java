@@ -16,11 +16,13 @@ public class Route {
     private  String component;
     private  String name;
     private  String parentName;
+    private  String title;
 
-    public Route(String routePath, String routeComponent, String routeName, String routeParentName) {
+    public Route(String routePath, String routeComponent, String routeName, String routeParentName,String title) {
         this.path = routePath;
         this.component = routeComponent;
         this.name = routeName;
         this.parentName = routeParentName;
+        this.title = title;
     }
 }
