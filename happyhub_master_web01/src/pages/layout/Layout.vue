@@ -27,6 +27,12 @@
               </span>
             </template>
           </el-card>
+          <el-pagination background
+                         layout="prev,pager,next"
+                         v-model:page-size="pageInfo.limit"
+                         v-model:current-page="pageInfo.page"
+                         :total="pageInfo.total"
+                         @current-change="getEventLists"/>
         </div>
       </el-main>
     </el-container>
@@ -45,15 +51,23 @@ const $http = getCurrentInstance().appContext.config.globalProperties.$http;
 const eventImage = "piglin.gif"
 const eventList = ref([])
 const photos = reactive(["post.png", "post.png", "post.png"])
+const pageInfo = reactive({
+  page: 1,
+  limit: 16,
+  total: 0
+})
 
 const jumpToEventInfo = () => {
   router.push("/eventInfo")
 }
-onMounted(() => {
-  $http.get('/event/getAll', {}).then(resp => {
+const getEventLists = () => {
+  $http.get('/event/getAll', {"pageNum": pageInfo.page, "limit": pageInfo.limit}).then(resp => {
     eventList.value = resp.data;
-    console.log(eventList)
+    // console.log(eventList)
   })
+}
+onMounted(() => {
+  getEventLists();
 })
 </script>
 
@@ -91,7 +105,8 @@ onMounted(() => {
         .postDiv {
           border: red solid 1px;
         }
-        .timeShow{
+
+        .timeShow {
           font-size: 10px;
         }
       }
