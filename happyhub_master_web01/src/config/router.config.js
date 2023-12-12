@@ -22,6 +22,9 @@ const routes = [
         path:'/home',
         name:'home',
         component:() => import('../pages/layout/Layout.vue'),
+        meta: {
+            noLogin: true
+        }
     },
     {
         path:'/userInfo',
