@@ -23,4 +23,6 @@ public interface EventService {
     void updateById(Events events);
     void addEvent(EventInsertVO eventInsertVO);
     String findOrganizerUsername(Integer organizerId);
+
+    String[] getCity();
 }

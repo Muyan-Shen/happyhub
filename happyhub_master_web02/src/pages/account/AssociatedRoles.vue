@@ -2,7 +2,7 @@
   <el-dialog v-model="visibleDialog" @close="$emit('update:visible',false)">
     <el-form>
       <el-form-item label="账号">
-        <el-input v-model="account.name" disabled/>
+        <el-input v-model="account.username" disabled/>
       </el-form-item>
       <el-form-item label="角色列表">
         <el-space wrap>
@@ -18,17 +18,19 @@
     </el-form>
     <template #footer>
       <el-button @click="$emit('update:visible',false)">取消</el-button>
-      <el-button @click="onSave" type="primary">保存</el-button>
+      <el-button @click="onSave()" type="primary">保存</el-button>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
-import {computed, defineProps, getCurrentInstance, reactive, ref, onMounted, onActivated, watch} from 'vue'
+import {computed, getCurrentInstance, reactive, ref, onMounted, onActivated, watch} from 'vue'
 import {ElMessage} from "element-plus";
+
 
 const $http = getCurrentInstance().appContext.config.globalProperties.$http;
 const emit = defineEmits(['update:visible']);
+
 const props = defineProps({
   /**
    * @type {Object} account
@@ -56,7 +58,7 @@ const visibleDialog = computed(
 const roles = reactive([]);
 // 获取当前账号已关联的角色
 const loadRoles = () => {
-  $http.get('role').then(res => {
+  $http.get('/role').then(res => {
     roles.length = 0;
     for (let role of res.data) {
       roles.push({

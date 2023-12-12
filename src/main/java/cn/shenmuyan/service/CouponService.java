@@ -5,6 +5,7 @@ import cn.shenmuyan.bean.Coupons;
 import java.util.List;
 
 /**
+ * 优惠卷接口
  * @Author 李诚林
  * @Version V1.0.0
  * @Since 1.0

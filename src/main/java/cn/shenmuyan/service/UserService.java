@@ -18,7 +18,7 @@ import java.util.List;
  */
 
 
-@Service
+
 public interface UserService {
 
     List<User> findAll(UserWhereVO UserWhereVO);

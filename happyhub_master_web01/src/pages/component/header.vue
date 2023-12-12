@@ -4,6 +4,26 @@
       <el-image src="LOGO_v2.png" fit="cover"/>
       <a href="/#/home">首页</a>
       <a href="/#/eventList">分类</a>
+      <el-dropdown is="nameDropDown">
+        <span id="username" class="nameText">
+          {{ city }}
+          <el-icon style="height: 25px">
+              <CaretBottom/>
+          </el-icon>
+        </span>
+        <template #dropdown>
+          <div class="dropdownList" style="width: 240px">
+            <el-scrollbar max-height="200px" style="padding: 7px">
+              <el-button v-for="city of citys" @click="searchByCity($event,city)"
+                         style="margin: 5px;
+                                padding: 4px;
+                                border: none">
+                {{ city }}
+              </el-button>
+            </el-scrollbar>
+          </div>
+        </template>
+      </el-dropdown>
     </div>
     <div class="headRight">
       <el-input
@@ -35,31 +55,51 @@
 <script setup>
 import router from "../../config/router.config.js";
 import {useProfileStore} from "../../stores/useProfile.js";
-import {UserFilled,Search} from "@element-plus/icons-vue";
+import {UserFilled, Search, CaretBottom} from "@element-plus/icons-vue";
 import {getCurrentInstance, ref, onMounted, reactive} from "vue";
+import axios from "axios";
 
 const keyword = ref('');
 const profileStore = useProfileStore();
 const userId = profileStore.profile.id;
 const $http = getCurrentInstance().appContext.config.globalProperties.$http;
-
-const OnSearch = (e)=>{
+const city = ref('')
+const citys = ref([])
+const ip = ref('')
+const OnSearch = (e) => {
   e.preventDefault();
-  $http.get('/event/getAll?keyword='+keyword.value).then(resp=>{
+  $http.get('/event/getAll?keyword=' + keyword.value).then(resp => {
     // console.log(typeof resp)
-    if (resp.data){
+    if (resp.data) {
       profileStore.saveEventList(Array.from(resp.data));
       router.push("/eventList")
+    }
+  })
+}
+const searchByCity = (e, city) => {
+  e.preventDefault();
+  $http.get('/event/getAll?keyword=' + city).then(resp => {
+    if (resp.data) {
+      profileStore.eventList = resp.data.list
     }
   })
 }
 const jumpToUser = () => {
   router.push("/userInfo")
 }
-const jumpToLogin = ()=>{
+const jumpToLogin = () => {
   router.push("/login")
 }
-onMounted(()=>{
+onMounted(() => {
+  axios.get('https://api.ipify.org/?format=json').then(resp => {
+    ip.value = resp.data.ip;
+    axios.get('https://restapi.amap.com/v3/ip?key=0106a49472396d64819af96dd0e9e3db&ip=' + ip.value).then(resp => {
+      city.value = resp.data.city;
+    })
+  })
+  $http.get('/event/getCity').then(resp => {
+    citys.value = resp.data;
+  })
 })
 </script>
 
@@ -82,19 +122,37 @@ onMounted(()=>{
     display: flex;
     align-items: center;
     justify-content: center;
-    .el-image{
+
+    .nameText {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 750;
+      margin-left: 15px;
+    }
+
+    .nameText:hover {
+      color: #ffd5dd;
+    }
+
+    .nameText:focus-visible {
+      outline: none;
+    }
+
+    .el-image {
       height: 45px;
       padding: 1px;
       margin-top: 5px;
     }
-    a{
+
+    a {
       margin-left: 15px;
 
       color: #fff;
       font-weight: 750;
       text-decoration: none;
     }
-    a:hover{
+
+    a:hover {
       color: pink;
     }
   }
@@ -104,13 +162,15 @@ onMounted(()=>{
     margin-right: 4%;
     align-items: center;
     display: flex;
-    .searchBox{
+
+    .searchBox {
       height: 18%;
       margin-right: 8%;
       box-shadow: 1px 1px 1px #ffffff;
 
       border-radius: 3px;
-      .el-button{
+
+      .el-button {
         height: 99%;
         color: white;
         background-color: pink;
@@ -118,6 +178,7 @@ onMounted(()=>{
         box-shadow: hotpink 1px 1px 1px;
       }
     }
+
     .el-button {
 
       background-color: #fdb5c1;

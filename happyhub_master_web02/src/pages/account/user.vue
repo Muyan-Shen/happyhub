@@ -45,7 +45,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <el-table :data="accounts">
+    <el-table :data="users">
       <el-table-column label="账号" prop="username"></el-table-column>
       <el-table-column label="创建时间" prop="createTime"></el-table-column>
       <el-table-column label="更新时间" prop="updateTime"></el-table-column>
@@ -80,7 +80,7 @@
                        :total="pageInfo.total"/>
       </template>
     </el-table>
-    <associated-roles v-model:visible="associatedRolesDialog.visible" :account="associatedRolesDialog.accounts"/>
+    <associated-roles v-model:visible="associatedRolesDialog.visible" :account="associatedRolesDialog.users"/>
   </div>
 </template>
 
@@ -91,7 +91,7 @@ import {Search} from "@element-plus/icons-vue";
 import AssociatedRoles from "@/pages/account/AssociatedRoles.vue";
 
 const $http = getCurrentInstance().appContext.config.globalProperties.$http;
-const accounts = reactive([])
+const users = reactive([])
 const searchForm = reactive({
   username: '',
   status: -1,
@@ -105,7 +105,7 @@ const pageInfo = reactive({
 })
 const associatedRolesDialog = reactive({
   visible: false,
-  accounts: {}
+    users: {}
 })
 
 const onSearch = (e)=>{
@@ -117,7 +117,7 @@ const onStatusChange = (row)=>{
 }
 
 const onAssociatedRoles = (role)=>{
-  associatedRolesDialog.accounts = account;
+  associatedRolesDialog.users = users;
   associatedRolesDialog.visible = true;
 }
 
@@ -148,8 +148,8 @@ const loadAccounts = () => {
   }
   console.log(searchString);
   $http.get('/user?'+encodeURI(searchString), {params}).then(res => {
-    accounts.length = 0;
-    accounts.push(...res.data);
+      users.length = 0;
+      users.push(...res.data);
     pageInfo.total = res.count;
   })
 }

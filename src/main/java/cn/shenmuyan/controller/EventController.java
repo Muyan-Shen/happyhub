@@ -7,6 +7,9 @@ import cn.shenmuyan.service.SeatService;
 import cn.shenmuyan.vo.EventInsertVO;
 import cn.shenmuyan.vo.EventWhereVO;
 import cn.shenmuyan.vo.SeatInsertVO;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +20,7 @@ import java.util.List;
 
 /**
  * 活动controller
+ *
  * @className: EventController
  * @author: 叶宝谦
  * @date: 2023/12/05 9:16
@@ -28,18 +32,33 @@ public class EventController {
     private EventService eventService;
     @Resource
     private SeatService seatService;
-    @GetMapping("getAll")
-    public SaResult getAll(@RequestParam("keyword") String keyword) {
-        EventWhereVO vo = new EventWhereVO();
-        vo.setOrganizer(keyword);
-        vo.setDescription(keyword);
-        vo.setTitle(keyword);
-        vo.setLocation(keyword);
-        List<Events> all = eventService.findAll(vo);
-        return SaResult.ok().setData(all);
+
+    @GetMapping("getCity")
+    public SaResult getCity(){
+        String[] city = eventService.getCity();
+        return SaResult.ok().setData(city);
     }
+
+    @GetMapping("getAll")
+    public SaResult getAll(@RequestParam(value = "keyword", defaultValue = "", required = false) String keyword,
+                           @RequestParam(defaultValue = "1", required = false) int pageNum,
+                           @RequestParam(defaultValue = "16", required = false) int limit) {
+        EventWhereVO vo = new EventWhereVO();
+        if (!keyword.isEmpty()) {
+            vo.setOrganizer(keyword);
+            vo.setDescription(keyword);
+            vo.setTitle(keyword);
+            vo.setLocation(keyword);
+        }
+        List<Events> all = eventService.findAll(vo);
+        //设置分页
+        PageHelper.startPage(pageNum,limit);
+        PageInfo<Events> events = new PageInfo<>(all);
+        return SaResult.ok().setData(events);
+    }
+
     @PostMapping("/getAll")
-    public SaResult getAll(@Validated EventWhereVO eventWhereVO){
+    public SaResult getAll(@Validated EventWhereVO eventWhereVO) {
         List<Events> all = eventService.findAll(eventWhereVO);
         return SaResult.ok().setData(all);
     }
@@ -68,6 +87,7 @@ public class EventController {
 
     /**
      * 创建活动
+     *
      * @param event
      * @return
      */
@@ -79,25 +99,27 @@ public class EventController {
 
     /**
      * 生成座位
+     *
      * @param vo
      * @return
      */
     @PostMapping("/generateSeats")
-    public SaResult generateSeat(@Validated @RequestBody SeatInsertVO vo){
+    public SaResult generateSeat(@Validated @RequestBody SeatInsertVO vo) {
         String[] directions = vo.getDirection();
         for (String direction : directions) {
-            seatService.setSeat(vo.getEventId(),vo.getTopGear(),direction,vo.getMaxCol(),vo.getGearSum(), vo.getGearPrice());
+            seatService.setSeat(vo.getEventId(), vo.getTopGear(), direction, vo.getMaxCol(), vo.getGearSum(), vo.getGearPrice());
         }
         return SaResult.ok("创建成功");
     }
 
     /**
      * 获得剩下的座位信息
-     * @param eventId   活动id
+     *
+     * @param eventId 活动id
      * @return
      */
-    @GetMapping ("/getAllSeatsInfo")
-    public SaResult getAllSeats(@NotNull Integer eventId){
+    @GetMapping("/getAllSeatsInfo")
+    public SaResult getAllSeats(@NotNull Integer eventId) {
         Events event = eventService.findById(eventId);
         Integer topGear = event.getTopGear();
         BigDecimal[] gearPrices = seatService.getGearPrices(eventId);
@@ -106,6 +128,6 @@ public class EventController {
             Integer num = seatService.getLastSeatNum(eventId, i + 1, 1);
             gearSeatNum[i] = num;
         }
-        return SaResult.ok().set("topGear",topGear).set("gearPrices",gearPrices).set("gearSeatNum",gearSeatNum);
+        return SaResult.ok().set("topGear", topGear).set("gearPrices", gearPrices).set("gearSeatNum", gearSeatNum);
     }
 }
