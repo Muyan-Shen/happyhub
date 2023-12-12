@@ -72,4 +72,9 @@ public class EventServiceImpl implements EventService {
         }
        return null;
     }
+
+    @Override
+    public String[] getCity() {
+        return eventsMapper.selectAllLocation();
+    }
 }

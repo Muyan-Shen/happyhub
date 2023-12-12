@@ -13,27 +13,27 @@
           </el-carousel>
         </div>
         <div class="cards">
-          <el-card v-for="event of eventList">
+          <el-card v-for="event of profileStore.eventList" @click="jumpToEventInfo(event.id)">
             <div class="postDiv">
               <el-image v-if="event.photoUrl" :src="event.photoUrl" style="height: 75%"/>
               <el-image v-if="!event.photoUrl" src="/event/photo03.jpg" style="width: 100%"/>
             </div>
             <template #footer>
               <span>{{ event.title }}</span><br>
-              <span class="timeShow">
+              <span class="timeShow" v-if="event.startTime">
                 {{ event.startTime.toString().replace(/T/g, ' ').replace(/:\d{2}$/, '') }}
                 &emsp;-&emsp;
                 {{ event.endTime.toString().replace(/T/g, ' ').replace(/:\d{2}$/, '') }}
               </span>
             </template>
           </el-card>
-          <el-pagination background
-                         layout="prev,pager,next"
-                         v-model:page-size="pageInfo.limit"
-                         v-model:current-page="pageInfo.page"
-                         :total="pageInfo.total"
-                         @current-change="getEventLists"/>
         </div>
+        <el-pagination background
+                       layout="prev,pager,next"
+                       v-model:page-size="pageInfo.limit"
+                       v-model:current-page="pageInfo.page"
+                       :total="pageInfo.total"
+                       @current-change="getEventLists"/>
       </el-main>
     </el-container>
   </div>
@@ -43,13 +43,10 @@
 import topHeader from '../component/header.vue'
 import router from '../../config/router.config.js'
 import {reactive, onMounted, getCurrentInstance, ref} from "vue";
-import {formatter} from "element-plus";
-import {formatDate} from "@vueuse/shared";
-import {Timer} from "@element-plus/icons-vue";
+import {useProfileStore} from "../../stores/useProfile.js";
 
 const $http = getCurrentInstance().appContext.config.globalProperties.$http;
-const eventImage = "piglin.gif"
-const eventList = ref([])
+const profileStore = useProfileStore();
 const photos = reactive(["post.png", "post.png", "post.png"])
 const pageInfo = reactive({
   page: 1,
@@ -57,13 +54,17 @@ const pageInfo = reactive({
   total: 0
 })
 
-const jumpToEventInfo = () => {
-  router.push("/eventInfo")
+const jumpToEventInfo = (eventId) => {
+  router.push({
+    name:"eventInfo",
+    params:{
+      "eventId":eventId
+    }
+  })
 }
 const getEventLists = () => {
   $http.get('/event/getAll', {"pageNum": pageInfo.page, "limit": pageInfo.limit}).then(resp => {
-    eventList.value = resp.data;
-    // console.log(eventList)
+    profileStore.eventList = resp.data.list;
   })
 }
 onMounted(() => {

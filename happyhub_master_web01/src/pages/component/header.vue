@@ -4,7 +4,7 @@
       <el-image src="LOGO_v2.png" fit="cover"/>
       <a href="/#/home">首页</a>
       <a href="/#/eventList">分类</a>
-      <el-dropdown is="nameDropDown" @visible-change="false">
+      <el-dropdown is="nameDropDown">
         <span id="username" class="nameText">
           {{ city }}
           <el-icon style="height: 25px">
@@ -12,9 +12,16 @@
           </el-icon>
         </span>
         <template #dropdown>
-          <el-scrollbar max-height="200px" style="padding: 7px">
-            <p v-for="city of citys" @click="" class="pCity">{{ city }}</p>
-          </el-scrollbar>
+          <div class="dropdownList" style="width: 240px">
+            <el-scrollbar max-height="200px" style="padding: 7px">
+              <el-button v-for="city of citys" @click="searchByCity($event,city)"
+                         style="margin: 5px;
+                                padding: 4px;
+                                border: none">
+                {{ city }}
+              </el-button>
+            </el-scrollbar>
+          </div>
         </template>
       </el-dropdown>
     </div>
@@ -57,17 +64,7 @@ const profileStore = useProfileStore();
 const userId = profileStore.profile.id;
 const $http = getCurrentInstance().appContext.config.globalProperties.$http;
 const city = ref('')
-const citys = ref(['长沙', '郑州', '沈阳', '青岛', '厦门', '宁波',
-  '佛山', '昆明', '合肥', '福州', '济南', '大连', '无锡', '太原', '哈尔滨',
-  '常州', '南宁', '南昌', '长春', '石家庄', '贵阳', '南通', '温州', '海口',
-  '珠海', '泉州', '东莞', '银川', '绍兴', '嘉兴', '台州', '包头', '呼和浩特',
-  '惠州', '烟台', '中国澳门', '金华', '阜阳', '中国香港', '中山', '兰州',
-  '乌鲁木齐', '扬州', '赣州', '宝鸡', '廊坊', '西宁', '盐城', '芜湖', '徐州',
-  '鞍山', '连云港', '柳州', '吉林', '洛阳', '宜昌', '景德镇', '六安', '南阳',
-  '汕头', '泰州', '威海', '湛江', '遵义', '滨州', '湖州', '九江', '莆田',
-  '潍坊', '大庆', '东营', '鄂尔多斯', '荆州', '开封', '秦皇岛', '清远',
-  '肇庆', '镇江', '淄博', '衢州', '东方', '桂林', '邯郸', '济宁', '江门',
-  '锦州', '丽水', '绵阳', '日照', '遂宁', '唐山', '孝感', '宜宾', '漳州', '株洲'])
+const citys = ref([])
 const ip = ref('')
 const OnSearch = (e) => {
   e.preventDefault();
@@ -79,6 +76,14 @@ const OnSearch = (e) => {
     }
   })
 }
+const searchByCity = (e, city) => {
+  e.preventDefault();
+  $http.get('/event/getAll?keyword=' + city).then(resp => {
+    if (resp.data) {
+      profileStore.eventList = resp.data.list
+    }
+  })
+}
 const jumpToUser = () => {
   router.push("/userInfo")
 }
@@ -87,12 +92,13 @@ const jumpToLogin = () => {
 }
 onMounted(() => {
   axios.get('https://api.ipify.org/?format=json').then(resp => {
-    console.log(resp)
     ip.value = resp.data.ip;
     axios.get('https://restapi.amap.com/v3/ip?key=0106a49472396d64819af96dd0e9e3db&ip=' + ip.value).then(resp => {
-      console.log(resp)
       city.value = resp.data.city;
     })
+  })
+  $http.get('/event/getCity').then(resp => {
+    citys.value = resp.data;
   })
 })
 </script>

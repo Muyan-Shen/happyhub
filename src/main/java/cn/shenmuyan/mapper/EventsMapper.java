@@ -30,4 +30,5 @@ public interface EventsMapper {
     int updateByPrimaryKey(Events record);
 
 
+    String[] selectAllLocation();
 }

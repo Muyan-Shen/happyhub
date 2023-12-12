@@ -33,6 +33,12 @@ public class EventController {
     @Resource
     private SeatService seatService;
 
+    @GetMapping("getCity")
+    public SaResult getCity(){
+        String[] city = eventService.getCity();
+        return SaResult.ok().setData(city);
+    }
+
     @GetMapping("getAll")
     public SaResult getAll(@RequestParam(value = "keyword", defaultValue = "", required = false) String keyword,
                            @RequestParam(defaultValue = "1", required = false) int pageNum,
