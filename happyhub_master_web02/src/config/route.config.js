@@ -58,7 +58,7 @@ export function addServerRoutes(routerList) {
         router.addRoute(r.parentName,{
             path:r.path,
             name:r.name,
-            component:()=>import(r.component),
+            component:()/* @vite-ignore */=>import(r.component),
             meta:{
                 parentName:r.parentName,
                 title:r.title

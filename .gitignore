@@ -11,8 +11,6 @@ target/
 *.iws
 *.iml
 *.ipr
-/pom.xml
-/
 
 ### Eclipse ###
 .apt_generated
@@ -38,3 +36,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+/src/main/java/cn/shenmuyan/controller/SeatTestController.java
+/happyhub_master_web02/package-lock.json
