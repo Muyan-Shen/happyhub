@@ -47,7 +47,7 @@
         </el-icon>
         登录/注册
       </el-button>
-      <el-image v-if="userId" src="vite.svg" index="/userInfo" @click="jumpToUser"/>
+      <el-image v-if="userId" :src="profileStore.profile.photoUrl" index="/userInfo" @click="jumpToUser"/>
     </div>
   </div>
 </template>

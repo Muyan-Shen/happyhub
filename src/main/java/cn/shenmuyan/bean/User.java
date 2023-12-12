@@ -33,6 +33,11 @@ public class User implements Serializable {
     private String passwordHash;
 
     /**
+     * 头像
+     */
+    private String photoUrl;
+
+    /**
      * 用户创建时间
      */
     private LocalDateTime createdAt;
@@ -97,6 +102,7 @@ public class User implements Serializable {
         sb.append(", username=").append(username);
         sb.append(", email=").append(email);
         sb.append(", passwordHash=").append(passwordHash);
+        sb.append(", photoUrl=").append(photoUrl);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", isDelete=").append(isDelete);

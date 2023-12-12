@@ -55,10 +55,11 @@ const pageInfo = reactive({
 })
 
 const jumpToEventInfo = (eventId) => {
+  console.log(eventId)
   router.push({
     name:"eventInfo",
     params:{
-      "eventId":eventId
+      eventId:eventId
     }
   })
 }
@@ -81,7 +82,6 @@ onMounted(() => {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    border: red 1px solid;
     height: 100%;
     margin-left: 10%;
     margin-right: 10%;
