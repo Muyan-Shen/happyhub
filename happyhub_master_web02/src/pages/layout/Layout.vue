@@ -10,14 +10,14 @@
                     <div class="col">
                         <div class="button">
                             <el-button
-                                    class="but1"
-                                    :color="blue"
+                                    class="expandButton"
+                                    :style="expandButtonStyle"
                                     @click="change">
                                 <el-icon v-if="isCollapse">
-                                    <Expand/>
+                                    <DArrowRight/>
                                 </el-icon>
                                 <el-icon v-else>
-                                    <Fold/>
+                                    <DArrowLeft/>
                                 </el-icon>
                             </el-button>
                         </div>
@@ -31,9 +31,56 @@
 
                                 </el-button>
                                 <el-drawer v-model="drawer"
-                                           title="I am the title"
                                            :with-header="false">
-                                    <span>Hi there!</span>
+                                    <el-descriptions title="个人信息"
+                                                     :size='large'
+                                                     :column="1">
+                                        <el-descriptions-item label="用户名">kooriookami</el-descriptions-item>
+                                        <el-descriptions-item label="性别">男</el-descriptions-item>
+                                        <el-descriptions-item label="年龄">22</el-descriptions-item>
+                                        <el-descriptions-item label="联系方式">18100000000</el-descriptions-item>
+                                        <el-descriptions-item label="邮箱地址">504142151@qq.com</el-descriptions-item>
+                                        <el-descriptions-item label="身份">
+                                            <el-tag size="small">Admin</el-tag>
+                                        </el-descriptions-item>
+                                    </el-descriptions>
+                                    <div class="dialog">
+                                        <el-button text @click="dialogFormVisible = true">
+                                            修改信息
+                                        </el-button>
+                                        <el-dialog v-model="dialogFormVisible" title="信息修改">
+                                            <el-form :model="form">
+                                                <el-form-item label="用户名"
+                                                              :label-width="formLabelWidth">
+                                                    <el-input v-model="form.username"
+                                                              autocomplete="off"/>
+                                                </el-form-item>
+                                                <el-form-item label="性别"
+                                                              :label-width="formLabelWidth">
+                                                    <el-select v-model="form.sex"
+                                                               placeholder="Please select a zone">
+                                                        <el-option label="男" value="shanghai"/>
+                                                        <el-option label="女" value="beijing"/>
+                                                    </el-select>
+                                                </el-form-item>
+                                                <el-form-item label="年龄"
+                                                              :label-width="formLabelWidth">
+                                                    <el-input type="number"
+                                                              v-model="form.age"
+                                                              maxlength="2" />
+                                                </el-form-item>
+                                                <el-form-item label="联系方式" :label-width="formLabelWidth">
+                                                    <el-input type="tel"
+                                                              v-model="form.phone"
+                                                              maxlength="11" />
+                                                </el-form-item>
+                                                <el-form-item label="邮箱地址" :label-width="formLabelWidth">
+                                                   <el-input type="email"
+                                                             v-model="form.email"/>
+                                                </el-form-item>
+                                            </el-form>
+                                        </el-dialog>
+                                    </div>
                                 </el-drawer>
                             </div>
                             <div class="screenfull">
@@ -45,7 +92,6 @@
                             <div class="mr-3">
                                 <el-avatar
                                         :size="96"
-
                                         src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"/>
                             </div>
 
@@ -73,7 +119,6 @@
                     </div>
                 </el-col>
             </el-row>
-            <el-divider/>
             <el-container>
                 <el-aside>
                     <el-menu
@@ -93,8 +138,8 @@
                                         <component :is="m1.icon"/>
                                     </el-icon>
                                     <span>
-                                            {{ m1.title ? m1.title : "" }}
-                                        </span>
+                    {{ m1.title ? m1.title : "" }}
+                  </span>
                                 </template>
                                 <el-menu-item v-for="m2 of m1.children" :key="m2.id" :index="m2.routePath">
                                     <template #title>
@@ -102,8 +147,8 @@
                                             <component :is="m2.icon"/>
                                         </el-icon>
                                         <span>
-                                            {{ m2.title ? m2.title : "" }}
-                                        </span>
+                      {{ m2.title ? m2.title : "" }}
+                    </span>
                                     </template>
                                 </el-menu-item>
                             </el-sub-menu>
@@ -113,8 +158,8 @@
                                         <component :is="m1.icon"/>
                                     </el-icon>
                                     <span>
-                                        {{ m1.title ? m1.title : "" }}
-                                    </span>
+                    {{ m1.title ? m1.title : "" }}
+                  </span>
                                 </template>
                             </el-menu-item>
                         </template>
@@ -129,16 +174,24 @@
 </template>
 
 <script setup>
-import {onMounted, onUnmounted, ref} from "vue";
+import {getCurrentInstance, onMounted, onUnmounted, reactive, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {serverMenus} from "../../config/route.config.js"
 import screenfull from 'screenfull'
 import {Postcard} from "@element-plus/icons";
+import { useProfileStore } from "@/stores/useProfile.js";
+
 
 const isCollapse = ref(true)
+const expandButtonStyle = ref('')
 
 function change() {
     isCollapse.value = !isCollapse.value;
+    if (!isCollapse.value) {
+        expandButtonStyle.value = "padding-left: 120px;padding-right:30px"
+    } else {
+        expandButtonStyle.value = "padding-left: 15px"
+    }
 }
 
 const route = useRoute();
@@ -151,11 +204,12 @@ router.afterEach((to) => {
     defaultActive.value = to.path;
 })
 
-
+//----------------------------------------------设置全屏-------------------------------------------
 // 是否全屏
 const isFullscreen = ref(false)
 
 function handleFullScreen() {
+
     screenfull.toggle()
 }
 
@@ -186,7 +240,27 @@ function handleFullScreen() {
 const change1 = () => {
     isFullscreen.value = screenfull.isFullscreen
 }
+
+//----------------------------------------------------------对话框
+const $http = getCurrentInstance().appContext.config.globalProperties.$http;
+const dialogFormVisible = ref(false)
+const formLabelWidth = '140px'
+const profileStore = useProfileStore();
+
+
+const form = reactive({
+    name: '',
+    region: '',
+    date1: '',
+    date2: '',
+    delivery: false,
+    type: [],
+    resource: '',
+    desc: '',
+})
+console.log(profileStore.AllRoles)
 onMounted(() => {
+
     screenfull.on('change1', change1)
 })
 // 删除侦听器
@@ -202,8 +276,16 @@ onUnmounted(() => {
   .el-header {
     background-color: #303133;
     color: #fff;
-    font-size: 36px;
-    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    span {
+      font-size: 28px;
+      font-weight: bold;
+      font-style: italic;
+      -webkit-box-reflect: below -5px linear-gradient(transparent 50%, #d7d5d5)
+    }
 
     .iconfont {
       font-size: 36px;
@@ -228,14 +310,17 @@ onUnmounted(() => {
         display: flex;
 
         .button {
-          width: 150px;
           text-align: center;
 
-          .but1 {
+          .expandButton {
             border: none;
             font-size: 30px;
             height: 50px;
-            width: 150px;
+            width: 64px;
+            transition: all 0.3s ease;
+            --el-button-hover-text-color: none;
+            --el-button-hover-bg-color: #ccc;
+            --el-button-active-bg-color: #ccc;
           }
         }
 
@@ -246,6 +331,9 @@ onUnmounted(() => {
           align-items: center; //垂直
           .postcard {
             margin-right: 20px;
+            .dialog{
+              text-align: center;
+            }
           }
 
           .screenfull {
@@ -253,8 +341,11 @@ onUnmounted(() => {
           }
 
           .mr-3 {
-
             margin-right: 20px;
+
+            .el-avatar {
+              border: #303133 3px solid;
+            }
           }
         }
 
@@ -289,6 +380,7 @@ onUnmounted(() => {
     .el-main {
       height: 100%;
       background-color: #fff;
+      box-shadow: 5px 5px 5px 0px #ccc inset;
     }
 
     .el-menu-item {

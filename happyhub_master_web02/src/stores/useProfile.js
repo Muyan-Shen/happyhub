@@ -12,6 +12,9 @@ export const useProfileStore = defineStore("profile", {
         IsLogin(){
             return this.token != ''
         },
+        AllRoles(state){
+          return state.roles
+        },
         // 返回一个函数：判断是否包含某个角色
         hasRole(){
             return (role)=>{
