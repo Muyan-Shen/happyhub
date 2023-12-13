@@ -128,4 +128,10 @@ public class EventController {
         }
         return SaResult.ok().set("topGear", topGear).set("gearPrices", gearPrices).set("gearSeatNum", gearSeatNum);
     }
+
+    @GetMapping("/getThree")
+    public SaResult getThree(){
+        List<Events> events = eventService.selectThree();
+        return SaResult.ok().setData(events);
+    }
 }

@@ -31,4 +31,6 @@ public interface EventsMapper {
 
 
     String[] selectAllLocation();
+
+    List<Events> selectThree();
 }
