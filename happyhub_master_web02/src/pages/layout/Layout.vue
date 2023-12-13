@@ -223,15 +223,25 @@ const triggerFileInput = () => {
 };
 
 // 处理文件选择
-const handleFileChange = (event) => {
+const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
-        // 使用 FileReader 来预览图片
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            form.picPath = e.target.result; // 更新头像路径为读取到的图片
-        };
-        reader.readAsDataURL(file);
+        const formData = new FormData();
+        formData.append('avatar', file);
+
+        try {
+            // 发送 POST 请求到后端
+            const response = await $http.post('/upload-avatar', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            // 更新图片路径
+            form.value.picPath = response.data.path;
+        } catch (error) {
+            console.error('上传失败', error);
+        }
     }
 };
 
