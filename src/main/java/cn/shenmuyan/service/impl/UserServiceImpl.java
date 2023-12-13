@@ -4,11 +4,14 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.crypto.digest.MD5;
 import cn.shenmuyan.bean.Orders;
 import cn.shenmuyan.bean.User;
+import cn.shenmuyan.bean.UserInformation;
 import cn.shenmuyan.bean.UserRoleMapping;
 import cn.shenmuyan.mapper.OrdersMapper;
+import cn.shenmuyan.mapper.UserInformationMapper;
 import cn.shenmuyan.mapper.UserMapper;
 import cn.shenmuyan.mapper.UserRoleMappingMapper;
 import cn.shenmuyan.service.UserService;
+import cn.shenmuyan.vo.UserInformationVO;
 import cn.shenmuyan.vo.UserInsertVO;
 import cn.shenmuyan.vo.UserWhereVO;
 import org.springframework.stereotype.Service;
@@ -33,6 +36,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private UserRoleMappingMapper userRoleMappingMapper;
+
+    @Resource
+    private UserInformationMapper userInformationMapper;
     @Override
     public List<User> findAll(UserWhereVO where) {
         return userMapper.selectAll(where);
@@ -73,5 +79,28 @@ public class UserServiceImpl implements UserService {
         userRoleMappingMapper.deleteByUserId(userId);
         //再添加新的关联
         userRoleMappingMapper.insertBatch(userId,roleIds);
+    }
+
+    /**
+     * @param loginId
+     * @return
+     */
+    @Override
+    public UserInformation findUserInformationByLoginId(Integer loginId) {
+        UserInformation userInformation = userInformationMapper.selectByUserId(loginId);
+        return userInformation;
+    }
+
+    /**
+     * @param userId
+     * @param userInformationVO
+     * @return
+     */
+    @Override
+
+    public boolean updateInformationByUserId(Integer userId, UserInformationVO userInformationVO) {
+        UserInformation userInformation = BeanUtil.copyProperties(userInformationVO, UserInformation.class);
+        userInformation.setUserId(userId);
+        return userInformationMapper.updateByUserId(userInformation);
     }
 }

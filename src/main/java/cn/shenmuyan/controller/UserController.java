@@ -5,7 +5,9 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import cn.shenmuyan.bean.Orders;
 import cn.shenmuyan.bean.User;
+import cn.shenmuyan.bean.UserInformation;
 import cn.shenmuyan.service.UserService;
+import cn.shenmuyan.vo.UserInformationVO;
 import cn.shenmuyan.vo.UserInsertVO;
 import cn.shenmuyan.vo.UserWhereVO;
 import com.github.pagehelper.PageHelper;
@@ -107,7 +109,7 @@ public class UserController {
                 .set("user",user);
     }
     /**
-     * 前台用户登出
+     * 后台用户登出
      * @return
      */
     @GetMapping("/logout2")
@@ -117,6 +119,25 @@ public class UserController {
         }
         StpUtil.logout();
         return SaResult.ok("注销成功");
+    }
+
+    /**
+     * 后台用户信息
+     * @return 用户详细信息
+     */
+    @GetMapping("/profile")
+    public SaResult profile() {
+        UserInformation userInformation = userService.findUserInformationByLoginId(StpUtil.getLoginIdAsInt());
+        if(userInformation==null)return SaResult.error().setCode(400).setMsg("未查询到信息");
+        return SaResult.ok().setData(userInformation);
+    }
+
+    @PostMapping("/profile")
+    public SaResult profileUpdate(@RequestBody UserInformationVO userInformationVO) {
+        if(!userService.updateInformationByUserId(StpUtil.getLoginIdAsInt(), userInformationVO)){
+            return SaResult.error().setCode(400).setMsg("修改失败");
+        }
+        return SaResult.ok().setMsg("修改成功");
     }
 
     @PostMapping("/register")

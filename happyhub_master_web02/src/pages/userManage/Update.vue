@@ -3,10 +3,10 @@
         <div class="search">
             <el-form @submit="onSearch">
                 <el-form-item>
-                    <el-form-item label="username">
-                        <el-input v-model="searchForm.username" placeholder="请输入账号"></el-input>
+                    <el-form-item label="用户ID">
+                        <el-input v-model="searchForm.username" placeholder="请输入ID"></el-input>
                     </el-form-item>
-                    <el-form-item label="createTime" :label-width="120">
+                    <el-form-item label="创建时间" :label-width="120">
                         <el-date-picker v-model="searchForm.createTime"
                                         type="daterange"
                                         unlink-panels
@@ -19,14 +19,14 @@
                     </el-form-item>
                 </el-form-item>
                 <el-form-item>
-                    <el-form-item label="status">
+                    <el-form-item label="状态">
                         <el-radio-group v-model="searchForm.status">
                             <el-radio :label="-1">所有</el-radio>
                             <el-radio :label="2">正常</el-radio>
                             <el-radio :label="1">禁用</el-radio>
                         </el-radio-group>
                     </el-form-item>
-                    <el-form-item label="updateTime" :label-width="120">
+                    <el-form-item label="更新时间" :label-width="120">
                         <el-date-picker v-model="searchForm.updateTime"
                                         type="daterange"
                                         unlink-panels
@@ -50,7 +50,7 @@
         <el-table :data="users">
             <el-table-column label="账号" prop="username"></el-table-column>
             <el-table-column label="创建时间" prop="createdAt"></el-table-column>
-            <el-table-column label="更新时间" prop="updatedeAt"></el-table-column>
+            <el-table-column label="更新时间" prop="updatedAt"></el-table-column>
             <el-table-column label="状态">
                 <template #default="{row}">
                     <el-switch v-model="row.isDelete"

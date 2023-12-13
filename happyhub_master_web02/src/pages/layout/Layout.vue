@@ -34,21 +34,25 @@
                                            :with-header="false">
                                     <el-descriptions title="个人信息"
                                                      :size='large'
-                                                     :column="1">
-                                        <el-descriptions-item label="用户名">kooriookami</el-descriptions-item>
-                                        <el-descriptions-item label="性别">男</el-descriptions-item>
-                                        <el-descriptions-item label="年龄">22</el-descriptions-item>
-                                        <el-descriptions-item label="联系方式">18100000000</el-descriptions-item>
-                                        <el-descriptions-item label="邮箱地址">504142151@qq.com</el-descriptions-item>
+                                                     :column="1" v-model="form">
+                                        <el-descriptions-item label="用户名">{{ form.username }}</el-descriptions-item>
+                                        <el-descriptions-item label="性别">{{ form.sex }}</el-descriptions-item>
+                                        <el-descriptions-item label="年龄">{{ form.age }}</el-descriptions-item>
+                                        <el-descriptions-item label="联系方式">{{ form.phone }}</el-descriptions-item>
+                                        <el-descriptions-item label="邮箱地址">{{ form.email }}</el-descriptions-item>
                                         <el-descriptions-item label="身份">
-                                            <el-tag size="small">Admin</el-tag>
+                                            <el-tag style="margin-left: 5px" size="small"
+                                                    v-for="role of profileStore.roles">{{ role.name }}
+                                            </el-tag>
                                         </el-descriptions-item>
                                     </el-descriptions>
                                     <div class="dialog">
                                         <el-button text @click="dialogFormVisible = true">
                                             修改信息
                                         </el-button>
-                                        <el-dialog v-model="dialogFormVisible" title="信息修改">
+                                        <el-dialog v-model="dialogFormVisible"
+                                                   title="信息修改"
+                                        >
                                             <el-form :model="form">
                                                 <el-form-item label="用户名"
                                                               :label-width="formLabelWidth">
@@ -57,8 +61,8 @@
                                                 </el-form-item>
                                                 <el-form-item label="性别"
                                                               :label-width="formLabelWidth">
-                                                    <el-select v-model="form.sex"
-                                                               placeholder="Please select a zone">
+                                                    <el-select v-model="form.sex">
+
                                                         <el-option label="男" value="shanghai"/>
                                                         <el-option label="女" value="beijing"/>
                                                     </el-select>
@@ -67,16 +71,16 @@
                                                               :label-width="formLabelWidth">
                                                     <el-input type="number"
                                                               v-model="form.age"
-                                                              maxlength="2" />
+                                                              maxlength="2"/>
                                                 </el-form-item>
                                                 <el-form-item label="联系方式" :label-width="formLabelWidth">
                                                     <el-input type="tel"
                                                               v-model="form.phone"
-                                                              maxlength="11" />
+                                                              maxlength="11"/>
                                                 </el-form-item>
                                                 <el-form-item label="邮箱地址" :label-width="formLabelWidth">
-                                                   <el-input type="email"
-                                                             v-model="form.email"/>
+                                                    <el-input type="email"
+                                                              v-model="form.email"/>
                                                 </el-form-item>
                                             </el-form>
                                         </el-dialog>
@@ -90,9 +94,13 @@
                                         :icon="isFullscreen ? 'Exit-FullScreen' : 'FullScreen'"/>
                             </div>
                             <div class="mr-3">
-                                <el-avatar
-                                        :size="96"
-                                        src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"/>
+
+                                <!-- 头像，点击时触发 fileInput 的点击事件 -->
+                                <el-avatar :size="96" :src="form.picPath" @click="triggerFileInput"/>
+
+                                <!-- 隐藏的文件输入元素 -->
+                                <input type="file" ref="fileInput" @change="handleFileChange" style="display: none;"/>
+
                             </div>
 
                         </div>
@@ -174,12 +182,12 @@
 </template>
 
 <script setup>
-import {getCurrentInstance, onMounted, onUnmounted, reactive, ref} from "vue";
+import {getCurrentInstance, onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {serverMenus} from "../../config/route.config.js"
 import screenfull from 'screenfull'
 import {Postcard} from "@element-plus/icons";
-import { useProfileStore } from "@/stores/useProfile.js";
+import {useProfileStore} from "@/stores/useProfile.js";
 
 
 const isCollapse = ref(true)
@@ -203,6 +211,29 @@ const drawer = ref(false)
 router.afterEach((to) => {
     defaultActive.value = to.path;
 })
+
+// ----------------------------------------------头像文件
+
+
+const fileInput = ref(null);
+
+// 触发文件输入元素的点击事件
+const triggerFileInput = () => {
+    fileInput.value.click();
+};
+
+// 处理文件选择
+const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        // 使用 FileReader 来预览图片
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            form.picPath = e.target.result; // 更新头像路径为读取到的图片
+        };
+        reader.readAsDataURL(file);
+    }
+};
 
 //----------------------------------------------设置全屏-------------------------------------------
 // 是否全屏
@@ -248,19 +279,42 @@ const formLabelWidth = '140px'
 const profileStore = useProfileStore();
 
 
-const form = reactive({
-    name: '',
-    region: '',
-    date1: '',
-    date2: '',
-    delivery: false,
-    type: [],
-    resource: '',
-    desc: '',
-})
-console.log(profileStore.AllRoles)
-onMounted(() => {
+function loadForm() {
+    $http.get('/user/profile').then(res => {
+        form.username = res.data.username
+        form.sex = res.data.sex
+        form.age = res.data.age
+        form.phone = res.data.phone
+        form.email = res.data.email
+        form.picPath = res.data.picPath
+    })
+}
 
+function updateForm() {
+
+    try {
+        $http.post('/user/profile', form).then(res => {
+            loadForm()
+        })
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+const form = reactive({
+    username: '',
+    sex: '',
+    age: '',
+    phone: '',
+    email: "",
+    picPath: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
+})
+
+watch(dialogFormVisible, (newValue, oldValue) => {
+    updateForm()
+})
+onMounted(() => {
+    loadForm()
     screenfull.on('change1', change1)
 })
 // 删除侦听器
@@ -331,7 +385,8 @@ onUnmounted(() => {
           align-items: center; //垂直
           .postcard {
             margin-right: 20px;
-            .dialog{
+
+            .dialog {
               text-align: center;
             }
           }
