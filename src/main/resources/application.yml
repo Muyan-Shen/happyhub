@@ -51,3 +51,6 @@ sa-token:
   # 是否输出操作日志
   is-log: true
 
+file:
+  upload-path: file:${user.dir}/happyhub_master_web01/public/event
+

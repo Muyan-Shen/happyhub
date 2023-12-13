@@ -6,6 +6,7 @@
       <a href="/#/eventList">分类</a>
       <el-dropdown is="nameDropDown">
         <span id="username" class="nameText">
+          <el-icon style="height: 15px"><LocationInformation /></el-icon>
           {{ city }}
           <el-icon style="height: 25px">
               <CaretBottom/>
@@ -58,7 +59,7 @@
 <script setup>
 import router from "../../config/router.config.js";
 import {useProfileStore} from "../../stores/useProfile.js";
-import {UserFilled, Search, CaretBottom} from "@element-plus/icons-vue";
+import {UserFilled, Search, CaretBottom, LocationInformation} from "@element-plus/icons-vue";
 import {getCurrentInstance, ref, onMounted, reactive} from "vue";
 import axios from "axios";
 
