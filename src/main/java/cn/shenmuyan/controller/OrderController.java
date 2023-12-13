@@ -6,6 +6,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.shenmuyan.bean.*;
 import cn.shenmuyan.service.*;
+import cn.shenmuyan.vo.PaymentBeforeVO;
 import cn.shenmuyan.vo.PaymentConfirmedVO;
 import cn.shenmuyan.vo.SeatTypeVO;
 import cn.shenmuyan.vo.TicketVO;
@@ -58,20 +59,24 @@ public class OrderController {
     /**
      * 点击购买后生成一个状态挂起的订单
      *
-     * @param eventId 活动id
-     * @param price   价格
+//     * @param eventId 活动id
+//     * @param price   价格
      * @return
      */
-    @PutMapping("/beforePaid")
-    public SaResult beforePaid(@NotNull(message = "活动id不能为空") Integer eventId,
-                               @NotNull(message = "价格档位不能为空") BigDecimal price) {
-
+    @PostMapping ("/beforePaid")
+    public SaResult beforePaid(
+            @RequestBody PaymentBeforeVO paymentBeforeVO
+//            @RequestBody@NotNull(message = "活动id不能为空") Integer eventId,
+//                               @RequestBody@NotNull(message = "价格档位不能为空") BigDecimal price
+    ) {
+        System.out.println(paymentBeforeVO.getPrice());
+        System.out.println(paymentBeforeVO.getEventId());
         int userId = Integer.parseInt((String) StpUtil.getLoginId());
         Orders orders = new Orders();
         orders.setUserId(userId);
-        orders.setEventId(eventId);
+        orders.setEventId(paymentBeforeVO.getEventId());
         orders.setStatus("pending");
-        orders.setTotalPrice(price);
+        orders.setTotalPrice(paymentBeforeVO.getPrice());
         int i = orderService.addOrder(orders);
         if (i > 0) {
             Orders orders1 = orderService.findOrdersById(orders.getId());

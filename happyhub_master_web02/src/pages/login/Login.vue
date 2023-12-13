@@ -27,7 +27,7 @@ import { addServerRoutes,resetRouters,serverMenus } from "../../config/route.con
 import { reactive,getCurrentInstance } from "vue";
 import { useRouter } from "vue-router";
 import { ElLoading } from "element-plus";
-import { useProfileStore } from "@/stores/useProfile.js";
+import {useProfileStore} from "../../stores/useProfile.js";
 
 const user = reactive({
   username: "",
