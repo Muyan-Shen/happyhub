@@ -55,8 +55,8 @@
 import {reactive,onMounted,onActivated,watch,ref} from "vue";
 import {getCurrentInstance} from "vue";
 import {CirclePlus, Search} from "@element-plus/icons-vue";
-import AssociatedPermissions from "@/pages/role/AssociatedPermissions.vue";
-import Add from "@/pages/role/Add.vue";
+import AssociatedPermissions from "@/pages/roleManage/AssociatedPermissions.vue";
+import Add from "@/pages/roleManage/Add.vue";
 
 const $http = getCurrentInstance().appContext.config.globalProperties.$http;
 const roles = reactive([])

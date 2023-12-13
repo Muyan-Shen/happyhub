@@ -41,6 +41,7 @@ public class UserController {
     public Map<String, Object> list(UserWhereVO userWhereVO,
                                     @RequestParam(defaultValue = "1") int page,
                                     @RequestParam(defaultValue = "10") int limit) {
+        log.info("userWhereVO:{}", userWhereVO);
         PageHelper.startPage(page, limit);//在查询之前使用,会自动的对紧接着的第一个查询进行分页
         List<User> list = userService.findAll(userWhereVO);
         PageInfo<User> pageInfo = new PageInfo<>(list);

@@ -2,7 +2,7 @@
   <el-dialog v-model="visibleDialog" @close="$emit('update:visible',false)">
     <el-form>
       <el-form-item label="账号">
-        <el-input v-model="account.username" disabled/>
+        <el-input v-model="user.username" disabled/>
       </el-form-item>
       <el-form-item label="角色列表">
         <el-space wrap>
@@ -33,15 +33,15 @@ const emit = defineEmits(['update:visible']);
 
 const props = defineProps({
   /**
-   * @type {Object} account
-   * @property {String} account.username
-   * @property {number} account.id
-   * @property {array} account.roles
-   * @property {number} account.roles.id
-   * @property {string} account.roles.name
-   * @property {String} account.roles.code
+   * @type {Object} user
+   * @property {String} user.username
+   * @property {number} user.id
+   * @property {array} user.roles
+   * @property {number} user.roles.id
+   * @property {string} user.roles.name
+   * @property {String} user.roles.code
    */
-  account: {
+  user: {
     type: Object,
     required: true
   },
@@ -70,7 +70,7 @@ const loadRoles = () => {
     }
     // 查询当前账号已关联的角色
     // 问号达标roles存在就执行循环
-    props.account.roles?.forEach(role => {
+    props.user.roles?.forEach(role => {
       //将已关联的角色设置为选中状态
       let index = roles.findIndex(item => item.id === role.id)
       if (index !== -1) {
@@ -84,7 +84,7 @@ const onSave = () => {
   const roleIds = roles.filter(role => role.checked).map(role => role.id);
 //   发送请求，保存关联关系；
 //   直接传值（后端用requestBody接收）防止浏览器吧这个请求变成复杂请求，导致不能跨域
-  $http.post(`/account/${props.account.id}/role`, roleIds).then(res => {
+  $http.post(`/user/${props.user.id}/role`, roleIds).then(res => {
     // 关闭对话框
     ElMessage.success(({
       message: '保存成功',

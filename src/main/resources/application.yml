@@ -23,6 +23,7 @@ mybatis:
   type-aliases-package: cn.shenmuyan.bean
   configuration:
     map-underscore-to-camel-case: true
+  type-handlers-package: cn.shenmuyan.typeHandler
 
 logging:
   level:

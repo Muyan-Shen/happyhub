@@ -1,147 +1,197 @@
 <template>
-  <div class="layout">
-    <el-container>
-      <el-header>
-        <i class="iconfont icon-a-zu44"/>
-        <span>权限管理系统</span>
-      </el-header>
-      <el-row>
-        <el-col :span="24">
-          <div class="col">
-            <div class="button">
-              <el-button
-                  class="expandButton"
-                  :style="expandButtonStyle"
-                  @click="change">
-                <el-icon v-if="isCollapse">
-                  <DArrowRight />
-                </el-icon>
-                <el-icon v-else>
-                  <DArrowLeft />
-                </el-icon>
-              </el-button>
-            </div>
+    <div class="layout">
+        <el-container>
+            <el-header>
+                <i class="iconfont icon-a-zu44"/>
+                <span>权限管理系统</span>
+            </el-header>
+            <el-row>
+                <el-col :span="24">
+                    <div class="col">
+                        <div class="button">
+                            <el-button
+                                    class="expandButton"
+                                    :style="expandButtonStyle"
+                                    @click="change">
+                                <el-icon v-if="isCollapse">
+                                    <DArrowRight/>
+                                </el-icon>
+                                <el-icon v-else>
+                                    <DArrowLeft/>
+                                </el-icon>
+                            </el-button>
+                        </div>
 
-            <div class="items-center">
-              <div class="postcard">
-                <el-button type="primary"
-                           :circle="true"
-                           @click="drawer = true"
-                           :icon="Postcard">
+                        <div class="items-center">
+                            <div class="postcard">
+                                <el-button type="primary"
+                                           :circle="true"
+                                           @click="drawer = true"
+                                           :icon="Postcard">
 
-                </el-button>
-                <el-drawer v-model="drawer"
-                           title="I am the title"
-                           :with-header="false">
-                  <span>Hi there!</span>
-                </el-drawer>
-              </div>
-              <div class="screenfull">
-                <el-button
-                    @click="handleFullScreen"
-                    :circle="true"
-                    :icon="isFullscreen ? 'Exit-FullScreen' : 'FullScreen'"/>
-              </div>
-              <div class="mr-3">
-                <el-avatar
-                    :size="96"
-                    src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"/>
-              </div>
+                                </el-button>
+                                <el-drawer v-model="drawer"
+                                           :with-header="false">
+                                    <el-descriptions title="个人信息"
+                                                     :size='large'
+                                                     :column="1">
+                                        <el-descriptions-item label="用户名">kooriookami</el-descriptions-item>
+                                        <el-descriptions-item label="性别">男</el-descriptions-item>
+                                        <el-descriptions-item label="年龄">22</el-descriptions-item>
+                                        <el-descriptions-item label="联系方式">18100000000</el-descriptions-item>
+                                        <el-descriptions-item label="邮箱地址">504142151@qq.com</el-descriptions-item>
+                                        <el-descriptions-item label="身份">
+                                            <el-tag size="small">Admin</el-tag>
+                                        </el-descriptions-item>
+                                    </el-descriptions>
+                                    <div class="dialog">
+                                        <el-button text @click="dialogFormVisible = true">
+                                            修改信息
+                                        </el-button>
+                                        <el-dialog v-model="dialogFormVisible" title="信息修改">
+                                            <el-form :model="form">
+                                                <el-form-item label="用户名"
+                                                              :label-width="formLabelWidth">
+                                                    <el-input v-model="form.username"
+                                                              autocomplete="off"/>
+                                                </el-form-item>
+                                                <el-form-item label="性别"
+                                                              :label-width="formLabelWidth">
+                                                    <el-select v-model="form.sex"
+                                                               placeholder="Please select a zone">
+                                                        <el-option label="男" value="shanghai"/>
+                                                        <el-option label="女" value="beijing"/>
+                                                    </el-select>
+                                                </el-form-item>
+                                                <el-form-item label="年龄"
+                                                              :label-width="formLabelWidth">
+                                                    <el-input type="number"
+                                                              v-model="form.age"
+                                                              maxlength="2" />
+                                                </el-form-item>
+                                                <el-form-item label="联系方式" :label-width="formLabelWidth">
+                                                    <el-input type="tel"
+                                                              v-model="form.phone"
+                                                              maxlength="11" />
+                                                </el-form-item>
+                                                <el-form-item label="邮箱地址" :label-width="formLabelWidth">
+                                                   <el-input type="email"
+                                                             v-model="form.email"/>
+                                                </el-form-item>
+                                            </el-form>
+                                        </el-dialog>
+                                    </div>
+                                </el-drawer>
+                            </div>
+                            <div class="screenfull">
+                                <el-button
+                                        @click="handleFullScreen"
+                                        :circle="true"
+                                        :icon="isFullscreen ? 'Exit-FullScreen' : 'FullScreen'"/>
+                            </div>
+                            <div class="mr-3">
+                                <el-avatar
+                                        :size="96"
+                                        src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"/>
+                            </div>
 
-            </div>
+                        </div>
 
-            <!--                        <div class="broad">-->
-            <!--                            <el-breadcrumb class="breadcrumb" separator="/">-->
-            <!--                                <transition-group name="breadcrumb">-->
-            <!--                                    <el-breadcrumb-item-->
-            <!--                                            v-for="(item, index) in breadcrumbData"-->
-            <!--                                            :key="item.path"-->
-            <!--                                    >-->
+                        <!--                        <div class="broad">-->
+                        <!--                            <el-breadcrumb class="breadcrumb" separator="/">-->
+                        <!--                                <transition-group name="breadcrumb">-->
+                        <!--                                    <el-breadcrumb-item-->
+                        <!--                                            v-for="(item, index) in breadcrumbData"-->
+                        <!--                                            :key="item.path"-->
+                        <!--                                    >-->
 
-            <!--                                        &lt;!&ndash; 不可点击项 &ndash;&gt;-->
-            <!--                                        <span v-if="index === breadcrumbData.length - 1"-->
-            <!--                                              class="no-redirect">{{ item.meta.title }}</span>-->
-            <!--                                        &lt;!&ndash; 可点击项 &ndash;&gt;-->
-            <!--                                        <a v-else class="redirect"-->
-            <!--                                           @click.prevent="onLinkClick(item)">{{ item.meta.title }}</a>-->
-            <!--                                    </el-breadcrumb-item>-->
-            <!--                                </transition-group>-->
-            <!--                            </el-breadcrumb>-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-          </div>
-        </el-col>
-      </el-row>
-      <el-container>
-        <el-aside>
-          <el-menu
-              active-text-color="#ffd04b"
-              background-color="#545c64"
-              class="el-menu-vertical-demo"
-              :collapse="isCollapse"
-              :router="true"
-              :unique-opened="true"
-              :collapse-transition="true"
-              text-color="#fff"
-          >
-            <template v-for="m1 of serverMenus">
-              <el-sub-menu v-if="m1.children" :key="m1.id" :index="m1.id">
-                <template #title>
-                  <el-icon>
-                    <component :is="m1.icon"/>
-                  </el-icon>
-                  <span>
+                        <!--                                        &lt;!&ndash; 不可点击项 &ndash;&gt;-->
+                        <!--                                        <span v-if="index === breadcrumbData.length - 1"-->
+                        <!--                                              class="no-redirect">{{ item.meta.title }}</span>-->
+                        <!--                                        &lt;!&ndash; 可点击项 &ndash;&gt;-->
+                        <!--                                        <a v-else class="redirect"-->
+                        <!--                                           @click.prevent="onLinkClick(item)">{{ item.meta.title }}</a>-->
+                        <!--                                    </el-breadcrumb-item>-->
+                        <!--                                </transition-group>-->
+                        <!--                            </el-breadcrumb>-->
+                        <!--                        </div>-->
+                        <!--                    </div>-->
+                    </div>
+                </el-col>
+            </el-row>
+            <el-container>
+                <el-aside>
+                    <el-menu
+                            active-text-color="#ffd04b"
+                            background-color="#545c64"
+                            class="el-menu-vertical-demo"
+                            :collapse="isCollapse"
+                            :router="true"
+                            :unique-opened="true"
+                            :collapse-transition="true"
+                            text-color="#fff"
+                    >
+                        <template v-for="m1 of serverMenus">
+                            <el-sub-menu v-if="m1.children" :key="m1.id" :index="m1.id">
+                                <template #title>
+                                    <el-icon>
+                                        <component :is="m1.icon"/>
+                                    </el-icon>
+                                    <span>
                     {{ m1.title ? m1.title : "" }}
                   </span>
-                </template>
-                <el-menu-item v-for="m2 of m1.children" :key="m2.id" :index="m2.routePath">
-                  <template #title>
-                    <el-icon>
-                      <component :is="m2.icon"/>
-                    </el-icon>
-                    <span>
+                                </template>
+                                <el-menu-item v-for="m2 of m1.children" :key="m2.id" :index="m2.routePath">
+                                    <template #title>
+                                        <el-icon>
+                                            <component :is="m2.icon"/>
+                                        </el-icon>
+                                        <span>
                       {{ m2.title ? m2.title : "" }}
                     </span>
-                  </template>
-                </el-menu-item>
-              </el-sub-menu>
-              <el-menu-item v-else :key="m1.id" :index="m1.routePath">
-                <template #title>
-                  <el-icon>
-                    <component :is="m1.icon"/>
-                  </el-icon>
-                  <span>
+                                    </template>
+                                </el-menu-item>
+                            </el-sub-menu>
+                            <el-menu-item v-else :key="m1.id" :index="m1.routePath">
+                                <template #title>
+                                    <el-icon>
+                                        <component :is="m1.icon"/>
+                                    </el-icon>
+                                    <span>
                     {{ m1.title ? m1.title : "" }}
                   </span>
-                </template>
-              </el-menu-item>
-            </template>
-          </el-menu>
-        </el-aside>
-        <el-main>
-          <router-view/>
-        </el-main>
-      </el-container>
-    </el-container>
-  </div>
+                                </template>
+                            </el-menu-item>
+                        </template>
+                    </el-menu>
+                </el-aside>
+                <el-main>
+                    <router-view/>
+                </el-main>
+            </el-container>
+        </el-container>
+    </div>
 </template>
 
 <script setup>
-import {onMounted, onUnmounted, ref} from "vue";
+import {getCurrentInstance, onMounted, onUnmounted, reactive, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {serverMenus} from "../../config/route.config.js"
 import screenfull from 'screenfull'
 import {Postcard} from "@element-plus/icons";
+import { useProfileStore } from "@/stores/useProfile.js";
+
 
 const isCollapse = ref(true)
 const expandButtonStyle = ref('')
+
 function change() {
-  isCollapse.value = !isCollapse.value;
-  if (!isCollapse.value){
-    expandButtonStyle.value = "padding-left: 120px;padding-right:30px"
-  }else {
-    expandButtonStyle.value = "padding-left: 15px"
-  }
+    isCollapse.value = !isCollapse.value;
+    if (!isCollapse.value) {
+        expandButtonStyle.value = "padding-left: 120px;padding-right:30px"
+    } else {
+        expandButtonStyle.value = "padding-left: 15px"
+    }
 }
 
 const route = useRoute();
@@ -151,15 +201,16 @@ const drawer = ref(false)
 
 
 router.afterEach((to) => {
-  defaultActive.value = to.path;
+    defaultActive.value = to.path;
 })
 
-
+//----------------------------------------------设置全屏-------------------------------------------
 // 是否全屏
 const isFullscreen = ref(false)
 
 function handleFullScreen() {
-  screenfull.toggle()
+
+    screenfull.toggle()
 }
 
 // // 生成数组数据
@@ -187,14 +238,34 @@ function handleFullScreen() {
 //     router.push(item.path)
 // }
 const change1 = () => {
-  isFullscreen.value = screenfull.isFullscreen
+    isFullscreen.value = screenfull.isFullscreen
 }
+
+//----------------------------------------------------------对话框
+const $http = getCurrentInstance().appContext.config.globalProperties.$http;
+const dialogFormVisible = ref(false)
+const formLabelWidth = '140px'
+const profileStore = useProfileStore();
+
+
+const form = reactive({
+    name: '',
+    region: '',
+    date1: '',
+    date2: '',
+    delivery: false,
+    type: [],
+    resource: '',
+    desc: '',
+})
+console.log(profileStore.AllRoles)
 onMounted(() => {
-  screenfull.on('change1', change1)
+
+    screenfull.on('change1', change1)
 })
 // 删除侦听器
 onUnmounted(() => {
-  screenfull.off('change1', change1)
+    screenfull.off('change1', change1)
 })
 </script>
 
@@ -240,6 +311,7 @@ onUnmounted(() => {
 
         .button {
           text-align: center;
+
           .expandButton {
             border: none;
             font-size: 30px;
@@ -259,6 +331,9 @@ onUnmounted(() => {
           align-items: center; //垂直
           .postcard {
             margin-right: 20px;
+            .dialog{
+              text-align: center;
+            }
           }
 
           .screenfull {
@@ -267,7 +342,8 @@ onUnmounted(() => {
 
           .mr-3 {
             margin-right: 20px;
-            .el-avatar{
+
+            .el-avatar {
               border: #303133 3px solid;
             }
           }
