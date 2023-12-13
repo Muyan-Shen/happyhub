@@ -219,7 +219,8 @@ const fileInput = ref(null);
 
 // 触发文件输入元素的点击事件
 const triggerFileInput = () => {
-    fileInput.value.click();
+    fileInput.value.click(
+    );
 };
 
 // 处理文件选择
@@ -238,7 +239,7 @@ const handleFileChange = async (event) => {
             });
 
             // 更新图片路径
-            form.value.picPath = response.data.path;
+            form.picPath = response.url
         } catch (error) {
             console.error('上传失败', error);
         }
