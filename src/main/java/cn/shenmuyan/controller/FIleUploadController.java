@@ -29,7 +29,7 @@ public class FIleUploadController {
         //保存上传的文件
         Path path = fileSaveComponent.getUploadPath().getFile().toPath();
         file.transferTo(path.resolve(file.getOriginalFilename()));
-        Path foregroundPath = Paths.get("../../../../../../../happyhub_master_web02/public/event");
+        Path foregroundPath = Paths.get("./happyhub_master_web02/public/event");
         file.transferTo(foregroundPath.resolve(file.getOriginalFilename()));
         return SaResult.ok().set("url","/public/event/"+file.getOriginalFilename());
     }

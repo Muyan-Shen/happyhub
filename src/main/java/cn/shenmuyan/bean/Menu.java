@@ -1,6 +1,5 @@
 package cn.shenmuyan.bean;
 
-import jdk.jfr.DataAmount;
 import lombok.Data;
 
 import java.util.List;
