@@ -246,14 +246,13 @@ const scrollToLine = ()=> {
 
 
 function change() {
-  console.log(price)
+
 }
 
 const eventId = route.params.eventId;
 const $http = getCurrentInstance().appContext.config.globalProperties.$http
 
 const getEventInfo = (eventId) => {
-  console.log(eventId);
   $http.get('/event/' + eventId)
       .then(res => {
         gears.value = res.gearPrices;
@@ -268,7 +267,8 @@ onMounted(
       getEventInfo(eventId);
     }
 )
-
+const orderId = ref({
+});
 
 const reBack= () => {
    router.push({
@@ -281,14 +281,13 @@ const getOrder = (eventId, price) => {
     price.value=''
     return
   }
-  $http.post('/pay/beforePaid/', {
-    "eventId": eventId, "price": price.value
-  }).then(res => {
-    ElMessage(res.msg);
-    router.push({
-      name:"eventOrderConfirm",
-      params:res.data
-    })
+  ElMessage("发起订单");
+  router.push({
+    name:"eventOrderCreate",
+    params:{
+      "eventId":eventId,
+      "price": price.value
+    }
   })
 }
 </script>
