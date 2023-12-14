@@ -42,7 +42,12 @@ const routes = [
         component:() => import('../pages/event/EventInfo.vue'),
     },
     {
-        path:'/eventOrderConfirm/?',
+        path:'/eventOrderCreate/:eventId?/:price?',
+        name:'eventOrderCreate',
+        component:() => import('../pages/event/EventOrderCreate.vue'),
+    },
+    {
+        path:'/eventOrderConfirm/:orderId',
         name:'eventOrderConfirm',
         component:() => import('../pages/event/eventOrderConfirm.vue'),
     },

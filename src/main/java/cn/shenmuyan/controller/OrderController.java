@@ -91,8 +91,8 @@ public class OrderController {
      * @param orderId 订单id
      * @return
      */
-    @GetMapping("/orderCancel")
-    public SaResult cancelOrders(@NotNull(message = "订单id不能为空") Integer orderId) {
+    @GetMapping("/orderCancel/{orderId}")
+    public SaResult cancelOrders(@PathVariable("orderId") @NotNull(message = "订单id不能为空") Integer orderId) {
         StpUtil.checkLogin();
         Orders order = new Orders();
         order.setId(orderId);
@@ -110,8 +110,8 @@ public class OrderController {
      * @param ordersId 订单id
      * @return
      */
-    @GetMapping("/orderConfirmed")
-    public SaResult confirmedOrders(@NotNull(message = "订单id不能为空") Integer ordersId) {
+    @GetMapping("/orderConfirmed/{orderId}")
+    public SaResult confirmedOrders(@PathVariable("orderId") @NotNull(message = "订单id不能为空") Integer ordersId) {
         StpUtil.checkLogin();
         Orders order = new Orders();
         order.setId(ordersId);
