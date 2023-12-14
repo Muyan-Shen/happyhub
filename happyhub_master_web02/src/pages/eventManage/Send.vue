@@ -11,11 +11,11 @@
                :model="eventInfo"
                :rules="eventRules"
                @submit="send($event,$refs.eventForm)">
-        <el-form-item label="活动标题">
+        <el-form-item label="活动标题" prop="title">
           <el-input v-model="eventInfo.title" placeholder="请输入标题">
           </el-input>
         </el-form-item>
-        <el-form-item label="举办地点">
+        <el-form-item label="举办地点" prop="location">
           <el-select v-model="eventInfo.location"
                      filterable
                      allow-create
@@ -27,7 +27,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="开始时间">
+        <el-form-item label="开始时间" prop="startTime">
           <el-date-picker v-model="eventInfo.startTime"
                           type="datetime"
                           format="YYYY年MM月DD日 HH:mm"
@@ -35,7 +35,7 @@
                           placeholder="开始时间">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="结束时间">
+        <el-form-item label="结束时间" prop="endTime">
           <el-date-picker v-model="eventInfo.endTime"
                           type="datetime"
                           format="YYYY年MM月DD日 HH:mm"
@@ -43,11 +43,10 @@
                           placeholder="结束时间">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="座位最高档次">
+        <el-form-item label="座位最高档次" prop="topGear">
           <el-input-number v-model="eventInfo.topGear"
                            :min="1"
                            :max="5">
-
           </el-input-number>
         </el-form-item>
         <el-form-item>
@@ -64,6 +63,53 @@
         </textarea>
       </div>
     </div>
+<!--    创建座位弹窗-->
+    <div class="dialog">
+      <el-dialog
+          v-model="dialogVisible"
+          width="30%"
+          title="Tips"
+          :show-close="false"
+          :close-on-click-modal="false"
+          @open="getSeatInfo"
+      >
+        <template #header>
+          <a>座位创建</a>
+        </template>
+        <el-form ref="seatForm"
+                 :model="seatInfo"
+                 :rules="seatRules"
+                 @submit="generateSeat($event,$refs.eventForm)">
+          <el-form-item label="座位分为多少块">
+            <el-input-number v-model="seatInfo.directionNum"
+                             :min="1"></el-input-number>
+          </el-form-item>
+          <el-form-item label="座位方位名称">
+            <el-input v-for="(num,index) of seatInfo.directionNum"
+                      :key="seatInfo.directionNum"
+                      v-model="seatInfo.direction[index]"
+                      placeholder="方位名称"/>
+          </el-form-item>
+          <el-form-item label="每个档次价格">
+            <el-input v-for="(gear,index) in eventInfo.topGear"
+                      v-model="seatInfo.gearPrice[index]"
+                      :placeholder="index+`档价格`"/>
+          </el-form-item>
+          <el-form-item label="每个档次座位数">
+            <el-input v-for="(gear,index) in eventInfo.topGear"
+                      v-model="seatInfo.gearSum[index]"
+                      :placeholder="index+`档座位数`"/>
+          </el-form-item>
+          <el-form-item label="每个块的最大列数" prop="direction">
+            <el-input-number v-model="seatInfo.maxCol"
+                             :min="1"></el-input-number>
+          </el-form-item>
+          <el-form-item>
+            <el-button native-type="submit">生成</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -77,6 +123,16 @@ import {ElMessage} from "element-plus";
 
 const $http = getCurrentInstance().appContext.config.globalProperties.$http
 const profileStore = useProfileStore();
+const dialogVisible = ref(false)
+const seatInfo = reactive({
+  eventId:-1,
+  topGear:-1,
+  directionNum:1,
+  direction:[],
+  maxCol:-1,
+  gearSum:[],
+  gearPrice:[]
+})
 const eventInfo = reactive({
   title: "",
   description: "",
@@ -103,32 +159,33 @@ const eventId = ref(-1);
 const fileInput = ref()
 const send = (e, form) => {
   e.preventDefault();
-  form.validate((valid) => {
-    if (valid) {
-      eventInfo.description = jodit.value.value
-      console.log(eventInfo)
-      $http.post('event/create', eventInfo).then(resp => {
-        console.log(resp)
-        if (resp.code === 200) {
-          eventId.value = resp.eventId;
-          ElMessage.success({
-            message: "创建成功",
-            duration: 750
-          })
-        } else {
-          ElMessage.error({
-            message: "创建失败，请按要求填写表单",
-            duration: 750
-          })
-        }
-      })
-    } else {
-      ElMessage.error({
-        message: "创建失败，请按要求填写表单",
-        duration: 1000
-      })
-    }
-  })
+  // form.validate((valid) => {
+  //   if (valid) {
+  //     eventInfo.description = jodit.value.value
+  //     console.log(eventInfo)
+  //     $http.post('event/create', eventInfo).then(resp => {
+  //       console.log(resp)
+  //       if (resp.code === 200) {
+  //         eventId.value = resp.eventId;
+  //         ElMessage.success({
+  //           message: "创建成功",
+  //           duration: 750
+  //         })
+  //       } else {
+  //         ElMessage.error({
+  //           message: "创建失败，请按要求填写表单",
+  //           duration: 750
+  //         })
+  //       }
+  //     })
+  //   } else {
+  //     ElMessage.error({
+  //       message: "创建失败，请按要求填写表单",
+  //       duration: 1000
+  //     })
+  //   }
+  // })
+  dialogVisible.value = true;
 }
 const triggerFileInput = ()=>{
   fileInput.value.click();
@@ -143,6 +200,18 @@ const handleFileChange = (event)=>{
       eventInfo.photoUrl = resp.url
     });
   }
+}
+const getSeatInfo = ()=>{
+  if (eventId >0){
+
+  }
+  seatInfo.eventId = eventId.value;
+  seatInfo.topGear = eventInfo.topGear;
+  seatInfo.directionNum = new Array(eventInfo.topGear).fill(0)
+}
+const generateSeat = (e,form)=>{
+  e.preventDefault();
+  console.log(seatInfo)
 }
 onMounted(() => {
   nextTick((() => {
@@ -195,8 +264,24 @@ onMounted(() => {
 
   .right {
     width: 50%;
-
     .joditArea {
+    }
+  }
+  .dialog{
+    .el-dialog{
+      .el-form{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-start;
+        .el-form-item{
+          .el-input{
+            width: 90px;
+            margin-bottom: 4px;
+            margin-right: 4px;
+          }
+        }
+      }
     }
   }
 }
