@@ -61,6 +61,7 @@
                 <if test="picPath != null">#{picPath,jdbcType=VARCHAR},</if>
         </trim>
     </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="cn.shenmuyan.bean.UserInformation">
         update user_information
         <set>

@@ -26,6 +26,4 @@ public interface UserInformationMapper {
 
     @Transactional
     boolean updateByUserId(UserInformation record);
-
-
 }

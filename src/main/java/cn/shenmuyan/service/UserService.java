@@ -31,10 +31,14 @@ public interface UserService {
 
     void add(UserInsertVO userInsertVO);
 
+    Integer add2(UserInsertVO userInsertVO);
+
     void associationRole(int loginIdAsInt, Integer[] roleIds);
 
     UserInformation findUserInformationByLoginId(Integer loginId);
 
 
     boolean updateInformationByUserId(Integer userId, UserInformationVO userInformation);
+
+    boolean updateUser(User user);
 }

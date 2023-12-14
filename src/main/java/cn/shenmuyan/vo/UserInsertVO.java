@@ -23,4 +23,5 @@ public class UserInsertVO {
     @Length(min = 1,max = 16,message = "密码长度必须在1-16位之间")
     @Pattern(regexp = "^[a-zA-Z0-9]{1,16}$",message = "密码必须由1-16位数字字母下划线")
     private String passwordHash;
+    private String email;
 }

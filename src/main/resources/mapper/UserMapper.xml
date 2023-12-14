@@ -123,6 +123,9 @@
             <if test="updatedAt != null">
                 updated_at = #{updatedAt,jdbcType=TIMESTAMP},
             </if>
+            <if test="photoUrl != null">
+                photo_url = #{photoUrl,jdbcType=OTHER},
+            </if>
             <if test="isDelete != null">
                 is_delete = #{isDelete,jdbcType=OTHER},
             </if>

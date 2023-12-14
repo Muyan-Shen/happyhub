@@ -3,7 +3,6 @@ package cn.shenmuyan.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
-import cn.shenmuyan.bean.Orders;
 import cn.shenmuyan.bean.User;
 import cn.shenmuyan.bean.UserInformation;
 import cn.shenmuyan.service.UserService;
@@ -17,7 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,10 +57,11 @@ public class UserController {
     }
 
     //关联角色
-    @PostMapping("/role")
+    @PostMapping("/{userId}/role")
     @SaCheckPermission(value = "account::role", orRole = "admin")
-    public SaResult role(@RequestParam Integer[] roleIds) {
-        userService.associationRole(StpUtil.getLoginIdAsInt(), roleIds);
+    public SaResult role(@PathVariable String userId,@RequestBody Integer[] roleIds) {
+        System.out.println(userId+ Arrays.toString(roleIds));
+        userService.associationRole(Integer.parseInt(userId), roleIds);
         return SaResult.ok();
     }
 
@@ -146,7 +146,12 @@ public class UserController {
         if (user != null){
             return SaResult.error().setCode(400).setMsg("用户已存在");
         }
-        userService.add(userInsertVO);
-        return SaResult.ok().setMsg("注册成功");
+        Integer integer = userService.add2(userInsertVO);
+        if(integer==-1){
+            return SaResult.error().setCode(400).setMsg("用户id查询失败");
+        }
+        HashMap<String,Integer> userId = new HashMap<>();
+        userId.put("userId",integer);
+        return SaResult.ok().setMsg("success").setData(userId);
     }
 }
