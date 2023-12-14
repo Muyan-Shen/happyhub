@@ -71,6 +71,18 @@ public class UserServiceImpl implements UserService {
             userRoleMappingMapper.insertBatch(user2.getId(),new Integer[]{1002});
         }
     }
+    @Override
+    public Integer add2(UserInsertVO user) {
+        //将UserInsertVO对象中的属性值拷贝到User对象中
+        User user1 = BeanUtil.copyProperties(user, User.class);
+        user1.setPasswordHash(MD5.create().digestHex(user1.getPasswordHash()));
+        int i = userMapper.insertSelective(user1);
+        if (i>0){
+            User user2 = userMapper.selectByUsernameAndPasswordHash(user1.getUsername(), user1.getPasswordHash());
+            return user2.getId();
+        }
+        return -1;
+    }
 
     @Override
     @Transactional  //开启事务
@@ -102,5 +114,13 @@ public class UserServiceImpl implements UserService {
         UserInformation userInformation = BeanUtil.copyProperties(userInformationVO, UserInformation.class);
         userInformation.setUserId(userId);
         return userInformationMapper.updateByUserId(userInformation);
+    }
+
+    /**
+     * @param userInformation
+     */
+    @Override
+    public boolean updateUser(User user) {
+        return userMapper.updateByPrimaryKeySelective(user);
     }
 }

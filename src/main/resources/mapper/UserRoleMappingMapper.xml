@@ -32,7 +32,7 @@
     </delete>
     <delete id="deleteByUserId">
         delete from user_role_mapping
-        where =#{accountId,jdbcType=INTEGER}
+        where user_id =#{userId,jdbcType=INTEGER}
     </delete>
     <insert id="insert">
         insert into user_role_mapping
@@ -53,7 +53,7 @@
     <insert id="insertBatch">
         insert into user_role_mapping ( user_id,role_id) values
         <foreach collection="roleIds" item="roleId" separator=",">
-            (#{accountId,jdbcType=INTEGER},(#{roleId,jdbcType=INTEGER}))
+            (#{userId,jdbcType=INTEGER},(#{roleId,jdbcType=INTEGER}))
         </foreach>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="cn.shenmuyan.bean.UserRoleMapping">

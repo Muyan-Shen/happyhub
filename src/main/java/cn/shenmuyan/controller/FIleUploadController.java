@@ -2,6 +2,7 @@ package cn.shenmuyan.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.util.SaResult;
+import cn.shenmuyan.bean.User;
 import cn.shenmuyan.bean.UserInformation;
 import cn.shenmuyan.config.FileSaveComponent;
 import cn.shenmuyan.service.UserService;
@@ -40,15 +41,21 @@ public class FIleUploadController {
     }
     @PostMapping("/upload-avatar")
     //@SaCheckPermission(value = "upload::file",orRole = "admin")
-    public SaResult uploadAvatar(@RequestParam("avatar") MultipartFile file) throws IOException {
+    public SaResult uploadAvatar(@RequestParam("avatar") MultipartFile file,@RequestParam("userId") Integer userId) throws IOException {
+
         //保存上传的文件
         System.out.println(file.getOriginalFilename());
         Path path = Paths.get("./happyhub_master_web01/public/user");
         file.transferTo(path.resolve(file.getOriginalFilename()));
         Path foregroundPath = Paths.get("./happyhub_master_web02/public/user");
         file.transferTo(foregroundPath.resolve(file.getOriginalFilename()));
-        UserInformation userInformation = new UserInformation();
-        userInformation.setPicPath("/user/"+file.getOriginalFilename());
-        return SaResult.ok().set("url","/user/"+file.getOriginalFilename());
+        User user = new User();
+        user.setPhotoUrl("/user/"+file.getOriginalFilename());
+        user.setId(userId);
+        boolean b = userService.updateUser(user);
+        if(b){
+            return SaResult.ok().set("url","/user/"+file.getOriginalFilename()).setMsg("头像上传成功");
+        }
+        return SaResult.error("头像上传失败");
     }
 }
