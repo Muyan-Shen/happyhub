@@ -34,11 +34,9 @@
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.shenmuyan.bean.Orders" useGeneratedKeys="true">
         insert into orders
         ( id,user_id,event_id
-        ,status,total_price,create_at
-        ,updated_at)
+        ,status,total_price)
         values (#{id,jdbcType=INTEGER},#{userId,jdbcType=INTEGER},#{eventId,jdbcType=INTEGER}
-        ,#{status,jdbcType=OTHER},#{totalPrice,jdbcType=DECIMAL},#{createAt,jdbcType=TIMESTAMP}
-        ,#{updatedAt,jdbcType=TIMESTAMP})
+        ,#{status,jdbcType=OTHER},#{totalPrice,jdbcType=DECIMAL})
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.shenmuyan.bean.Orders" useGeneratedKeys="true">
         insert into orders
