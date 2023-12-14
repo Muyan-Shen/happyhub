@@ -65,7 +65,6 @@ public class EventServiceImpl implements EventService {
         if (i>0){
             EventWhereVO whereVO = new EventWhereVO();
             whereVO.setTitle(vo.getTitle());
-            whereVO.setStartTime(new LocalDateTime[]{vo.getStartTime(),vo.getEndTime()});
             return findAll(whereVO).get(0).getId();
         }
         return -1;

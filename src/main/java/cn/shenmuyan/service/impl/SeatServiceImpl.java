@@ -25,9 +25,6 @@ public class SeatServiceImpl implements cn.shenmuyan.service.SeatService {
 
     @Override
     public void setSeat(int eventId, int topGear, String direction, int maxCol, int[] gearSum, BigDecimal[] gearPrice) {
-        if (getLastSeatNum(eventId, -1) > 0) {
-            throw new SeatAlreadyExistedException();
-        }
         List<Seats> seats = new ArrayList<>();
         int sum = Arrays.stream(gearSum).sum();
         int maxRow = ((sum % maxCol) == 0) ? sum / maxCol : sum / maxCol + 1;
@@ -49,9 +46,12 @@ public class SeatServiceImpl implements cn.shenmuyan.service.SeatService {
                         break;
                     }
                 }
-                seats.add(seat);
+                if (seat.getGears()!=null){
+                    seats.add(seat);
+                }
             }
         }
+        System.out.println(seats);
         seatsMapper.insertSeats(seats);
     }
 
