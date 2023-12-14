@@ -64,13 +64,14 @@ public class EventController {
     }
 
     /**
-     * 获取活动详情（档位未显示）
+     * 获取活动详情
      *
      * @param eventId 活动id
      * @return
      */
-    @GetMapping("/eventId")
-    public SaResult getEventById(Integer eventId) {
+    @GetMapping("/{eventId}")
+    public SaResult getEventById(@PathVariable Integer eventId) {
+        System.out.println(eventId);
         Events event = eventService.findById(eventId);
         if (event == null) {
             return SaResult.error("获取失败");
@@ -80,7 +81,8 @@ public class EventController {
             return SaResult.error("没有该活动组织者");
         }
         event.setOrganizerUsername(organizerUsername);
-        return SaResult.ok().setData(event);
+        BigDecimal[] gearPrices = seatService.getGearPrices(eventId);
+        return SaResult.ok().setData(event).set("gearPrices",gearPrices);
     }
 
     /**

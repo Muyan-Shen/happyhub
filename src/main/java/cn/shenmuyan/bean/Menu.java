@@ -1,5 +1,6 @@
 package cn.shenmuyan.bean;
 
+
 import lombok.Data;
 
 import java.util.List;

@@ -69,7 +69,8 @@ export default {
             get,
             post,
             put,
-            del
+            del,
+            config:http.defaults
         }
     }
 }

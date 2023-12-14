@@ -42,6 +42,11 @@ const routes = [
         component:() => import('../pages/event/EventInfo.vue'),
     },
     {
+        path:'/eventOrderConfirm/?',
+        name:'eventOrderConfirm',
+        component:() => import('../pages/event/eventOrderConfirm.vue'),
+    },
+    {
         path:'/:patchMatch(.*)*',
         name:'404',
         component:() => import('../pages/errors/404.vue')
