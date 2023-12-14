@@ -48,6 +48,11 @@ public class EventInsertVO {
     @NotNull(message = "组织者id不能为空")
     private Integer organizerId;
     /**
+     * 图片url
+     */
+    @NotNull(message = "图片url不能为空")
+    private String photoUrl;
+    /**
      * 最高档位
      */
     @NotNull(message = "最高档位不能为空")

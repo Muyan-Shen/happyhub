@@ -44,7 +44,6 @@ public class FIleUploadController {
     public SaResult uploadAvatar(@RequestParam("avatar") MultipartFile file,@RequestParam("userId") Integer userId) throws IOException {
 
         //保存上传的文件
-        System.out.println(file.getOriginalFilename());
         Path path = Paths.get("./happyhub_master_web01/public/user");
         file.transferTo(path.resolve(file.getOriginalFilename()));
         Path foregroundPath = Paths.get("./happyhub_master_web02/public/user");
@@ -57,5 +56,15 @@ public class FIleUploadController {
             return SaResult.ok().set("url","/user/"+file.getOriginalFilename()).setMsg("头像上传成功");
         }
         return SaResult.error("头像上传失败");
+    }
+    @PostMapping("/upload-event")
+    //@SaCheckPermission(value = "upload::file",orRole = "admin")
+    public SaResult uploadEvent(@RequestParam("photo") MultipartFile file) throws IOException {
+        System.out.println(file.getOriginalFilename());
+        Path path = Paths.get("./happyhub_master_web01/public/event");
+        file.transferTo(path.resolve(file.getOriginalFilename()));
+        Path foregroundPath = Paths.get("./happyhub_master_web02/public/event");
+        file.transferTo(foregroundPath.resolve(file.getOriginalFilename()));
+        return SaResult.ok().set("url","/event/"+file.getOriginalFilename()).setMsg("图片上传成功");
     }
 }

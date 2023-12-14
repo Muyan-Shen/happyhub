@@ -16,6 +16,7 @@ import cn.shenmuyan.vo.UserWhereVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -42,7 +43,6 @@ public class EventServiceImpl implements EventService {
                 eventWhereVO.setOrganizerId(ids);
             }
         }
-        System.out.println(eventWhereVO);
         List<Events> events = eventsMapper.selectAll(eventWhereVO);
         return events;
     }
@@ -58,10 +58,17 @@ public class EventServiceImpl implements EventService {
 
     }
 
-    @Override
-    public void addEvent(EventInsertVO vo) {
+
+    public Integer addEvent(EventInsertVO vo) {
         Events events = BeanUtil.copyProperties(vo, Events.class);
-        eventsMapper.insertSelective(events);
+        int i = eventsMapper.insertSelective(events);
+        if (i>0){
+            EventWhereVO whereVO = new EventWhereVO();
+            whereVO.setTitle(vo.getTitle());
+            whereVO.setStartTime(new LocalDateTime[]{vo.getStartTime(),vo.getEndTime()});
+            return findAll(whereVO).get(0).getId();
+        }
+        return -1;
     }
 
     @Override

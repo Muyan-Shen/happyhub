@@ -111,9 +111,8 @@
                 <if test="startTime != null">start_time,</if>
                 <if test="endTime != null">end_time,</if>
                 <if test="organizerId != null">organizer_id,</if>
-                <if test="topGear != null">photo_url,</if>
+                <if test="topGear != null">top_gear,</if>
                 <if test="photoUrl != null">photo_url,</if>
-                <if test="status != null">status,</if>
                 <if test="statusDescription != null">status_description,</if>
                 <if test="createdAt != null">created_at,</if>
                 <if test="updatedAt != null">updated_at,</if>
@@ -128,7 +127,6 @@
                 <if test="organizerId != null">#{organizerId,jdbcType=INTEGER},</if>
                 <if test="topGear != null">#{topGear,jdbcType=INTEGER},</if>
                 <if test="photoUrl != null">#{photoUrl,jdbcType=VARCHAR},</if>
-                <if test="status != null">#{status,jdbcType=OTHER},</if>
                 <if test="statusDescription != null">#{statusDescription,jdbcType=VARCHAR},</if>
                 <if test="createdAt != null">#{createdAt,jdbcType=TIMESTAMP},</if>
                 <if test="updatedAt != null">#{updatedAt,jdbcType=TIMESTAMP},</if>

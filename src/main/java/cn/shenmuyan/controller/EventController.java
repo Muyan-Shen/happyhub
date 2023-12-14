@@ -93,8 +93,8 @@ public class EventController {
      */
     @PostMapping("/create")
     public SaResult create(@Validated @RequestBody EventInsertVO event) {
-        eventService.addEvent(event);
-        return SaResult.ok("创建成功");
+        Integer eventId = eventService.addEvent(event);
+        return SaResult.ok("创建成功").set("eventId",eventId);
     }
 
     /**

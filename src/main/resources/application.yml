@@ -10,7 +10,10 @@ spring:
       max-lifetime: 60000
        # 设置为30分钟，单位是毫秒
       connection-timeout: 60000 # 设置为60秒，单位是毫秒
-
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
   sql:
     init:
       schema-locations: classpath:sql/init-database.sql
