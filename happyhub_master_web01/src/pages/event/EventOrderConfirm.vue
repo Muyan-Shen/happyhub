@@ -12,7 +12,7 @@
             </el-icon>
             支付信息
           </div>
-          <div>订单编号：{{ payment.orderId }}</div>
+          <div>订单编号：{{payment.orderId}}</div>
           <div>总价格：{{ payment.amount }}元</div>
           <div>支付状态：{{ payment.status }}</div>
           <div>创建时间：{{ payment.processedAt }}</div>
@@ -36,14 +36,14 @@
     </el-select>
     <span class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确认</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false,">确认</el-button>
       </span>
   </el-dialog>
 </template>
 
 <script setup>
 import router from "../../config/router.config.js";
-import {onMounted, reactive, ref, watch} from "vue";
+import {onBeforeMount, onMounted, reactive, ref, watch} from "vue";
 import {useRoute} from "vue-router";
 import {getCurrentInstance} from "vue";
 import {Clock, Paperclip} from "@element-plus/icons-vue";
@@ -59,8 +59,14 @@ const route = useRoute();
 const couponsId = ref()
 orderId.value = route.params.orderId;
 
-const payment = ref()
-const getPayment = async (orderId) => {
+const payment = ref({
+  "orderId":"",
+  "amount":"",
+  "status":"",
+  "processedAt":""
+})
+const getPayment =  (orderId) => {
+  console.log(orderId)
   $http.get("/pay/orderConfirmed/" + orderId).then(res => {
     console.log(res)
     payment.value = res.data;
