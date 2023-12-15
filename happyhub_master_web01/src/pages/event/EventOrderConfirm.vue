@@ -31,12 +31,13 @@
           v-for="coupon in coupons"
           :key="coupon.id"
           :value="coupon.code"
-      ><span><el-icon><Paperclip/></el-icon>优惠券编号: {{ coupon.id }}       ￥折扣额:{{ coupon.discountAmount }}元</span>
+      ><span v-if="coupon.discountAmount!=null"><el-icon><Paperclip/></el-icon>优惠券编号: {{ coupon.id }}       ￥折扣额:{{ coupon.discountAmount }}元</span>
+        <span v-else><el-icon><Paperclip/></el-icon>优惠券编号: {{ coupon.id }}       ￥折扣额:{{ coupon.discount}}折</span>
       </el-option>
     </el-select>
     <span class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false,">确认</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确认</el-button>
       </span>
   </el-dialog>
 </template>
