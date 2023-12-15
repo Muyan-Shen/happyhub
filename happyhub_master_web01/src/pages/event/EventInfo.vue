@@ -229,7 +229,6 @@ const scrollToLine = ()=> {
     }
   }
   if(activeName.value == 'second'){
-    // 触发‘配置管理’事件
     const targetElement = document.querySelector(`#line-start2`);
     if (targetElement) {
       targetElement.scrollIntoView({ behavior: "smooth" });
@@ -281,7 +280,7 @@ const getOrder = (eventId, price) => {
     price.value=''
     return
   }
-  ElMessage("发起订单");
+  // ElMessage("发起订单");
   router.push({
     name:"eventOrderCreate",
     params:{

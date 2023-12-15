@@ -105,6 +105,25 @@ public class OrderController {
     }
 
     /**
+     * 取消支付
+     * @param paymentId
+     * @return
+     */
+    @GetMapping("/paymentCanceled/{paymentId}")
+    public SaResult paymentCanceled(@PathVariable("paymentId") @NotNull(message = "支付id不能为空") Integer paymentId){
+        StpUtil.checkLogin();
+        Payments payment=new Payments();
+        payment.setId(paymentId);
+        payment.setStatus("failed");
+        int i = paymentService.updatePayment(payment);
+        if (i > 0) {
+            return SaResult.ok().setMsg("支付取消成功");
+        }
+        return SaResult.error("支付取消失败");
+    }
+
+
+    /**
      * 确认订单-使用优惠卷之前
      *
      * @param ordersId 订单id
