@@ -85,7 +85,7 @@
                                             </el-form>
                                         </el-dialog>
                                     </div>
-                                </el-drawer>
+                                    </el-drawer>
                             </div>
                             <div class="screenfull">
                                 <el-button
@@ -189,10 +189,10 @@ import screenfull from 'screenfull'
 import {Postcard} from "@element-plus/icons";
 import {useProfileStore} from "@/stores/useProfile.js";
 
-
+const $http = getCurrentInstance().appContext.config.globalProperties.$http;
 const isCollapse = ref(true)
 const expandButtonStyle = ref('')
-
+const profileStore = useProfileStore();
 function change() {
     isCollapse.value = !isCollapse.value;
     if (!isCollapse.value) {
@@ -228,7 +228,7 @@ const handleFileChange = async (event) => {
     if (file) {
         const formData = new FormData();
         formData.append('avatar', file);
-
+        formData.append('userId', profileStore.profile.id)
         try {
             // 发送 POST 请求到后端
             const response = await $http.post('/upload-avatar', formData, {
@@ -283,10 +283,10 @@ const change1 = () => {
 }
 
 //----------------------------------------------------------对话框
-const $http = getCurrentInstance().appContext.config.globalProperties.$http;
+
 const dialogFormVisible = ref(false)
 const formLabelWidth = '140px'
-const profileStore = useProfileStore();
+
 
 
 function loadForm() {
@@ -317,7 +317,7 @@ const form = reactive({
     age: '',
     phone: '',
     email: "",
-    picPath: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
+    picPath: ''
 })
 
 watch(dialogFormVisible, (newValue, oldValue) => {

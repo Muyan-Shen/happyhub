@@ -41,7 +41,7 @@ public class FIleUploadController {
     }
     @PostMapping("/upload-avatar")
     //@SaCheckPermission(value = "upload::file",orRole = "admin")
-    public SaResult uploadAvatar(@RequestParam("avatar") MultipartFile file,@RequestParam("userId") Integer userId) throws IOException {
+    public SaResult uploadAvatar(@RequestParam("avatar") MultipartFile file,@RequestParam("userId") String userId) throws IOException {
 
         //保存上传的文件
         Path path = Paths.get("./happyhub_master_web01/public/user");
@@ -50,7 +50,7 @@ public class FIleUploadController {
         file.transferTo(foregroundPath.resolve(file.getOriginalFilename()));
         User user = new User();
         user.setPhotoUrl("/user/"+file.getOriginalFilename());
-        user.setId(userId);
+        user.setId(Integer.valueOf(userId));
         boolean b = userService.updateUser(user);
         if(b){
             return SaResult.ok().set("url","/user/"+file.getOriginalFilename()).setMsg("头像上传成功");

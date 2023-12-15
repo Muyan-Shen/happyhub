@@ -1,31 +1,26 @@
 <template>
   <div class="account">
-    <div class="search">
-      <el-form @submit="onSearch" inline>
-        <el-form-item>
-          <el-form-item label="rolename">
-            <el-input v-model="searchForm.name" placeholder="请输入角色名称"></el-input>
-          </el-form-item>
-          <el-form-item label="角色编码" :label-width="120">
-            <el-input v-model="searchForm.code" placeholder="请输入角色编码"></el-input>
-          </el-form-item>
-        </el-form-item>
-        <el-form-item>
-          <el-form-item>
-            <el-button type="primary" native-type="submit">
-              <el-icon :size="24"><Search/></el-icon>
-            </el-button>
-            <el-button type="primary" @click="addRoleDialog = true">
-              <el-icon :size="24"><CirclePlus/></el-icon>
-            </el-button>
-          </el-form-item>
-        </el-form-item>
-      </el-form>
-    </div>
-    <el-table :data="roles">
+      <div class="search">
+          <!-- 对搜索表单加上阴影效果，增加立体感 -->
+          <el-form @submit.native.prevent="onSearch" inline class="search-form">
+              <!-- 将label和input放在同一行显示，以节省空间 -->
+              <el-form-item>
+                  <el-input v-model="searchForm.name" placeholder="请输入角色名称" prefix-icon="Search"></el-input>
+              </el-form-item>
+              <el-form-item>
+                  <el-input v-model="searchForm.code" placeholder="请输入角色编码" prefix-icon="Operation"></el-input>
+              </el-form-item>
+              <el-form-item>
+                  <el-button type="primary" native-type="submit" icon="Search">搜索</el-button>
+                  <!-- 增加了一些左边距 -->
+                  <el-button type="success" @click="addRoleDialog = true" icon="CirclePlus" style="margin-left: 8px;">添加</el-button>
+              </el-form-item>
+          </el-form>
+      </div>
+      <el-table :data="roles" border stripe>
       <el-table-column label="角色名称" prop="name"></el-table-column>
-      <el-table-column label="角色编码" prop="cide"></el-table-column>
-      <el-table-column label="角色编码" prop="description"></el-table-column>
+      <el-table-column label="角色编码" prop="code"></el-table-column>
+      <el-table-column label="角色描述" prop="description"></el-table-column>
       <el-table-column label="创建时间" prop="createTime"></el-table-column>
       <el-table-column label="更新时间" prop="updateTime"></el-table-column>
       <el-table-column label="操作" fixed="right">
@@ -111,16 +106,25 @@ onActivated(loadRoles);
 </script>
 
 <style scoped lang="scss">
-.account{
-  width: 100%;
-  height: 100%;
-  .el-form-item {
-    .el-button{
-      margin-left: 10px;
+.search {
+  padding: 20px; // 增加padding
+  background-color: #f8f8f8; // 更改背景色
+  border-radius: 8px; // 增加圆角
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); // 增加阴影效果
+
+  .search-form {
+    .el-form-item {
+      margin-right: 12px; // 增加间距
     }
   }
-  .el-pagination{
-    margin: 10px;
+}
+
+.el-table {
+  &:not(.el-table--border) {
+    .el-table__body tr td,
+    .el-table__header-wrapper tr th {
+      border-bottom: 1px solid #ebeef5; // 加底部边框线
+    }
   }
 }
 </style>
