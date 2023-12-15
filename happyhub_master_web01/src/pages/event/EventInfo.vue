@@ -179,6 +179,7 @@
 </template>
 
 <script setup>
+
 import topHeader from '../component/header.vue'
 import {CircleClose, CircleCheck, PriceTag} from "@element-plus/icons-vue";
 import {onMounted, reactive, ref, computed, nextTick} from "vue";
@@ -289,9 +290,17 @@ const getOrder = (eventId, price) => {
     }
   })
 }
+
+
 </script>
 
-<style scoped lang="scss">
+<style  lang="scss">
+
+.detail .words img {
+  width: 100% !important; /* 强制宽度为100%并覆盖内联样式 */
+  height: auto !important; /* 高度根据宽度调整，并覆盖内联样式 */
+  display: block; /* 图片显示为块级元素 */
+}
 .eventDiv {
   height: 100%;
 
@@ -317,6 +326,7 @@ const getOrder = (eventId, price) => {
         .titles{
           position: fixed;
           top: v-bind("titleOffsetTop");
+
         }
         .eventInfoDiv {
           display: flex;
