@@ -83,6 +83,11 @@
     <select id="selectAllLocation" resultType="java.lang.String">
         select distinct location from events where status = 1
     </select>
+    <select id="selectThree" resultType="cn.shenmuyan.bean.Events">
+        select
+            <include refid="Base_Column_List"/>
+        from events limit 0,3
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from events

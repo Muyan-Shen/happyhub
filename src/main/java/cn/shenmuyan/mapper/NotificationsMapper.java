@@ -1,6 +1,9 @@
 package cn.shenmuyan.mapper;
 
 import cn.shenmuyan.bean.Notifications;
+import cn.shenmuyan.vo.NotificationWhereVO;
+
+import java.util.List;
 
 /**
  * 通知信息表Mapper
@@ -13,7 +16,7 @@ public interface NotificationsMapper {
 
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Notifications record);
+    void insert(Notifications record);
 
     int insertSelective(Notifications record);
 
@@ -23,4 +26,5 @@ public interface NotificationsMapper {
 
     int updateByPrimaryKey(Notifications record);
 
+    List<Notifications> selectAll(NotificationWhereVO vo);
 }

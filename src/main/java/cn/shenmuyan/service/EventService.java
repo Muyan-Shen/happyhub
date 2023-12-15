@@ -26,4 +26,6 @@ public interface EventService {
     String findOrganizerUsername(Integer organizerId);
 
     String[] getCity();
+
+    List<Events> selectThree();
 }

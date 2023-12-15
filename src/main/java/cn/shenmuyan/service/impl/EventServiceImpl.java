@@ -84,4 +84,10 @@ public class EventServiceImpl implements EventService {
     public String[] getCity() {
         return eventsMapper.selectAllLocation();
     }
+
+    @Override
+    public List<Events> selectThree() {
+        return eventsMapper.selectThree();
+    }
+
 }

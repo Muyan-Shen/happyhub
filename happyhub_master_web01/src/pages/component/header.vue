@@ -80,7 +80,7 @@ const OnSearch = (e) => {
   $http.get('/event/getAll?keyword=' + keyword.value).then(resp => {
     // console.log(typeof resp)
     if (resp.data) {
-      profileStore.saveEventList(Array.from(resp.data));
+      profileStore.saveEventList(resp.data.list);
       router.push("/eventList")
     }
   })
@@ -109,6 +109,7 @@ onMounted(() => {
     citys.value = resp.data;
   })
 })
+
 </script>
 
 <style scoped lang="scss">
