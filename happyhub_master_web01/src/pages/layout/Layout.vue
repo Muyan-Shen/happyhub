@@ -104,7 +104,6 @@ onMounted(() => {
         margin: 8px;
 
         .postDiv {
-          border: red solid 1px;
         }
 
         .timeShow {

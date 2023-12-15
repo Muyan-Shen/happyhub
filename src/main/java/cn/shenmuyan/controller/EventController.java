@@ -93,6 +93,11 @@ public class EventController {
      */
     @PostMapping("/create")
     public SaResult create(@Validated @RequestBody EventInsertVO event) {
+        EventWhereVO whereVO = new EventWhereVO();
+        whereVO.setTitle(event.getTitle());
+        if (eventService.findAll(whereVO).size() > 0){
+            return SaResult.error("活动标题重复");
+        }
         Integer eventId = eventService.addEvent(event);
         return SaResult.ok("创建成功").set("eventId",eventId);
     }
@@ -107,6 +112,7 @@ public class EventController {
     public SaResult generateSeat(@Validated @RequestBody SeatInsertVO vo) {
         String[] directions = vo.getDirection();
         for (String direction : directions) {
+            System.out.println(1);
             seatService.setSeat(vo.getEventId(), vo.getTopGear(), direction, vo.getMaxCol(), vo.getGearSum(), vo.getGearPrice());
         }
         return SaResult.ok("创建成功");

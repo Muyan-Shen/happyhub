@@ -60,7 +60,6 @@ public class FIleUploadController {
     @PostMapping("/upload-event")
     //@SaCheckPermission(value = "upload::file",orRole = "admin")
     public SaResult uploadEvent(@RequestParam("photo") MultipartFile file) throws IOException {
-        System.out.println(file.getOriginalFilename());
         Path path = Paths.get("./happyhub_master_web01/public/event");
         file.transferTo(path.resolve(file.getOriginalFilename()));
         Path foregroundPath = Paths.get("./happyhub_master_web02/public/event");
