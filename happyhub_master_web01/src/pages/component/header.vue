@@ -52,6 +52,10 @@
                 :src="profileStore.profile.photoUrl"
                 index="/userInfo"
                 @click="jumpToUser"/>
+      <div class="service" @click="jumpToService">
+        <el-icon :color="`#fff`" :size="30"><Headset /></el-icon>
+        <a>客 服</a>
+      </div>
     </div>
   </div>
 </template>
@@ -59,7 +63,7 @@
 <script setup>
 import router from "../../config/router.config.js";
 import {useProfileStore} from "../../stores/useProfile.js";
-import {UserFilled, Search, CaretBottom, LocationInformation} from "@element-plus/icons-vue";
+import {UserFilled, Search, CaretBottom, LocationInformation, Headset} from "@element-plus/icons-vue";
 import {getCurrentInstance, ref, onMounted, reactive} from "vue";
 import axios from "axios";
 
@@ -90,6 +94,9 @@ const jumpToUser = () => {
 }
 const jumpToLogin = () => {
   router.push("/login")
+}
+const jumpToService = ()=>{
+  router.push("/service")
 }
 onMounted(() => {
   axios.get('https://api.ipify.org/?format=json').then(resp => {
@@ -180,19 +187,37 @@ onMounted(() => {
     }
 
     .el-button {
-
       background-color: #fdb5c1;
       border: none;
       box-shadow: 1px 1px 1px #ffffff;
     }
     .el-image{
-      width: 15%;
+      width: 18%;
       border-radius: 50%;
       transition: all 0.3s ease;
     }
     .el-image:hover{
-      width: 18%;
-      box-shadow: white 0px 2px 4px 3px;
+      width: 24%;
+      box-shadow: hotpink 0px 0px 0px 4px;
+      transition: all 0.3s ease;
+    }
+    .service{
+      margin-left: 5%;
+      padding: 2px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      border-radius: 20%;
+      transition: all 0.3s ease;
+      a{
+        font-size: 12px;
+        font-weight: 750;
+        color: white;
+      }
+    }
+    .service:hover{
+      background-color: pink;
       transition: all 0.3s ease;
     }
   }
