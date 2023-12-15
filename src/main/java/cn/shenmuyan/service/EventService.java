@@ -2,6 +2,7 @@ package cn.shenmuyan.service;
 
 import cn.shenmuyan.bean.Events;
 import cn.shenmuyan.vo.EventInsertVO;
+import cn.shenmuyan.vo.EventUpdateVO;
 import cn.shenmuyan.vo.EventWhereVO;
 import org.springframework.stereotype.Service;
 import cn.shenmuyan.bean.Orders;
@@ -20,7 +21,7 @@ import java.util.List;
 public interface EventService {
     public List<Events> findAll(EventWhereVO eventWhereVO);
     public Events findById(Integer eventId);
-    void updateById(Events events);
+    int updateById(EventUpdateVO vo);
     Integer addEvent(EventInsertVO eventInsertVO);
     String findOrganizerUsername(Integer organizerId);
 

@@ -1,10 +1,12 @@
 package cn.shenmuyan.controller;
 
 import cn.dev33.satoken.util.SaResult;
+import cn.hutool.core.bean.BeanUtil;
 import cn.shenmuyan.bean.Events;
 import cn.shenmuyan.service.EventService;
 import cn.shenmuyan.service.SeatService;
 import cn.shenmuyan.vo.EventInsertVO;
+import cn.shenmuyan.vo.EventUpdateVO;
 import cn.shenmuyan.vo.EventWhereVO;
 import cn.shenmuyan.vo.SeatInsertVO;
 import com.github.pagehelper.PageHelper;
@@ -102,6 +104,19 @@ public class EventController {
         return SaResult.ok("创建成功").set("eventId",eventId);
     }
 
+    /**
+     * 活动修改
+     * @param vo
+     * @return
+     */
+    @PostMapping("/update")
+    public SaResult update(@Validated @RequestBody EventUpdateVO vo) {
+        int i = eventService.updateById(vo);
+        if (i > 0) {
+            return SaResult.ok().setMsg("修改成功");
+        }
+        return SaResult.error("修改失败");
+    }
     /**
      * 生成座位
      *
