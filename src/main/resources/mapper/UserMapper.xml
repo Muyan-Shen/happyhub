@@ -68,6 +68,9 @@
         where username = #{username,jdbcType=VARCHAR}
         and password_hash = #{passwordHash,jdbcType=VARCHAR}
     </select>
+    <select id="selectAllId" resultType="java.lang.Integer">
+        select id from user
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete

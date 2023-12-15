@@ -2,10 +2,7 @@ package cn.shenmuyan.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.crypto.digest.MD5;
-import cn.shenmuyan.bean.Orders;
 import cn.shenmuyan.bean.User;
-import cn.shenmuyan.bean.UserRoleMapping;
-import cn.shenmuyan.mapper.OrdersMapper;
 import cn.shenmuyan.mapper.UserMapper;
 import cn.shenmuyan.mapper.UserRoleMappingMapper;
 import cn.shenmuyan.service.UserService;
@@ -73,5 +70,10 @@ public class UserServiceImpl implements UserService {
         userRoleMappingMapper.deleteByUserId(userId);
         //再添加新的关联
         userRoleMappingMapper.insertBatch(userId,roleIds);
+    }
+
+    @Override
+    public List<Integer> findAllId() {
+        return userMapper.selectAllId();
     }
 }

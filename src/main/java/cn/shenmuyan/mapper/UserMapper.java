@@ -32,4 +32,5 @@ public interface UserMapper {
 
     User selectByUsernameAndPasswordHash(@Param("username") String username, @Param("passwordHash")String passwordHash);
 
+    List<Integer> selectAllId();
 }

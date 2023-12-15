@@ -25,7 +25,21 @@
         where  notification_id = #{notificationId,jdbcType=INTEGER} 
     </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <select id="selectAll" resultType="cn.shenmuyan.bean.Notifications">
+        select
+            <include refid="Base_Column_List"/>
+        from notifications
+        <where>
+            <if test="title!=null and title!=''">
+            title like concat('%', #{title,jdbcType=VARCHAR}, '%')
+            </if>
+        <if test="message!=null and message!=''">
+            or message like concat('%', #{message,jdbcType=VARCHAR}, '%')
+        </if>
+        </where>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from notifications
         where  notification_id = #{notificationId,jdbcType=INTEGER} 
     </delete>
@@ -63,10 +77,10 @@
                 <if test="userId != null">
                     user_id = #{userId,jdbcType=INTEGER},
                 </if>
-                <if test="title != null">
+                <if test="title != null and title != ''">
                     title = #{title,jdbcType=VARCHAR},
                 </if>
-                <if test="message != null">
+                <if test="message != null and message != ''">
                     message = #{message,jdbcType=VARCHAR},
                 </if>
                 <if test="status != null">
