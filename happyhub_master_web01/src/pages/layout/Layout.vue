@@ -2,7 +2,7 @@
   <div class="layout">
     <el-container>
       <el-header>
-        <top-header/>
+        <top-header @GetCity="getEventListByCity"/>
       </el-header>
       <el-main>
         <div class="carousel">
@@ -64,8 +64,17 @@ const jumpToEventInfo = (eventId) => {
   })
 }
 const getEventLists = () => {
-  $http.get('/event/getAll', {"pageNum": pageInfo.page, "limit": pageInfo.limit}).then(resp => {
+  $http.get(`/event/getAll?pageNum=${pageInfo.page}&limit=${pageInfo.limit}`).then(resp => {
     profileStore.eventList = resp.data.list;
+    pageInfo.total = resp.count;
+  })
+}
+const getEventListByCity = (city) =>{
+  console.log(2)
+  $http.get(`/event/getAll?keyword=${city}`).then(resp => {
+    profileStore.eventList = resp.data.list;
+    pageInfo.page = 1;
+    pageInfo.total = resp.count;
   })
 }
 onMounted(() => {

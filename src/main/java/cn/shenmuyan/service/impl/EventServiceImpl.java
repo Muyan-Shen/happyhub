@@ -10,6 +10,7 @@ import cn.shenmuyan.mapper.UserMapper;
 import cn.shenmuyan.mapper.OrdersMapper;
 import cn.shenmuyan.service.EventService;
 import cn.shenmuyan.vo.EventInsertVO;
+import cn.shenmuyan.vo.EventUpdateVO;
 import org.springframework.stereotype.Service;
 import cn.shenmuyan.vo.EventWhereVO;
 import cn.shenmuyan.vo.UserWhereVO;
@@ -54,8 +55,8 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void updateById(Events events) {
-
+    public int updateById(EventUpdateVO vo) {
+        return eventsMapper.updateByPrimaryKeySelective(vo);
     }
 
 

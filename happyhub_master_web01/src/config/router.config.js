@@ -27,6 +27,11 @@ const routes = [
         }
     },
     {
+        path:'/service',
+        name:'service',
+        component:() => import('../pages/customerService/service.vue'),
+    },
+    {
         path:'/userInfo',
         name:'userInfo',
         component:() => import('../pages/user/userInfo.vue'),
