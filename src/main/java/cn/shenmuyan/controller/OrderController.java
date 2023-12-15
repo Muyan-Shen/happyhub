@@ -6,10 +6,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.shenmuyan.bean.*;
 import cn.shenmuyan.service.*;
-import cn.shenmuyan.vo.PaymentBeforeVO;
-import cn.shenmuyan.vo.PaymentConfirmedVO;
-import cn.shenmuyan.vo.SeatTypeVO;
-import cn.shenmuyan.vo.TicketVO;
+import cn.shenmuyan.vo.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -183,17 +180,15 @@ public class OrderController {
 
     /**
      * 支付使用优惠券计算价格
-     * @param paymentId
-     * @param couponsId
+     * @param useCouponsVO
      * @return
      */
     @PostMapping("/useCoupons")
-    public SaResult useCoupons(@NotNull(message = "支付id不能为空") Integer paymentId,
-                               @NotNull(message = "优惠券id不能为空") Integer couponsId) {
+    public SaResult useCoupons(@RequestBody UseCouponsVO useCouponsVO) {
         //1.通过couponsId查到使用的优惠券
-         Coupons coupon=couponService.selectCouponById(couponsId);
+         Coupons coupon=couponService.selectCouponById(useCouponsVO.getCouponsId());
         //2.通过paymentId查到支付信息
-        Payments payment = paymentService.selectPaymentById(paymentId);
+        Payments payment = paymentService.selectPaymentById(useCouponsVO.getPaymentId());
         System.out.println(payment);
         //3.获取支付信息价格和优惠券折扣 ，计算最后的价格 setprice但不修改数据库
         BigDecimal price=null;

@@ -23,8 +23,8 @@
                   <div class="eventTime">活动时间:{{ eventInfo.startTime }}-{{ eventInfo.endTime }}</div>
                   <div class="eventLocation">活动地点:{{ eventInfo.location }}</div>
                   <div class="eventGear">活动档位:
-                    <el-radio-group v-model="price.value" size="small" @change="change">
-                      <el-radio-button v-for="gear of gears" :label="gear"></el-radio-button>
+                    <el-radio-group v-model="gear1.value" size="small" @change="change">
+                      <el-radio-button v-for="(gear,index) of gears" :label="index1[index]"  >{{gear}}</el-radio-button>
                     </el-radio-group>
                   </div>
                   <el-button  @click="getOrder(eventInfo.id,price)">购买</el-button>
@@ -186,9 +186,12 @@ import {getCurrentInstance} from "vue";
 import {ElMessage} from "element-plus";
 import  {useRoute} from "vue-router";
 import router  from "../../config/router.config.js";
+import {useProfileStore} from "../../stores/useProfile.js";
+import index from "pinia-plugin-persist";
 
 const route = useRoute();
-
+const index1 = [2,5,8]
+const useProfileStore1 = useProfileStore();
 
 const eventInfo = ref(
     {
@@ -205,10 +208,11 @@ const eventInfo = ref(
     }
 )
 
-const price = ref({
+const gear1= ref({
   value: '',
   visible: false,
 })
+const price=ref()
 const gears = ref([]);
 
 const activeName = ref('first');
@@ -245,17 +249,21 @@ const scrollToLine = ()=> {
 
 
 function change() {
-
+  price.value=gears.value[gear1.value.value]
+  console.log(gear1.value.value)
+  // console.log(price.value)
 }
 
 const eventId = route.params.eventId;
 const $http = getCurrentInstance().appContext.config.globalProperties.$http
 
 const getEventInfo = (eventId) => {
+  titleOffsetTop.value=479;
   $http.get('/event/' + eventId)
       .then(res => {
         gears.value = res.gearPrices;
         eventInfo.value = res.data;
+        // console.log(gears.value)
       }).catch(err => {
     console.error('获取活动信息时出错：', err);
   });
@@ -280,18 +288,26 @@ const getOrder = (eventId, price) => {
     price.value=''
     return
   }
+
+  useProfileStore1.gear=gear1.value.value
+  console.log(price.value)
   // ElMessage("发起订单");
   router.push({
     name:"eventOrderCreate",
     params:{
       "eventId":eventId,
-      "price": price.value
+      "price": gears.value[gear1.value.value]
     }
   })
 }
 </script>
 
-<style scoped lang="scss">
+<style  lang="scss">
+.detail .words img {
+  width: 100% !important; /* 强制宽度为100%并覆盖内联样式 */
+  height: auto !important; /* 高度根据宽度调整，并覆盖内联样式 */
+  display: block; /* 图片显示为块级元素 */
+}
 .eventDiv {
   height: 100%;
 
@@ -337,7 +353,12 @@ const getOrder = (eventId, price) => {
 
 
           .eventPhotoDiv {
-            width: 40%;
+             width:304.29px;
+            height:359.39px;
+            .el-image{
+              width: 304.29px;
+              height: 354.99px;
+            }
           }
 
           .eventMessage {

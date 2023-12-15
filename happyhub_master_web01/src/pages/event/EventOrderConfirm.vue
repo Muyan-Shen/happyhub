@@ -16,9 +16,9 @@
           <div>总价格：{{ payment.amount }}元</div>
           <div>支付状态：{{ payment.status }}</div>
           <div>创建时间：{{ payment.processedAt }}</div>
-          <el-button @click="paymentConfirm1">确认</el-button>
-          <el-button @click="dialogFormVisible = true">使用优惠券</el-button>
-          <el-button @click="paymentCancel1(payment.id)">取消</el-button>
+          <el-button @click="dialogFormVisible = true">使用优惠券</el-button><br>
+          <el-button @click="paymentConfirm1">确认支付 </el-button>
+          <el-button @click="paymentCancel1(payment.id)">取消支付</el-button>
         </el-card>
       </div>
     </el-main>
@@ -30,14 +30,27 @@
       <el-option
           v-for="coupon in coupons"
           :key="coupon.id"
-          :value="coupon.code"
+          :value="coupon.id"
+          :label="coupon.discountAmount!=null?'优惠券编号: '+coupon.id+'       ￥折扣额: '+coupon.discountAmount+'元':'优惠券编号: '+coupon.id+'       ￥折扣额: '+coupon.discount"
       ><span v-if="coupon.discountAmount!=null"><el-icon><Paperclip/></el-icon>优惠券编号: {{ coupon.id }}       ￥折扣额:{{ coupon.discountAmount }}元</span>
-        <span v-else><el-icon><Paperclip/></el-icon>优惠券编号: {{ coupon.id }}       ￥折扣额:{{ coupon.discount}}折</span>
+        <span v-else><el-icon><Paperclip/></el-icon>优惠券编号: {{ coupon.id }}       ￥折扣额:{{ coupon.discount}}</span>
       </el-option>
     </el-select>
-    <span class="dialog-footer">
+    <span class="dialog-footer1">
         <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确认</el-button>
+        <el-button type="primary" @click="couponsUse">确认</el-button>
+      </span>
+  </el-dialog>
+
+
+  <el-dialog v-model="centerDialogVisible" title="优惠金额" width="30%" center>
+    <span>
+     最后的优惠价格为：{{payment.amount}}元
+    </span>
+      <span class="dialog-footer2">
+        <el-button type="primary" @click="centerDialogVisible = false">
+         确认
+        </el-button>
       </span>
   </el-dialog>
 </template>
@@ -49,8 +62,9 @@ import {useRoute} from "vue-router";
 import {getCurrentInstance} from "vue";
 import {Clock, Paperclip} from "@element-plus/icons-vue";
 import topHeader from '../component/header.vue'
+import {ElAlert} from "element-plus";
 
-
+const centerDialogVisible = ref(false)
 const dialogFormVisible = ref(false)
 const $http = getCurrentInstance().appContext.config.globalProperties.$http
 
@@ -61,6 +75,7 @@ const couponsId = ref()
 orderId.value = route.params.orderId;
 
 const payment = ref({
+  "id":"",
   "orderId":"",
   "amount":"",
   "status":"",
@@ -80,6 +95,10 @@ const paymentCancel1 = (paymentId) => {
   })
 }
 const paymentConfirm1 = () => {
+  $http.post("/pay/paymentConfirmed/",{"paymentId":payment.value.id
+    , "couponsId":couponsId,"price":payment.value.amount,"gear":}).then((res) => {
+
+  })
   router.push({
     name: "home"
   })
@@ -100,6 +119,17 @@ let coupons = ref()
 const couponsSelect = () => {
   $http.get("/pay/selectCoupons").then((res) => {
     coupons.value = res.data;
+  })
+}
+
+const couponsUse=()=>{
+  dialogFormVisible.value = false
+  $http.post("/pay/useCoupons/",{"paymentId":payment.value.id,"couponsId":couponsId.value}).then(res=> {
+    console.log(res.data.amount)
+    if(payment.amount!=res.data.amount){
+      payment.value.amount=res.data.amount
+      centerDialogVisible.value=true
+    }
   })
 }
 onMounted(() => {
@@ -136,7 +166,10 @@ onMounted(() => {
     width: 300px;
   }
 
-  .dialog-footer button:first-child {
+  .dialog-footer1 button:first-child {
+    margin-right: 10px;
+  }
+  .dialog-footer2 button:first-child {
     margin-right: 10px;
   }
 }
