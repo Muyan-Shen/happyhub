@@ -1,6 +1,7 @@
 package cn.shenmuyan.service;
 
 import cn.shenmuyan.bean.Role;
+import cn.shenmuyan.vo.RoleInsertVO;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 public interface RoleService {
     List<Role> findAll(String name, String password);
     Role findById(Integer id);
-    void add(Role role);
+    boolean add(RoleInsertVO role);
     void deleteById(Integer ... ids);
 
     void updateById(Role role);

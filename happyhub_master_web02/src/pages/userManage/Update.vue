@@ -3,8 +3,8 @@
         <div class="search">
             <el-form @submit="onSearch">
                 <el-form-item>
-                    <el-form-item label="用户ID">
-                        <el-input v-model="searchForm.username" placeholder="请输入ID"></el-input>
+                    <el-form-item label="用户名">
+                        <el-input v-model="searchForm.username" placeholder="请输入用户名"></el-input>
                     </el-form-item>
                     <el-form-item label="创建时间" :label-width="120">
                         <el-date-picker v-model="searchForm.createTime"
@@ -79,7 +79,8 @@
                                layout="prev,pager,next"
                                v-model:page-size="pageInfo.limit"
                                v-model:current-page="pageInfo.page"
-                               :total="pageInfo.total"/>
+                               :total="pageInfo.total"
+                               @current-change="onPageChange"/>
             </template>
         </el-table>
         <associated-roles v-model:visible="associatedRolesDialog.visible" :user="associatedRolesDialog.users"/>
@@ -122,6 +123,10 @@ const onAssociatedRoles = (row) => {
     associatedRolesDialog.visible = true;
 }
 
+const onPageChange = (newPage) => {
+    pageInfo.page = newPage; // 更新当前页码
+    loadAccounts(); // 执行查询操作
+}
 const loadAccounts = () => {
 
 
@@ -169,17 +174,44 @@ onActivated(loadAccounts);
 
 <style scoped lang="scss">
 .account {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 
-  .el-form-item {
-    .el-button {
-      margin-left: 10px;
+    .el-form-item {
+        .el-button {
+            margin-left: 10px;
+            transition: all 0.3s; /* 添加按钮过渡效果 */
+            &:hover {
+                transform: scale(1.1); /* 鼠标悬停时按钮放大 */
+            }
+        }
     }
-  }
 
-  .el-pagination {
-    margin: 10px;
-  }
+    .el-switch {
+        transition: all 0.3s; /* 添加开关过渡效果 */
+    }
+
+    .el-table {
+        .el-table-column {
+            &.is-right {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .el-button {
+                margin-left: 5px;
+            }
+        }
+    }
+
+    .el-pagination {
+        margin: 10px;
+    }
+}
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.3s;
+}
+.fade-enter, .fade-leave-to {
+    opacity: 0;
 }
 </style>

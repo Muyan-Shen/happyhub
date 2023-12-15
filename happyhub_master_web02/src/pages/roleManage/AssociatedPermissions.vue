@@ -1,32 +1,34 @@
 <template>
-  <el-dialog class="associated-permissions" v-model="visibleDialog" @close="$emit('update:visible',false)">
-    <el-form>
-      <el-form-item label="角色名称">
-        <el-input v-model="role.name" disabled/>
-      </el-form-item>
-      <el-form-item label="角色编码">
-        <el-input v-model="role.code" disabled/>
-      </el-form-item>
-      <el-form-item label="权限列表">
-        <el-scrollbar height="300">
-          <el-tree
-              ref="treeRef"
-              :data="permissions"
-              show-checkbox
-              node-key="id"
-              highlight-current
-              :props="defaultProps"
-              :default-expanded-keys="expandedKeys"
-              :default-checked-keys="checkedKeys"
-          />
-        </el-scrollbar>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <el-button @click="$emit('update:visible',false)">取消</el-button>
-      <el-button @click="onSave()" type="primary">保存</el-button>
-    </template>
-  </el-dialog>
+    <el-dialog class="associated-permissions" v-model="visibleDialog" title="配置权限" :before-close="handleClose">
+        <el-form label-position="left" label-width="100px">
+            <el-form-item label="角色名称">
+                <el-input v-model="role.name" disabled/>
+            </el-form-item>
+            <el-form-item label="角色编码">
+                <el-input v-model="role.code" disabled/>
+            </el-form-item>
+            <el-form-item label="权限列表">
+                <el-scrollbar class="permissions-scrollbar">
+                    <el-tree
+                            ref="treeRef"
+                            :data="permissions"
+                            show-checkbox
+                            node-key="id"
+                            highlight-current
+                            :props="defaultProps"
+                            :default-expanded-keys="expandedKeys"
+                            :default-checked-keys="checkedKeys"
+                    />
+                </el-scrollbar>
+            </el-form-item>
+        </el-form>
+        <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="handleClose">取消</el-button>
+        <el-button type="primary" :loading="saving" @click="onSave">保存</el-button>
+      </span>
+        </template>
+    </el-dialog>
 </template>
 
 <script setup>
@@ -145,15 +147,44 @@ watch(() => props.visible, (val) => {
 })
 // onMounted(loadRoles);
 // onActivated(loadRoles);
+
+
+const saving = ref(false);
+
+const handleClose = () => {
+    // 可以添加确认步骤或清理工作
+    emit('update:visible', false);
+};
 </script>
 
 <style scoped lang="scss">
-.associated-permissions{
-  .el-form{
-    .el-form-item{
-      .el-scrollbar{
-        width: 100%;
-      }
+.associated-permissions {
+  // 自定义滚动条
+  .permissions-scrollbar {
+    height: 300px;
+    width: 100%;
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  // 调整按钮样式
+  .dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .el-button {
+      margin-left: 8px;
     }
   }
 }

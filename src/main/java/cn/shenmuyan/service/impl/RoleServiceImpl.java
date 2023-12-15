@@ -1,10 +1,12 @@
 package cn.shenmuyan.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.shenmuyan.bean.Role;
 import cn.shenmuyan.exceptions.ParamException;
 import cn.shenmuyan.mapper.RoleMapper;
 import cn.shenmuyan.mapper.RolePermissionMappingMapper;
 import cn.shenmuyan.service.RoleService;
+import cn.shenmuyan.vo.RoleInsertVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,12 +39,13 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void add(Role role) {
-        Role role1 = roleMapper.selectByCode(role.getCode());
-        if (role1 != null){
+    public boolean add(RoleInsertVO role) {
+        Role role1 = BeanUtil.copyProperties(role, Role.class);
+        Role role2 = roleMapper.selectByCode(role1.getCode());
+        if (role2 != null){
             throw new ParamException(400,"角色编码已存在");
         }
-        roleMapper.insertSelective(role);
+        return roleMapper.insertSelective(role1);
     }
 
     @Override

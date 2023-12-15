@@ -7,36 +7,32 @@
                 <div style="margin-left: 50px">
                     <!-- 头像，点击时触发 fileInput 的点击事件 -->
                     <el-avatar :size="96" :src="form.picPath" @click="triggerFileInput"/>
-
                     <!-- 隐藏的文件输入元素 -->
                     <input type="file" ref="fileInput" @change="handleFileChange" style="display: none;"/>
                 </div>
-
-
             </div>
             <!-- 用户名 -->
-            <div class="form-group">
+            <el-form-item class="form-group" prop="username">
                 <label for="username">用户名:</label>
-                <input v-model="form.username" name="username" type="text" @blur="validate" />
-                <span v-if="usernameError" class="error">{{ usernameError }}</span>
-            </div>
+                <el-input v-model.trim="form.username"  type="text"  />
+            </el-form-item>
 
             <!-- 邮箱 -->
-            <div class="form-group">
+            <el-form-item class="form-group" prop="email">
                 <label for="email">邮箱:</label>
-                <input v-model="form.email" name="email" type="email" @blur="validate" />
-                <span v-if="emailError" class="error" :class="{ active: emailError }">{{ emailError }}</span>
-            </div>
+                <el-input v-model.trim="form.email"  type="email"  />
+            </el-form-item>
 
             <!-- 密码 -->
-            <div class="form-group">
+            <el-form-item class="form-group" prop="passwordHash">
                 <label for="password">密码:</label>
-                <input v-model="form.passwordHash" name="password" type="password" @blur="validate" />
-                <span v-if="passwordError" class="error" :class="{ active: passwordError }">{{ passwordError }}</span>
-            </div>
+                <el-input v-model.trim="form.passwordHash"  type="password"  />
+            </el-form-item>
 
-            <!-- 提交按钮 -->
-            <button type="submit" class="submit-button">添加</button>
+            <!-- 提交按钮的容器 -->
+            <div class="submit-button-container">
+                <el-button type="submit" class="submit-button">添加</el-button>
+            </div>
         </el-form>
     </div>
 </template>
@@ -46,6 +42,7 @@
 import {reactive, ref} from "vue";
 import * as $http from "../../config/http.config.js";
 import {useField, validate} from "vee-validate";
+import {ElMessage} from "element-plus";
 
 
 // 表单模型
@@ -63,27 +60,18 @@ const rules = {
     ],
     email: [
         { required: true, message: "请输入邮箱地址", trigger: "blur" },
-        { email: true, message: "请输入正确的邮箱格式", trigger: "blur" }
+        {pattern: /^[a-zA-Z0-9]+@.+$/, message: "请输入正确的邮箱格式", trigger: 'blur'}
+        // { email: true, message: , trigger: "blur" }
     ],
-    password: [
+    passwordHash: [
         { required: true, message: "请输入密码", trigger: "blur" },
         { min: 6, message: "密码长度不能小于 6 个字符", trigger: "blur" }
     ]
 };
-// 初始化错误对象
-const errors = reactive({});
 
-// 在使用 useField 之前这些名字是未定义的，所以无法将它们作为参数传递
-// 改为如下使用，第一个参数是字段名，第二个参数是验证规则，初始值可以作为第三个参数传递
-
-const { value: usernameValue, errorMessage: usernameError } = useField('username', rules.username);
-const { value: emailValue, errorMessage: emailError } = useField('email', rules.email);
-const { value: passwordValue, errorMessage: passwordError } = useField('password', rules.password);
 
 // 更新模型绑定部分
-form.username = usernameValue;
-form.email = emailValue;
-form.passwordHash = passwordValue;
+
 
 const userForm = ref(null); // 获取表单引用
 const fileInput = ref();
@@ -96,21 +84,20 @@ const triggerFileInput = () => {
 
 // 提交表单，注册用户信息
 const submitForm = async () => {
-
-
     if (!userForm.value) {
         console.log("表单引用未获得");
         return;
     }
     // 验证表单的所有字段
-    userForm.value.validate().then(async (valid) => {
+    await userForm.value.validate().then(async (valid) => {
         if (valid) {
             try {
                 // 发送POST请求到后端注册账号的URL
                 const accountResponse = await $http.post('/user/register', form);
-                console.log(accountResponse)
+
                 // 假设后端返回的accountResponse包含用户信息和账户创建的状态
                 if (accountResponse && accountResponse.data) {
+                    ElMessage.success('账户创建成功，头像上传中...');
                     // 账号创建成功，继续上传头像
                     const fileEl = fileInput.value;
                     if (fileEl && fileEl.files.length > 0) {
@@ -118,10 +105,10 @@ const submitForm = async () => {
                     }
                 } else {
                     // 账户创建失败，输出错误信息
-                    console.error('账户创建失败', accountResponse.data.message);
+                    ElMessage.error('账户创建失败，请检查提交的资料。');
                 }
             } catch (error) {
-                console.error('提交失败', error);
+                ElMessage.error('提交失败，请稍后再试。');
             }
         }
     })
@@ -140,11 +127,11 @@ const handleFileUpload = async (file, userId) => {
                 'Content-Type': 'multipart/form-data'
             }
         });
-
+        ElMessage.success('头像上传成功！');
         // 处理上传头像后的逻辑，例如更新头像显示
         form.picPath = response.url; // 假设后端返回新头像的URL
     } catch (uploadError) {
-        console.error('上传头像失败', uploadError);
+        ElMessage.error('上传头像失败，请稍后再试。');
     }
 };
 
@@ -207,6 +194,14 @@ const handleFileChange = async (event) => {
         font-size: 0.8em;
         margin-top: 5px;
     }
+    /* ...其它样式保持不变... */
+
+    // 按钮的容器样式，使用 flexbox 居中按钮
+    .submit-button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
 
     .submit-button {
         background-color: #409eff;
@@ -215,13 +210,17 @@ const handleFileChange = async (event) => {
         color: white;
         cursor: pointer;
         padding: 10px 20px;
-        margin-top: 10px;
-    }
+        margin-top: 10px; // 删除或者移动到 `.submit-button-container`
 
-    .submit-button:hover {
-        background-color: #66b1ff;
-    }
+        &:hover {
+            background-color: #66b1ff;
+        }
 
+        // 删除这里的 transform scale 属性，否则会影响居中
+        // &:hover {
+        //     transform: scale(1.05);
+        // }
+    }
     // ...其他样式保持不变...
 
     .form-container {

@@ -56,8 +56,10 @@ public class RoleController {
     @PutMapping
     @SaCheckPermission(value = "role::add", orRole = "admin")
     public SaResult add(@RequestBody @Validated RoleInsertVO vo) {
-        roleService.add(BeanUtil.copyProperties(vo, Role.class));
-        return SaResult.ok();
+        if(!roleService.add(vo)){
+            return SaResult.error().setMsg("新增失败");
+        }
+        return SaResult.ok().setMsg("success");
     }
 
     /**
