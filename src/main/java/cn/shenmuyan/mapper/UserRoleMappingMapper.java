@@ -28,7 +28,7 @@ public interface UserRoleMappingMapper {
 
     void deleteByUserId(@Param(value = "userId")int userId);
 
-    void insertBatch(@Param("accountId") int accountId, @Param("roleIds") Integer[] roleIds);
+    void insertBatch(@Param("userId") int userId, @Param("roleIds") Integer[] roleIds);
     List<UserRoleMapping> selectAll();
 
 }

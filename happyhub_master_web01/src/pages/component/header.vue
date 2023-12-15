@@ -6,6 +6,7 @@
       <a href="/#/eventList">分类</a>
       <el-dropdown is="nameDropDown">
         <span id="username" class="nameText">
+          <el-icon style="height: 15px"><LocationInformation /></el-icon>
           {{ city }}
           <el-icon style="height: 25px">
               <CaretBottom/>
@@ -47,7 +48,10 @@
         </el-icon>
         登录/注册
       </el-button>
-      <el-image v-if="userId" src="vite.svg" index="/userInfo" @click="jumpToUser"/>
+      <el-image v-if="userId"
+                :src="profileStore.profile.photoUrl"
+                index="/userInfo"
+                @click="jumpToUser"/>
     </div>
   </div>
 </template>
@@ -55,7 +59,7 @@
 <script setup>
 import router from "../../config/router.config.js";
 import {useProfileStore} from "../../stores/useProfile.js";
-import {UserFilled, Search, CaretBottom} from "@element-plus/icons-vue";
+import {UserFilled, Search, CaretBottom, LocationInformation} from "@element-plus/icons-vue";
 import {getCurrentInstance, ref, onMounted, reactive} from "vue";
 import axios from "axios";
 
@@ -108,7 +112,6 @@ onMounted(() => {
   height: 100%;
   width: 100%;
 
-  border: 0px red solid;
   border-radius: 5px;
   background-color: hotpink;
   box-shadow: 2px 4px 2px #c2bfc1;
@@ -184,6 +187,16 @@ onMounted(() => {
       background-color: #fdb5c1;
       border: none;
       box-shadow: 1px 1px 1px #ffffff;
+    }
+    .el-image{
+      width: 15%;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+    .el-image:hover{
+      width: 18%;
+      box-shadow: white 0px 2px 4px 3px;
+      transition: all 0.3s ease;
     }
   }
 }

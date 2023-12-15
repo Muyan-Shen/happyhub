@@ -195,7 +195,7 @@ const onRegister = (e, form) => {
     align-items: center;
 
     .el-tabs {
-      min-width: 280px;
+      min-width: 330px;
       padding: 0px;
       margin-left: auto;
       margin-right: 10%;

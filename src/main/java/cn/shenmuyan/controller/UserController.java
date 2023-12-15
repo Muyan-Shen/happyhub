@@ -3,9 +3,10 @@ package cn.shenmuyan.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
-import cn.shenmuyan.bean.Orders;
 import cn.shenmuyan.bean.User;
+import cn.shenmuyan.bean.UserInformation;
 import cn.shenmuyan.service.UserService;
+import cn.shenmuyan.vo.UserInformationVO;
 import cn.shenmuyan.vo.UserInsertVO;
 import cn.shenmuyan.vo.UserWhereVO;
 import com.github.pagehelper.PageHelper;
@@ -15,7 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,7 @@ public class UserController {
     public Map<String, Object> list(UserWhereVO userWhereVO,
                                     @RequestParam(defaultValue = "1") int page,
                                     @RequestParam(defaultValue = "10") int limit) {
+        log.info("userWhereVO:{}", userWhereVO);
         PageHelper.startPage(page, limit);//在查询之前使用,会自动的对紧接着的第一个查询进行分页
         List<User> list = userService.findAll(userWhereVO);
         PageInfo<User> pageInfo = new PageInfo<>(list);
@@ -55,10 +57,11 @@ public class UserController {
     }
 
     //关联角色
-    @PostMapping("/role")
+    @PostMapping("/{userId}/role")
     @SaCheckPermission(value = "account::role", orRole = "admin")
-    public SaResult role(@RequestParam Integer[] roleIds) {
-        userService.associationRole(StpUtil.getLoginIdAsInt(), roleIds);
+    public SaResult role(@PathVariable String userId,@RequestBody Integer[] roleIds) {
+        System.out.println(userId+ Arrays.toString(roleIds));
+        userService.associationRole(Integer.parseInt(userId), roleIds);
         return SaResult.ok();
     }
 
@@ -106,7 +109,7 @@ public class UserController {
                 .set("user",user);
     }
     /**
-     * 前台用户登出
+     * 后台用户登出
      * @return
      */
     @GetMapping("/logout2")
@@ -118,13 +121,37 @@ public class UserController {
         return SaResult.ok("注销成功");
     }
 
+    /**
+     * 后台用户信息
+     * @return 用户详细信息
+     */
+    @GetMapping("/profile")
+    public SaResult profile() {
+        UserInformation userInformation = userService.findUserInformationByLoginId(StpUtil.getLoginIdAsInt());
+        if(userInformation==null)return SaResult.error().setCode(400).setMsg("未查询到信息");
+        return SaResult.ok().setData(userInformation);
+    }
+
+    @PostMapping("/profile")
+    public SaResult profileUpdate(@RequestBody UserInformationVO userInformationVO) {
+        if(!userService.updateInformationByUserId(StpUtil.getLoginIdAsInt(), userInformationVO)){
+            return SaResult.error().setCode(400).setMsg("修改失败");
+        }
+        return SaResult.ok().setMsg("修改成功");
+    }
+
     @PostMapping("/register")
     public SaResult register(@RequestBody @Validated UserInsertVO userInsertVO){
         User user = userService.findByUsernameAndPassword(userInsertVO.getUsername(), userInsertVO.getPasswordHash());
         if (user != null){
             return SaResult.error().setCode(400).setMsg("用户已存在");
         }
-        userService.add(userInsertVO);
-        return SaResult.ok().setMsg("注册成功");
+        Integer integer = userService.add2(userInsertVO);
+        if(integer==-1){
+            return SaResult.error().setCode(400).setMsg("用户id查询失败");
+        }
+        HashMap<String,Integer> userId = new HashMap<>();
+        userId.put("userId",integer);
+        return SaResult.ok().setMsg("success").setData(userId);
     }
 }

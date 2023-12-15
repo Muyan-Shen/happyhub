@@ -62,8 +62,9 @@ const onLogin = async (e, form) => {
                     const loginResponse = await $http.post('/user/login2', user);
                     if (loginResponse.code === 200) { // 登录成功
                         resetRouters();
+
                         // 保存登录状态，跳转到首页
-                        profileStore.login(loginResponse.token, loginResponse.roles, loginResponse.permissions, loginResponse.account);
+                        profileStore.login(loginResponse.token, loginResponse.user.roles, loginResponse.user.roles.permissions, loginResponse.user);
                         const menuResponse = await $http.get('/menu/' + loginResponse.user.username);
                         // 存储菜单
                         serverMenus.value = menuResponse.data.menuTree;

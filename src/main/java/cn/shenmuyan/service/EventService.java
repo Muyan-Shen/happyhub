@@ -21,7 +21,7 @@ public interface EventService {
     public List<Events> findAll(EventWhereVO eventWhereVO);
     public Events findById(Integer eventId);
     void updateById(Events events);
-    void addEvent(EventInsertVO eventInsertVO);
+    Integer addEvent(EventInsertVO eventInsertVO);
     String findOrganizerUsername(Integer organizerId);
 
     String[] getCity();

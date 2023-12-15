@@ -10,7 +10,10 @@ spring:
       max-lifetime: 60000
        # 设置为30分钟，单位是毫秒
       connection-timeout: 60000 # 设置为60秒，单位是毫秒
-
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
   sql:
     init:
       schema-locations: classpath:sql/init-database.sql
@@ -23,6 +26,7 @@ mybatis:
   type-aliases-package: cn.shenmuyan.bean
   configuration:
     map-underscore-to-camel-case: true
+  type-handlers-package: cn.shenmuyan.typeHandler
 
 logging:
   level:
@@ -49,4 +53,7 @@ sa-token:
   token-style: uuid
   # 是否输出操作日志
   is-log: true
+
+file:
+  upload-path: file:${user.dir}/happyhub_master_web01/public/event
 

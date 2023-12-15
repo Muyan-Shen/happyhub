@@ -22,6 +22,9 @@ const routes = [
         path:'/home',
         name:'home',
         component:() => import('../pages/layout/Layout.vue'),
+        meta: {
+            noLogin: true
+        }
     },
     {
         path:'/userInfo',
@@ -67,15 +70,14 @@ const router = createRouter({
 
 router.beforeEach((to,from)=>{
     const profileStore = useProfileStore();
-    // TODO 方便开发先把登录判断去掉
-    // if(to.meta && 'noLogin' in to.meta){
-    //     if (to.meta.noLogin){
-    //         return true;
-    //     }
-    // }
-    // if (!profileStore.IsLogin){
-    //     return {name:'login'}
-    // }
+    if(to.meta && 'noLogin' in to.meta){
+        if (to.meta.noLogin){
+            return true;
+        }
+    }
+    if (!profileStore.IsLogin){
+        return {name:'login'}
+    }
 })
 
 export default router;
