@@ -67,6 +67,7 @@ const keyword = ref('');
 const profileStore = useProfileStore();
 const userId = profileStore.profile.id;
 const $http = getCurrentInstance().appContext.config.globalProperties.$http;
+const instance = getCurrentInstance();
 const city = ref('')
 const citys = ref([])
 const ip = ref('')
@@ -82,11 +83,7 @@ const OnSearch = (e) => {
 }
 const searchByCity = (e, city) => {
   e.preventDefault();
-  $http.get('/event/getAll?keyword=' + city).then(resp => {
-    if (resp.data) {
-      profileStore.eventList = resp.data.list
-    }
-  })
+  instance.emit("GetCity",city)
 }
 const jumpToUser = () => {
   router.push("/userInfo")
