@@ -43,8 +43,8 @@ public class EventController {
 
     @GetMapping("getAll")
     public SaResult getAll(@RequestParam(value = "keyword", defaultValue = "", required = false) String keyword,
-                           @RequestParam(defaultValue = "1", required = false) int pageNum,
-                           @RequestParam(defaultValue = "16", required = false) int limit) {
+                           @RequestParam(name="pageNum", defaultValue = "1", required = false) int pageNum,
+                           @RequestParam(name="limit", defaultValue = "16", required = false) int limit) {
         EventWhereVO vo = new EventWhereVO();
         if (!keyword.isEmpty()) {
             vo.setOrganizer(keyword);
@@ -52,11 +52,11 @@ public class EventController {
             vo.setTitle(keyword);
             vo.setLocation(keyword);
         }
-        List<Events> all = eventService.findAll(vo);
-        //设置分页
+        //设置分页，会自动地对紧接着的第一个查询进行分页
         PageHelper.startPage(pageNum,limit);
+        List<Events> all = eventService.findAll(vo);
         PageInfo<Events> events = new PageInfo<>(all);
-        return SaResult.ok().setData(events);
+        return SaResult.ok().setData(events).set("count",events.getTotal());
     }
 
     @PostMapping("/getAll")

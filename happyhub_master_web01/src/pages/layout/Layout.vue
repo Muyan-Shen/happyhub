@@ -64,8 +64,10 @@ const jumpToEventInfo = (eventId) => {
   })
 }
 const getEventLists = () => {
-  $http.get('/event/getAll', {"pageNum": pageInfo.page, "limit": pageInfo.limit}).then(resp => {
+  $http.get(`/event/getAll?pageNum=${pageInfo.page}&limit=${pageInfo.limit}`).then(resp => {
+    console.log(pageInfo.page)
     profileStore.eventList = resp.data.list;
+    pageInfo.total = resp.count;
   })
 }
 onMounted(() => {
