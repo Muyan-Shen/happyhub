@@ -2,6 +2,8 @@ package cn.shenmuyan.service;
 
 import cn.shenmuyan.bean.Orders;
 import cn.shenmuyan.bean.User;
+import cn.shenmuyan.bean.UserInformation;
+import cn.shenmuyan.vo.UserInformationVO;
 import cn.shenmuyan.vo.UserInsertVO;
 import cn.shenmuyan.vo.UserWhereVO;
 import org.springframework.stereotype.Service;

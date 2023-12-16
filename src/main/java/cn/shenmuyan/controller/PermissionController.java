@@ -40,12 +40,13 @@ public class PermissionController {
      */
     @GetMapping
     @SaCheckPermission(value =  "permission:list",orRole = "admin")
-    public SaResult list(String name,
+    public SaResult list(String id ,
+                         String name,
                          String code,
                          @RequestParam(defaultValue = "1") int page,
                          @RequestParam(defaultValue = "10") int limit) {
         PageHelper.startPage(page,limit);
-        List<Permission> list = permissionService.findAll(name, code);
+        List<Permission> list = permissionService.findAll(id,name, code);
         PageInfo<Permission> pageInfo = new PageInfo<>(list);
         return SaResult.ok()
                 .setData(pageInfo.getList())
@@ -56,19 +57,19 @@ public class PermissionController {
     @SaCheckPermission(value = "permission:add",orRole = "admin")
     public SaResult add(@RequestBody @Validated PermissionInsertVO vo){
         permissionService.add(BeanUtil.copyProperties(vo,Permission.class));
-        return SaResult.ok();
+        return SaResult.ok("success");
     }
 
     /**
      * 删除
-     * @param ids
+     * @param id
      * @return
      */
     @SaCheckPermission(value = "permission:delete",orRole = "admin")
     @DeleteMapping
-    public SaResult deleteByIds(Integer ... ids){
-        permissionService.deleteById(ids);
-        return SaResult.ok();
+    public SaResult deleteByIds(Integer id){
+        permissionService.deleteById(id);
+        return SaResult.ok("success");
     }
 
     @GetMapping("/{id}")
@@ -79,7 +80,9 @@ public class PermissionController {
     }
     @PostMapping("/{id}")
     @SaCheckPermission(value = "permission:update",orRole = "admin")
-    public SaResult updateById(@PathVariable Integer id,Permission permission){
+    public SaResult updateById(@PathVariable Integer id,@RequestBody PermissionInsertVO vo){
+        System.out.println(vo);
+        Permission permission = BeanUtil.copyProperties(vo,Permission.class);
         permission.setId(id);
         permissionService.updateById(permission);
         return SaResult.ok();

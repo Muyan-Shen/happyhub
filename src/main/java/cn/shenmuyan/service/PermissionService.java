@@ -14,10 +14,10 @@ import java.util.List;
  */
 
 public interface PermissionService {
-    List<Permission> findAll(String name, String password);
+    List<Permission> findAll(String id ,String name, String password);
     Permission findById(Integer id);
     void add(Permission permission);
-    void deleteById(Integer ... ids);
+    boolean deleteById(Integer  id);
 
-    void updateById(Permission permission);
+    boolean updateById(Permission permission);
 }

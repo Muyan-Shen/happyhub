@@ -28,6 +28,7 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
+    User selectById(Integer id);
     List<User> selectAll(UserWhereVO where);
 
     User selectByUsernameAndPasswordHash(@Param("username") String username, @Param("passwordHash")String passwordHash);

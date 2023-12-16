@@ -16,6 +16,16 @@
         <collection property="roles" ofType="cn.shenmuyan.bean.Role"
                     column="id" select="cn.shenmuyan.mapper.RoleMapper.selectByUserId"/>
     </resultMap>
+    <resultMap id="BaseResultMap1" type="cn.shenmuyan.bean.User">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="passwordHash" column="password_hash" jdbcType="VARCHAR"/>
+        <result property="photoUrl" column="photo_url" jdbcType="VARCHAR"/>
+        <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+        <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
+        <result property="isDelete" column="is_delete" jdbcType="OTHER"/>
+    </resultMap>
 
     <sql id="Base_Column_List">
         id,username,email,
@@ -70,6 +80,12 @@
     </select>
     <select id="selectAllId" resultType="java.lang.Integer">
         select id from user
+    </select>
+    <select id="selectById" resultMap="BaseResultMap1">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where id = #{id,jdbcType=INTEGER}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

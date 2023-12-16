@@ -22,8 +22,8 @@ public class PermissionServiceImpl implements PermissionService {
     @Resource
     private PermissionMapper permissionMapper;
     @Override
-    public List<Permission> findAll(String name, String password) {
-        return permissionMapper.selectAll(name, password);
+    public List<Permission> findAll(String id,String name, String password) {
+        return permissionMapper.selectAll(id,name, password);
     }
 
     @Override
@@ -41,13 +41,13 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public void deleteById(Integer ... ids) {
-        permissionMapper.deleteByIds(ids);
+    public boolean deleteById(Integer id) {
+        return permissionMapper.deleteById(id);
     }
 
     @Override
-    public void updateById(Permission permission) {
-        permissionMapper.updateByPrimaryKeySelective(permission);
+    public boolean updateById(Permission permission) {
+        return permissionMapper.updateByPrimaryKeySelective(permission);
     }
 
 }
