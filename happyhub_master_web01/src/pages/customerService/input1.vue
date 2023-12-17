@@ -12,11 +12,13 @@ const  input = ref('')
 
 const emit = defineEmits(['sendData'])
 const send = ()=>{
-    let param={
-        input:input.value
+    if(input.value.trim() !== '') {
+        let param = {
+            input: input.value
+        }
+        emit('sendData', param)
+        input.value = ''
     }
-    //传递给父组件
-    emit('sendData',param)
 }
 </script>
 

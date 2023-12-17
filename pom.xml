@@ -127,9 +127,25 @@
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
-
+    <repositories>
+        <repository>
+            <id>虹猫</id>
+            <url>http://192.168.0.4:8081/repository/maven-public/</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>true</enabled></snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>虹猫</id>
+            <url>http://192.168.0.4:8081/repository/maven-public/</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>true</enabled></snapshots>
+        </pluginRepository>
+    </pluginRepositories>
     <dependencyManagement>
         <dependencies>
             <dependency>

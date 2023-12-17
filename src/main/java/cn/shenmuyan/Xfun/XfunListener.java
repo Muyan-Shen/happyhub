@@ -1,21 +1,20 @@
 package cn.shenmuyan.Xfun;
 
-import cn.shenmuyan.Xfun.XfunReceieveRequest;
-import cn.shenmuyan.Xfun.XfunSendRequest;
 import cn.shenmuyan.vo.MsgDTO;
 import com.alibaba.fastjson.JSONObject;
+import com.sun.xml.internal.ws.resources.UtilMessages;
 import lombok.Builder;
 import okhttp3.*;
-import org.springframework.stereotype.Component;
-
+import org.jetbrains.annotations.NotNull;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import javax.validation.constraints.NotNull;
+
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Title: XfunListener
@@ -42,6 +41,9 @@ public class XfunListener extends WebSocketListener {
     public boolean isFinished() {
         return is_finished;
     }
+    public void setFinished() {
+        this.is_finished=false;
+    }
 
     public List<MsgDTO> getHistoryList() {
         return historyList;
@@ -60,25 +62,18 @@ public class XfunListener extends WebSocketListener {
     public void init_chat(){
         is_finished = false;
     }
-    // 接收到消息如何处理
     @Override
     public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
         super.onMessage(webSocket, text);
 
-        // System.out.println("接收到消息：" + text);
+         System.out.println("接收到消息：" + text);
 
-        // 消息格式处理
         XfunReceieveRequest xfunReceieveRequest = JSONObject.parseObject(text, XfunReceieveRequest.class);
 
-
-        //状态判断
         if(xfunReceieveRequest.getHeader().getCode() == 0) {
-            // 0的话 ，获取状态成功
             XfunReceieveRequest.PayloadDTO payload = xfunReceieveRequest.getPayload();
             XfunReceieveRequest.PayloadDTO.ChoicesDTO choices = payload.getChoices();
-            //处理得到的答案
             List<MsgDTO> msgs = choices.getText();
-            //打上index
             for(int i = 0; i < msgs.size(); i++){
                 MsgDTO msg =msgs.get(i);
                 msg.setIndex(historyList.size()+i);
@@ -86,25 +81,20 @@ public class XfunListener extends WebSocketListener {
             }
 
             if(xfunReceieveRequest.getHeader().getStatus() == 2){
-                //表示会话来到最后一个结果
                 XfunReceieveRequest.PayloadDTO.UsageDTO.TextDTO text1 = payload.getUsage().getText();
                 System.out.println("PromptTokecn：" + text1.getPromptTokens());
                 System.out.println("QuestionToken：" + text1.getQuestionTokens());
                 System.out.println("CompletionToken：" + text1.getCompletionTokens());
                 System.out.println("TotalToken"+text1.getTotalTokens());
 
-                is_finished = true;
-
-                // 消息整合
                 StringBuilder message = new StringBuilder();
                 for(MsgDTO msg: historyList){
                     message.append(msg.getContent());
                 }
                 deleteHistory();
                 answer = message.toString();
-                //断开连接
-                // webSocket.close(3,"客户端断开连接");
 
+                is_finished = true;
 
             }
         }
@@ -144,7 +134,6 @@ public class XfunListener extends WebSocketListener {
         return httpUrl.toString();
     }
 
-    // msgs和uid 转成 XfunSendRequest
     public XfunSendRequest getSendRequest(String uid, List<MsgDTO> msgs) {
         XfunSendRequest xfunSendRequest = new XfunSendRequest();
         XfunSendRequest.Header header = new XfunSendRequest.Header();
@@ -163,13 +152,10 @@ public class XfunListener extends WebSocketListener {
         return xfunSendRequest;
     }
 
-    /**
-     *  发送信息
-     */
+
     public XfunListener sendMsg(String uid, List<MsgDTO> msgs, XfunListener webSocketListener) throws Exception {
-        // 获取鉴权url
+
         String url = getAuthUrl(hostUrl,apiSecret,apiKey);
-        //建立请求
         OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
         Request request = new Request.Builder().url(url).build();
 
@@ -178,9 +164,8 @@ public class XfunListener extends WebSocketListener {
         XfunSendRequest xfunSendRequest = this.getSendRequest(uid, msgs);
         System.out.println("params:" + JSONObject.toJSONString(xfunSendRequest));
 
-        //发送消息
-        webSocket.send(JSONObject.toJSONString(xfunSendRequest));
 
+        webSocket.send(JSONObject.toJSONString(xfunSendRequest));
         return webSocketListener;
     }
 }

@@ -46,7 +46,7 @@ public class XfunSendRequest {
             @JsonProperty("temperature")
             private Double temperature = 0.5;
             @JSONField(name = "max_tokens")
-            private Integer maxTokens = 2048;
+            private Integer maxTokens = 8192;
         }
     }
 

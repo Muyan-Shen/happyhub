@@ -4,6 +4,7 @@ import {ElMessage} from "element-plus";
 import {useProfileStore} from "../stores/useProfile.js";
 
 const http = axios.create({
+    withCredentials: true ,// 确保携带 Cookie
     baseURL: 'http://localhost:8000',
     timeout: 10000,
     headers: {

@@ -1,13 +1,12 @@
 package cn.shenmuyan.Xfun;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.shenmuyan.vo.MsgDTO;
-import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Component;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,18 +20,36 @@ import java.util.List;
 @Service
 public class AiManager {
 
-
-    public XfunListener xfunListener; // 实现发送接受消息的websockect
+    private Integer time = 5;
+    private Integer sessionId;
+    public XfunListener xfunListener;
     private List<MsgDTO> messageHistory = new ArrayList<>();
+    private LocalDateTime lastInteraction;
+    public AiManager(){
+        init();
+    }
 
+    public void setSessionId(Integer sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public void setXfunListener(XfunListener xfunListener) {
+        this.xfunListener = xfunListener;
+    }
     public void init(){
         messageHistory.clear();
         String presupposedAnswer = "您好，我是小M，有什么可以帮到您的吗？";
         MsgDTO msgDTO = new MsgDTO();
         msgDTO.setRole("bot");
         msgDTO.setContent(presupposedAnswer);
-        msgDTO.setIndex(messageHistory.size()); // 设置这是第几条消息
+        msgDTO.setIndex(messageHistory.size());
+        msgDTO.setSendAt(LocalDateTime.now());
         messageHistory.add(msgDTO);
+        lastInteraction = LocalDateTime.now();
+    }
+
+    public void updateLastInteractionTime() {
+        lastInteraction = LocalDateTime.now();
     }
 
     public List<MsgDTO> getMessages(){
@@ -43,23 +60,17 @@ public class AiManager {
         MsgDTO msgDTO = new MsgDTO();
         msgDTO.setRole("user");
         msgDTO.setContent(question);
-        msgDTO.setIndex(messageHistory.size()); // 设置这是第几条消息
+        msgDTO.setIndex(messageHistory.size());
+        msgDTO.setSendAt(LocalDateTime.now());
         messageHistory.add(msgDTO);
+        updateLastInteractionTime();
     }
 
-    public List<MsgDTO> Chat(){
-        //8位随机数
-        String random = String.valueOf((int)((Math.random()*9+1)*10000000));
-        //添加到消息历史
-
-
-        xfunListener.init_chat();
+    public List<MsgDTO> chat(){
+        String random = String.valueOf(StpUtil.getLoginIdAsInt());
         try {
-            // 获取接受消息的webSoeckt
             XfunListener webSocket = xfunListener.sendMsg(random, messageHistory, xfunListener);
-            //等待weSocked返回消息 , 这是一个笨笨的处理方法。
             int cnt = 300;
-            //最长等待30S
             while (!webSocket.isFinished() && cnt > 0){
                 Thread.sleep(1000);  //休息1S
                 cnt--;
@@ -67,32 +78,45 @@ public class AiManager {
             if(cnt == 0){
                 return null;
             }
-
+            webSocket.setFinished();
             String answer = webSocket.getAnswer();
-            //把机器人回复也添加到历史记录中
+            System.out.println("answer:"+answer);
             MsgDTO replyDTO = new MsgDTO();
             replyDTO.setRole("bot");
             replyDTO.setContent(answer);
             replyDTO.setIndex(messageHistory.size());
+            replyDTO.setSendAt(LocalDateTime.now());
             messageHistory.add(replyDTO);
-            //返回答案
             return messageHistory;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-    public static void main(String[] args) {
-        AiManager ai = new AiManager();
-        ai.xfunListener =  XfunListener.builder()
-                .apiKey("23c5e09fe931746d2691698913eb25a8")
-                .apiSecret("MjU2Njk2NDQ5Y2MxZDBmZGRiNGVmNGMw")
-                .appid("640f368d")
-                .hostUrl("https://spark-api.xf-yun.com/v3.1/chat")
-                .build();
 
-        System.out.println(ai.testChat("你好啊！"));
-        System.out.println(ai.testChat("vue组件中的ref是什么作用"));
+
+    @Scheduled(fixedRate = 60000) // 每分钟执行一次
+    public void cleanUpExpiredSessions() {
+        if (lastInteraction != null && Duration.between(lastInteraction, LocalDateTime.now()).toMinutes() >= time) {
+
+            saveMessagesToDatabase();
+            resetSession();
+        }
     }
+
+    // 保存消息到数据库
+    private void saveMessagesToDatabase() {
+        // 使用JDBC或Spring Data JPA将 messageHistory 保存到数据库
+        // ...
+    }
+
+    // 清理会话
+    private void resetSession() {
+        init();
+        lastInteraction = null;
+
+    }
+
+
 
 
 }

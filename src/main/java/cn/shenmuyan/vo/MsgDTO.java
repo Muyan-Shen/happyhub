@@ -10,6 +10,8 @@ package cn.shenmuyan.vo;
 import lombok.Data;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 /**
  * 消息对象
  *
@@ -25,6 +27,8 @@ public class MsgDTO {
      */
     private String content;
     private Integer index;
+
+    private LocalDateTime sendAt;
 
     @Getter
     public static enum Role {
