@@ -1,6 +1,7 @@
 package cn.shenmuyan.service;
 
 import cn.shenmuyan.bean.Orders;
+import cn.shenmuyan.bean.Role;
 import cn.shenmuyan.bean.User;
 import cn.shenmuyan.bean.UserInformation;
 import cn.shenmuyan.vo.UserInformationVO;
@@ -43,4 +44,6 @@ public interface UserService {
     boolean updateUser(User user);
 
     List<Integer> findAllId();
+
+
 }

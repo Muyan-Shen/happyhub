@@ -22,5 +22,7 @@ public interface RoleService {
     void updateById(Role role);
 
     void associationPermission(Integer roleId, Integer[] permissionIds);
+
+    List<String> findAllRole();
 }
 

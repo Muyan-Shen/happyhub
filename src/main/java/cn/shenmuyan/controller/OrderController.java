@@ -265,4 +265,9 @@ public class OrderController {
         }
         return SaResult.error("支付失败");
     }
+
+    @GetMapping("/getAllOrder")
+    public SaResult getAllOrder(@RequestParam(value = "userId") Integer userId){
+        return SaResult.ok().setData(orderService.getAllOrder(userId));
+    }
 }

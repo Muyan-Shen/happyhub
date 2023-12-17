@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 public class NotificationInsertVO {
-    @NotNull(message = "用户id不能为空")
     private Integer userId;
     @NotBlank(message = "标题不能为空")
     private String title;

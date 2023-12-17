@@ -66,4 +66,9 @@ public class RoleServiceImpl implements RoleService {
         //添加新的关联
         rolePermissionMappingMapper.insertBatch(roleId, permissionIds);
     }
+
+    @Override
+    public List<String> findAllRole() {
+        return roleMapper.selectAllRole();
+    }
 }

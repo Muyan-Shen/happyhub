@@ -24,4 +24,6 @@ public interface NotificationService {
     void deleteById(Integer id);
     //添加通知
     void add(NotificationInsertVO vo);
+
+    void addByRole(String role,String  title,String message);
 }

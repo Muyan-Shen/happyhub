@@ -8,6 +8,7 @@ import cn.shenmuyan.service.OrderService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 订单接口实现类
@@ -45,6 +46,11 @@ public class OrderServiceImpl implements OrderService {
     public int updateOrder(Orders order) {
         int i = ordersMapper.updateByPrimaryKeySelective(order);
         return i;
+    }
+
+    @Override
+    public List<Orders> getAllOrder(Integer userId) {
+        return ordersMapper.findAllOrder(userId);
     }
 
 

@@ -2,6 +2,8 @@ package cn.shenmuyan.mapper;
 
 import cn.shenmuyan.bean.Orders;
 
+import java.util.List;
+
 /**
  * 订单表Mapper
 * @author 50414
@@ -23,4 +25,5 @@ public interface OrdersMapper {
 
     int updateByPrimaryKey(Orders record);
 
+    List<Orders> findAllOrder(Integer userId);
 }
