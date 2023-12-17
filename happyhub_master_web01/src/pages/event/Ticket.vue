@@ -31,7 +31,7 @@
 <script setup>
 import topHeader from '../component/header.vue'
 import {useRoute} from "vue-router";
-import {nextTick, onBeforeMount, onMounted, ref} from "vue";
+import {nextTick, onBeforeMount, onMounted, ref, watch} from "vue";
 import {useProfileStore} from "../../stores/useProfile.js";
 import {DocumentRemove} from "@element-plus/icons-vue";
 import router from "../../config/router.config.js";
@@ -48,6 +48,16 @@ const ticket = ref({
 })
 
 const useProfileStore1 = useProfileStore();
+
+watch(
+    () => useProfileStore1.ticket,
+    (val) => {
+      if (val) {
+        ticket.value = val;
+        useProfileStore1.ticket = '';
+      }
+    },
+);
 
 const getTicket = () => {
   ticket.value = useProfileStore1.ticket
