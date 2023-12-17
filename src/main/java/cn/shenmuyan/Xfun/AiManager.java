@@ -1,7 +1,10 @@
 package cn.shenmuyan.Xfun;
 
 import cn.shenmuyan.vo.MsgDTO;
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,30 +19,46 @@ import java.util.List;
  */
 
 @Service
-@ComponentScan(basePackages = {"cn.shenmuyan.Xfun", "其他需要扫描的包"})
 public class AiManager {
 
 
-    @Resource
-    private XfunListener xfunListener;  // 实现发送接受消息的websockect
+    public XfunListener xfunListener; // 实现发送接受消息的websockect
+    private List<MsgDTO> messageHistory = new ArrayList<>();
 
-    public String testChat(String question){
+    public void init(){
+        messageHistory.clear();
+        String presupposedAnswer = "您好，我是小M，有什么可以帮到您的吗？";
+        MsgDTO msgDTO = new MsgDTO();
+        msgDTO.setRole("bot");
+        msgDTO.setContent(presupposedAnswer);
+        msgDTO.setIndex(messageHistory.size()); // 设置这是第几条消息
+        messageHistory.add(msgDTO);
+    }
 
-        //8位随机数
-        String random = String.valueOf((int)((Math.random()*9+1)*10000000));
-        List<MsgDTO> msgs = new ArrayList<>();
-        MsgDTO msgDTO = new MsgDTO( );
+    public List<MsgDTO> getMessages(){
+        return messageHistory;
+    }
+
+    public void userAddMessage(String question){
+        MsgDTO msgDTO = new MsgDTO();
         msgDTO.setRole("user");
         msgDTO.setContent(question);
-        msgDTO.setIndex(0);
-        msgs.add(msgDTO);
+        msgDTO.setIndex(messageHistory.size()); // 设置这是第几条消息
+        messageHistory.add(msgDTO);
+    }
+
+    public List<MsgDTO> Chat(){
+        //8位随机数
+        String random = String.valueOf((int)((Math.random()*9+1)*10000000));
+        //添加到消息历史
+
 
         xfunListener.init_chat();
         try {
             // 获取接受消息的webSoeckt
-            XfunListener webSocket = xfunListener.sendMsg(random, msgs, xfunListener);
+            XfunListener webSocket = xfunListener.sendMsg(random, messageHistory, xfunListener);
             //等待weSocked返回消息 , 这是一个笨笨的处理方法。
-            int cnt = 30;
+            int cnt = 300;
             //最长等待30S
             while (!webSocket.isFinished() && cnt > 0){
                 Thread.sleep(1000);  //休息1S
@@ -50,8 +69,14 @@ public class AiManager {
             }
 
             String answer = webSocket.getAnswer();
+            //把机器人回复也添加到历史记录中
+            MsgDTO replyDTO = new MsgDTO();
+            replyDTO.setRole("bot");
+            replyDTO.setContent(answer);
+            replyDTO.setIndex(messageHistory.size());
+            messageHistory.add(replyDTO);
             //返回答案
-            return answer;
+            return messageHistory;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -66,6 +91,7 @@ public class AiManager {
                 .build();
 
         System.out.println(ai.testChat("你好啊！"));
+        System.out.println(ai.testChat("vue组件中的ref是什么作用"));
     }
 
 

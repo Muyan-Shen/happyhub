@@ -6,6 +6,7 @@ import cn.shenmuyan.vo.MsgDTO;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Builder;
 import okhttp3.*;
+import org.springframework.stereotype.Component;
 
 
 import javax.crypto.Mac;
@@ -22,7 +23,6 @@ import java.util.*;
  * @Package cn.shenmuyan.Xfun
  * @Date 2023/12/17 7:51
  */
-
 @Builder
 public class XfunListener extends WebSocketListener {
     private String hostUrl;
@@ -154,13 +154,12 @@ public class XfunListener extends WebSocketListener {
         XfunSendRequest.ParameterDTO parameterDTO = new XfunSendRequest.ParameterDTO();
         XfunSendRequest.ParameterDTO.ChatDTO chatDTO = new XfunSendRequest.ParameterDTO.ChatDTO();
         parameterDTO.setChat(chatDTO);
-        xfunSendRequest.setParameterDTO(parameterDTO);
+        xfunSendRequest.setParameter(parameterDTO);
         XfunSendRequest.PayloadDTO payloadDTO = new XfunSendRequest.PayloadDTO();
         XfunSendRequest.PayloadDTO.MessageDTO messageDTO = new XfunSendRequest.PayloadDTO.MessageDTO();
         messageDTO.setText(msgs);
         payloadDTO.setMessage(messageDTO);
         xfunSendRequest.setPayload(payloadDTO);
-        System.out.println(xfunSendRequest);
         return xfunSendRequest;
     }
 

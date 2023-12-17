@@ -22,7 +22,7 @@ public class XfunSendRequest {
     private Header header;
 
     @JsonProperty("parameter")
-    private ParameterDTO parameterDTO;
+    private ParameterDTO parameter;
 
     @JsonProperty("payload")
     private PayloadDTO payload;
@@ -34,7 +34,7 @@ public class XfunSendRequest {
         private String uid;
     }
 
-    @ Data
+    @Data
     public static class ParameterDTO{
 
         @JsonProperty("chat")
