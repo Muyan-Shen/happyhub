@@ -30,5 +30,6 @@ public interface UserRoleMappingMapper {
 
     void insertBatch(@Param("userId") int userId, @Param("roleIds") Integer[] roleIds);
     List<UserRoleMapping> selectAll();
+    List<Integer> searchByRoleId(@Param(value = "roleId")int roleId);
 
 }

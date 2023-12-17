@@ -3,11 +3,13 @@ package cn.shenmuyan.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
+import cn.hutool.core.bean.BeanUtil;
 import cn.shenmuyan.bean.User;
 import cn.shenmuyan.bean.UserInformation;
 import cn.shenmuyan.service.UserService;
 import cn.shenmuyan.vo.UserInformationVO;
 import cn.shenmuyan.vo.UserInsertVO;
+import cn.shenmuyan.vo.UserUpdateVO;
 import cn.shenmuyan.vo.UserWhereVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -154,4 +156,19 @@ public class UserController {
         userId.put("userId",integer);
         return SaResult.ok().setMsg("success").setData(userId);
     }
+
+    @PostMapping("/update")
+    public SaResult update(@RequestBody@Validated UserUpdateVO vo){
+        System.out.println(vo);
+        User user = BeanUtil.copyProperties(vo, User.class);
+        userService.updateUser(user);
+        return SaResult.ok("修改成功");
+    }
+
+    @GetMapping("/getById")
+    public SaResult getByid(@RequestParam(value = "id") Integer id){
+        User user = userService.findById(id);
+        return SaResult.ok().setData(user);
+    }
+
 }

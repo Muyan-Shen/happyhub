@@ -15,6 +15,15 @@
         <collection property="permissions" ofType="cn.shenmuyan.bean.Permission"
                     column="id" select="cn.shenmuyan.mapper.PermissionMapper.selectByRoleId"/>
     </resultMap>
+    <resultMap id="BaseResultMap1" type="cn.shenmuyan.bean.Role">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="code" column="code" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status" jdbcType="TINYINT"/>
+    </resultMap>
 
 
     <sql id="Base_Column_List">
@@ -54,6 +63,12 @@
         select <include refid="Base_Column_List"/>
         from role
         where code = #{code,jdbcType=VARCHAR}
+    </select>
+    <select id="selectAllRole" resultType="java.lang.String">
+        select distinct name from role
+    </select>
+    <select id="selectByName" resultType="java.lang.Integer">
+        select id from role where name = #{name,jdbcType=VARCHAR}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

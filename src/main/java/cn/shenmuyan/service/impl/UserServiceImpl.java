@@ -122,6 +122,9 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean updateUser(User user) {
+        if(user.getPasswordHash()==null){
+        user.setPasswordHash(MD5.create().digestHex(user.getPasswordHash()));
+        }
         return userMapper.updateByPrimaryKeySelective(user);
     }
 
@@ -129,4 +132,5 @@ public class UserServiceImpl implements UserService {
     public List<Integer> findAllId() {
         return userMapper.selectAllId();
     }
+
 }

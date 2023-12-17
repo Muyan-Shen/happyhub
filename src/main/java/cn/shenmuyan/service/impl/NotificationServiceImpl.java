@@ -3,6 +3,8 @@ package cn.shenmuyan.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.shenmuyan.bean.Notifications;
 import cn.shenmuyan.mapper.NotificationsMapper;
+import cn.shenmuyan.mapper.RoleMapper;
+import cn.shenmuyan.mapper.UserRoleMappingMapper;
 import cn.shenmuyan.service.NotificationService;
 import cn.shenmuyan.vo.NotificationInsertVO;
 import cn.shenmuyan.vo.NotificationUpdateVO;
@@ -22,6 +24,10 @@ import java.util.List;
 public class NotificationServiceImpl implements NotificationService {
     @Resource
     private NotificationsMapper notificationsMapper;
+    @Resource
+    private UserRoleMappingMapper userRoleMappingMapper;
+    @Resource
+    private RoleMapper roleMapper;
     @Override
     public List<Notifications> selectAll(NotificationWhereVO notificationWhereVO) {
         return notificationsMapper.selectAll(notificationWhereVO);
@@ -47,5 +53,19 @@ public class NotificationServiceImpl implements NotificationService {
     public void add(NotificationInsertVO vo) {
         Notifications notifications = BeanUtil.copyProperties(vo, Notifications.class);
         notificationsMapper.insertSelective(notifications);
+    }
+
+    @Override
+    public void addByRole(String role, String title, String message) {
+        Notifications notifications=new Notifications();
+        notifications.setTitle(title);
+        notifications.setMessage(message);
+        Integer roleId = roleMapper.selectByName(role);
+        List<Integer> userIds = userRoleMappingMapper.searchByRoleId(roleId);
+        for (Integer userId : userIds) {
+            notifications.setUserId(userId);
+            notifications.setNotificationId(null);
+            notificationsMapper.insertSelective(notifications);
+        }
     }
 }

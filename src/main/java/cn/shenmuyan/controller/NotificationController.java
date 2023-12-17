@@ -2,7 +2,9 @@ package cn.shenmuyan.controller;
 
 import cn.dev33.satoken.util.SaResult;
 import cn.shenmuyan.bean.Notifications;
+import cn.shenmuyan.bean.Role;
 import cn.shenmuyan.service.NotificationService;
+import cn.shenmuyan.service.RoleService;
 import cn.shenmuyan.service.UserService;
 import cn.shenmuyan.vo.NotificationInsertVO;
 import cn.shenmuyan.vo.NotificationUpdateVO;
@@ -26,6 +28,8 @@ public class NotificationController {
     private NotificationService notificationService;
     @Resource
     private UserService userService;
+    @Resource
+    private RoleService roleService;
     @GetMapping("/getAll")
     public SaResult getAll(@RequestParam(value = "keyword", defaultValue = "", required = false) String keyword){
         NotificationWhereVO notificationWhereVO=new NotificationWhereVO();
@@ -40,6 +44,12 @@ public class NotificationController {
     @PostMapping("/addNotification")
     public SaResult addNotification(@RequestBody @Validated NotificationInsertVO vo){
         notificationService.add(vo);
+        return SaResult.ok("创建成功");
+    }
+
+    @PostMapping("/addNotificationByRole")
+    public SaResult addNotificationByRole(@RequestParam(value = "role") String role,@RequestBody @Validated NotificationInsertVO vo){
+        notificationService.addByRole(role, vo.getTitle(), vo.getMessage());
         return SaResult.ok("创建成功");
     }
 
@@ -66,7 +76,12 @@ public class NotificationController {
     @GetMapping("/getAllUserId")
     public SaResult getAllUserId(){
         List<Integer> userIds = userService.findAllId();
-        System.out.println(userIds);
         return SaResult.ok().set("userIds",userIds);
+    }
+
+    @GetMapping("/getAllRole")
+    public SaResult getAllRole(){
+        List<String> roles=roleService.findAllRole();
+        return SaResult.ok().set("roles",roles);
     }
 }

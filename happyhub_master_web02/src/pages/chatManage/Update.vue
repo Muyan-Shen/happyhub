@@ -17,7 +17,7 @@
                 <el-table-column prop="title" align="center" label="通知标题" min-width="80"/>
                 <el-table-column prop="message" align="center" label="通知内容" min-width="80"/>
                 <el-table-column prop="status" align="center" label="状态" min-width="80"/>
-                <el-table-column prop="created_at" align="center" label="发布时间" min-width="80"/>
+                <el-table-column prop="createdAt" align="center" label="发布时间" min-width="80"/>
                 <el-table-column align="center" label="操作" min-width="80">
                     <template #default="scope">
                         <el-button size="small" @click="handleEdit(scope.row),dialogFormVisible=true">修改</el-button>
@@ -76,6 +76,7 @@ const getNotificationList = () => {
     $http.get('/notification/getAll?keyword=' + keyword.value).then(resp => {
         notificationList.value = resp.data;
     })
+  console.log(notificationList)
 }
 
 

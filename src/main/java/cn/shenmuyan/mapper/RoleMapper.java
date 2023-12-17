@@ -31,4 +31,8 @@ public interface RoleMapper {
 
     void deleteByIds(@Param("ids") Integer[] ids);
     Role selectByCode(String code);
+
+    List<String> selectAllRole();
+
+    Integer selectByName(@Param("name")String name);
 }
