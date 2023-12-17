@@ -1,10 +1,12 @@
 package cn.shenmuyan.controller;
 
 import cn.dev33.satoken.util.SaResult;
+import cn.hutool.core.bean.BeanUtil;
 import cn.shenmuyan.bean.Events;
 import cn.shenmuyan.service.EventService;
 import cn.shenmuyan.service.SeatService;
 import cn.shenmuyan.vo.EventInsertVO;
+import cn.shenmuyan.vo.EventUpdateVO;
 import cn.shenmuyan.vo.EventWhereVO;
 import cn.shenmuyan.vo.SeatInsertVO;
 import com.github.pagehelper.PageHelper;
@@ -42,8 +44,8 @@ public class EventController {
 
     @GetMapping("getAll")
     public SaResult getAll(@RequestParam(value = "keyword", defaultValue = "", required = false) String keyword,
-                           @RequestParam(defaultValue = "1", required = false) int pageNum,
-                           @RequestParam(defaultValue = "16", required = false) int limit) {
+                           @RequestParam(name="pageNum", defaultValue = "1", required = false) int pageNum,
+                           @RequestParam(name="limit", defaultValue = "16", required = false) int limit) {
         EventWhereVO vo = new EventWhereVO();
         if (!keyword.isEmpty()) {
             vo.setOrganizer(keyword);
@@ -51,11 +53,11 @@ public class EventController {
             vo.setTitle(keyword);
             vo.setLocation(keyword);
         }
-        List<Events> all = eventService.findAll(vo);
-        //设置分页
+        //设置分页，会自动地对紧接着的第一个查询进行分页
         PageHelper.startPage(pageNum,limit);
+        List<Events> all = eventService.findAll(vo);
         PageInfo<Events> events = new PageInfo<>(all);
-        return SaResult.ok().setData(events);
+        return SaResult.ok().setData(events).set("count",events.getTotal());
     }
 
     @PostMapping("/getAll")
@@ -109,6 +111,19 @@ public class EventController {
     }
 
     /**
+     * 活动修改
+     * @param vo
+     * @return
+     */
+    @PostMapping("/update")
+    public SaResult update(@Validated @RequestBody EventUpdateVO vo) {
+        int i = eventService.updateById(vo);
+        if (i > 0) {
+            return SaResult.ok().setMsg("修改成功");
+        }
+        return SaResult.error("修改失败");
+    }
+    /**
      * 生成座位
      *
      * @param vo
@@ -141,5 +156,11 @@ public class EventController {
             gearSeatNum[i] = num;
         }
         return SaResult.ok().set("topGear", topGear).set("gearPrices", gearPrices).set("gearSeatNum", gearSeatNum);
+    }
+
+    @GetMapping("/getThree")
+    public SaResult getThree(){
+        List<Events> events = eventService.selectThree();
+        return SaResult.ok().setData(events);
     }
 }

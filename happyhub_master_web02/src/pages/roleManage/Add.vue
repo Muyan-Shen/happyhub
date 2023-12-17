@@ -61,11 +61,13 @@ const onSave = async () => {
         if (valid) {
             try {
                 const response = await $http.put('/role', roleInfo);
-                if (response.status === 200) {
+                if (response.code === 200) {
                     ElMessage.success({
                         message: '新增角色成功',
                         duration: 1000,
-                        onClose: () => emit('update:modelValue', false),
+                        onClose: () => {
+                            emit('update:modelValue', false)
+                        },
                     });
                 } else {
                     ElMessage.error({
@@ -108,12 +110,61 @@ watch(visible, (newValue) => {
 </script>
 
 <style scoped lang="scss">
-.dialog-footer {
-  text-align: right;
-  padding: 10px 0;
+.add {
+    .el-dialog {
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 
-  .el-button {
-    margin-left: 10px;
-  }
+        .el-dialog__header {
+            font-size: 18px;
+            font-weight: bold;
+            color: #303133;
+            background-color: #f5f5f5;
+            border-bottom: 1px solid #ebeef5;
+        }
+
+        .el-dialog__body {
+            padding: 20px 30px;
+            font-size: 14px;
+            color: #606266;
+
+            .el-form-item {
+                margin-bottom: 20px;
+            }
+
+            .el-input {
+                border-radius: 4px;
+                &:focus {
+                    border-color: #409eff;
+                    box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.2);
+                }
+            }
+        }
+
+        .dialog-footer {
+            border-top: 1px solid #ebeef5;
+            padding: 10px 20px;
+            text-align: right;
+            background-color: #f5f5f5;
+
+            .el-button {
+                margin-left: 10px;
+                border-radius: 4px;
+                &:hover {
+                    transform: translateY(-2px);
+                }
+            }
+
+            .el-button[type="primary"] {
+                background-color: #409eff;
+                border-color: #409eff;
+                color: #fff;
+                &:hover {
+                    background-color: #66b1ff;
+                    border-color: #66b1ff;
+                }
+            }
+        }
+    }
 }
 </style>

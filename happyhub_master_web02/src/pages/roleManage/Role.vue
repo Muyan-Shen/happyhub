@@ -41,7 +41,7 @@
                        :total="pageInfo.total"/>
       </template>
     </el-table>
-    <add v-model="addRoleDialog"/>
+    <add v-model="addRoleDialog" @update:modelValue="loadRoles"/>
     <associated-permissions v-model:visible="associatedPermissionDialog.visible" :role="associatedPermissionDialog.role"/>
   </div>
 </template>

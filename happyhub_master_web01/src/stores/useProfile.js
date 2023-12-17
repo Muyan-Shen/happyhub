@@ -11,7 +11,7 @@ export const useProfileStore = defineStore("profile", {
     }),
     getters:{
         IsLogin(){
-            return this.token != ''
+            return this.token !== ''
         },
         // 返回一个函数：判断是否包含某个角色
         hasRole(){

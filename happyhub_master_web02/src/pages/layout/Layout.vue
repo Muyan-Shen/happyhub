@@ -182,7 +182,7 @@
 </template>
 
 <script setup>
-import {getCurrentInstance, onMounted, onUnmounted, reactive, ref, watch} from "vue";
+import {getCurrentInstance, onBeforeMount, onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {serverMenus} from "../../config/route.config.js"
 import screenfull from 'screenfull'
@@ -323,6 +323,7 @@ const form = reactive({
 watch(dialogFormVisible, (newValue, oldValue) => {
     updateForm()
 })
+
 onMounted(() => {
     loadForm()
     screenfull.on('change1', change1)

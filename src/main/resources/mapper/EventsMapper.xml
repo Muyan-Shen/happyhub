@@ -83,6 +83,11 @@
     <select id="selectAllLocation" resultType="java.lang.String">
         select distinct location from events where status = 1
     </select>
+    <select id="selectThree" resultType="cn.shenmuyan.bean.Events">
+        select
+            <include refid="Base_Column_List"/>
+        from events limit 0,3
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from events
@@ -132,7 +137,7 @@
                 <if test="updatedAt != null">#{updatedAt,jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="cn.shenmuyan.bean.Events">
+    <update id="updateByPrimaryKeySelective" parameterType="cn.shenmuyan.vo.EventUpdateVO">
         update events
         <set>
                 <if test="title != null">
@@ -150,9 +155,6 @@
                 <if test="endTime != null">
                     end_time = #{endTime,jdbcType=TIMESTAMP},
                 </if>
-                <if test="organizerId != null">
-                    organizer_id = #{organizerId,jdbcType=INTEGER},
-                </if>
                 <if test="photoUrl != null">
                     photo_url = #{photoUrl,jdbcType=VARCHAR},
                 </if>
@@ -161,12 +163,6 @@
                 </if>
                 <if test="statusDescription != null">
                     status_description = #{statusDescription,jdbcType=VARCHAR},
-                </if>
-                <if test="createdAt != null">
-                    created_at = #{createdAt,jdbcType=TIMESTAMP},
-                </if>
-                <if test="updatedAt != null">
-                    updated_at = #{updatedAt,jdbcType=TIMESTAMP},
                 </if>
         </set>
         where   id = #{id,jdbcType=INTEGER} 

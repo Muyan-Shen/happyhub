@@ -14,19 +14,19 @@
             <!-- 用户名 -->
             <el-form-item class="form-group" prop="username">
                 <label for="username">用户名:</label>
-                <el-input v-model.trim="form.username"  type="text"  />
+                <el-input v-model.trim="form.username" type="text"/>
             </el-form-item>
 
             <!-- 邮箱 -->
             <el-form-item class="form-group" prop="email">
                 <label for="email">邮箱:</label>
-                <el-input v-model.trim="form.email"  type="email"  />
+                <el-input v-model.trim="form.email" type="email"/>
             </el-form-item>
 
             <!-- 密码 -->
             <el-form-item class="form-group" prop="passwordHash">
                 <label for="password">密码:</label>
-                <el-input v-model.trim="form.passwordHash"  type="password"  />
+                <el-input v-model.trim="form.passwordHash" type="password"/>
             </el-form-item>
 
             <!-- 提交按钮的容器 -->
@@ -41,7 +41,6 @@
 
 import {reactive, ref} from "vue";
 import * as $http from "../../config/http.config.js";
-import {useField, validate} from "vee-validate";
 import {ElMessage} from "element-plus";
 
 
@@ -49,23 +48,23 @@ import {ElMessage} from "element-plus";
 const form = reactive({
     username: '',
     email: '',
-    passwordHash:'' ,
-    picPath:''
+    passwordHash: '',
+    picPath: ''
 });
 
 const rules = {
     username: [
-        { required: true, message: "请输入用户名", trigger: "blur" },
-        { min: 3, message: "用户名长度不能小于 3 个字符", trigger: "blur" }
+        {required: true, message: "请输入用户名", trigger: "blur"},
+        {min: 3, message: "用户名长度不能小于 3 个字符", trigger: "blur"}
     ],
     email: [
-        { required: true, message: "请输入邮箱地址", trigger: "blur" },
+        {required: true, message: "请输入邮箱地址", trigger: "blur"},
         {pattern: /^[a-zA-Z0-9]+@.+$/, message: "请输入正确的邮箱格式", trigger: 'blur'}
         // { email: true, message: , trigger: "blur" }
     ],
     passwordHash: [
-        { required: true, message: "请输入密码", trigger: "blur" },
-        { min: 6, message: "密码长度不能小于 6 个字符", trigger: "blur" }
+        {required: true, message: "请输入密码", trigger: "blur"},
+        {min: 6, message: "密码长度不能小于 6 个字符", trigger: "blur"}
     ]
 };
 
@@ -148,125 +147,71 @@ const handleFileChange = async (event) => {
 
 
 <style scoped lang="scss">
-.layout {
-    // ...其它样式保持不变...
+.form-container {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  padding: 30px;
+  max-width: 500px;
+  transition: box-shadow 0.3s ease;
 
-    // 新增表单样式
-    .form-container {
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        margin: 20px;
-        padding: 20px;
-    }
+  &:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  }
+}
 
-    .form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
 
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 15px;
-        width: 100%;
-    }
+  label {
+    color: #303133;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
 
-    .form-group label {
-        margin-bottom: 5px;
-        color: #303133;
-        font-weight: bold;
-    }
+  .el-input {
+    border-radius: 4px;
+  }
+}
 
-    .form-group input[type="text"],
-    .form-group input[type="email"],
-    .form-group input[type="password"],
-    .form-group input[type="file"] {
-        border: 1px solid #dcdfe6;
-        border-radius: 4px;
-        padding: 10px;
-        width: 100%;
-    }
+.submit-button-container {
+  display: flex;
+  justify-content: center;
+}
 
-    .error {
-        color: #f56c6c;
-        font-size: 0.8em;
-        margin-top: 5px;
-    }
-    /* ...其它样式保持不变... */
+.submit-button {
+  background-color: #409eff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
 
-    // 按钮的容器样式，使用 flexbox 居中按钮
-    .submit-button-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 10px;
-    }
+  &:hover {
+    background-color: #66b1ff;
+    transform: translateY(-2px);
+  }
+}
 
-    .submit-button {
-        background-color: #409eff;
-        border: none;
-        border-radius: 4px;
-        color: white;
-        cursor: pointer;
-        padding: 10px 20px;
-        margin-top: 10px; // 删除或者移动到 `.submit-button-container`
+.el-avatar {
+  cursor: pointer;
+  transition: transform 0.2s;
 
-        &:hover {
-            background-color: #66b1ff;
-        }
+  &:hover {
+    transform: scale(1.05);
+  }
+}
 
-        // 删除这里的 transform scale 属性，否则会影响居中
-        // &:hover {
-        //     transform: scale(1.05);
-        // }
-    }
-    // ...其他样式保持不变...
+input[type="file"] {
+  display: none;
+}
 
-    .form-container {
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        &:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-    }
-
-    .form-group input[type="text"],
-    .form-group input[type="email"],
-    .form-group input[type="password"] {
-        // 输入框在获取焦点时的动画和样式
-        transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        &:focus {
-            border-color: #409eff;
-            box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.2);
-        }
-    }
-
-    // 悬停在提交按钮上时的动画和样式
-    .submit-button {
-        transition: background-color 0.3s ease-in-out;
-        &:hover {
-            background-color: #66b1ff;
-            transform: scale(1.05); // 按钮放大效果
-        }
-    }
-
-    // 错误信息的淡入动画
-    .error {
-        transition: opacity 0.3s ease-in-out;
-        opacity: 0;
-        &.active {
-            opacity: 1; // 当有错误时显示
-        }
-    }
-
-    // 头像的悬停效果
-    .el-avatar {
-        cursor: pointer;
-        transition: transform 0.3s ease;
-        &:hover {
-            transform: scale(1.1); // 头像放大效果
-        }
-    }
+.error {
+  color: #f56c6c;
+  margin-top: 5px;
 }
 </style>

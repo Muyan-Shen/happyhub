@@ -99,7 +99,9 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserInformation findUserInformationByLoginId(Integer loginId) {
+        User user = userMapper.selectById(loginId);
         UserInformation userInformation = userInformationMapper.selectByUserId(loginId);
+        userInformation.setPicPath(user.getPhotoUrl());
         return userInformation;
     }
 
@@ -109,7 +111,6 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-
     public boolean updateInformationByUserId(Integer userId, UserInformationVO userInformationVO) {
         UserInformation userInformation = BeanUtil.copyProperties(userInformationVO, UserInformation.class);
         userInformation.setUserId(userId);
@@ -122,5 +123,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updateUser(User user) {
         return userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Override
+    public List<Integer> findAllId() {
+        return userMapper.selectAllId();
     }
 }

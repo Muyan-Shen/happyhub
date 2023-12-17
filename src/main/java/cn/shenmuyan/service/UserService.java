@@ -41,4 +41,6 @@ public interface UserService {
     boolean updateInformationByUserId(Integer userId, UserInformationVO userInformation);
 
     boolean updateUser(User user);
+
+    List<Integer> findAllId();
 }

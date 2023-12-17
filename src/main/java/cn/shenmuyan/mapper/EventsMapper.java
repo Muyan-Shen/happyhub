@@ -1,6 +1,7 @@
 package cn.shenmuyan.mapper;
 
 import cn.shenmuyan.bean.Events;
+import cn.shenmuyan.vo.EventUpdateVO;
 import cn.shenmuyan.vo.EventWhereVO;
 
 import java.util.List;
@@ -25,10 +26,12 @@ public interface EventsMapper {
 
     List<Events> selectAll(EventWhereVO eventWhereVO);
 
-    int updateByPrimaryKeySelective(Events record);
+    int updateByPrimaryKeySelective(EventUpdateVO vo);
 
     int updateByPrimaryKey(Events record);
 
 
     String[] selectAllLocation();
+
+    List<Events> selectThree();
 }

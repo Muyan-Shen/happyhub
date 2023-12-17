@@ -32,6 +32,15 @@ logging:
   level:
     cn.shenmuyan: debug
 
+
+xfun:
+  open:
+    appid: 640f368d
+    apiSecret: MjU2Njk2NDQ5Y2MxZDBmZGRiNGVmNGMw
+    hostUrl: https://spark-api.xf-yun.com/v3.1/chat
+    apiKey: 23c5e09fe931746d2691698913eb25a8
+
+
 pagehelper:
   helper-dialect: mysql
   reasonable: true

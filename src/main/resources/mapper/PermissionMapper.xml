@@ -39,6 +39,9 @@
         <include refid="Base_Column_List" />
         from permission
         <where>
+            <if test="id != null and id != ''">
+                and id like concat('%',#{id},'%')
+            </if>
             <if test="name != null and name != ''">
                 and name like concat('%',#{name},'%')
             </if>
@@ -62,6 +65,10 @@
         <foreach collection="ids" item="id" open="(" separator="," close=")">
             #{id,jdbcType=INTEGER}
         </foreach>
+    </delete>
+    <delete id="deleteById">
+        delete from permission
+        where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.shenmuyan.bean.Permission" useGeneratedKeys="true">
         insert into permission
@@ -120,7 +127,7 @@
                     status = #{status,jdbcType=TINYINT},
                 </if>
         </set>
-        where   id = #{id,jdbcType=INTEGER} 
+        where  id = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="cn.shenmuyan.bean.Permission">
         update permission

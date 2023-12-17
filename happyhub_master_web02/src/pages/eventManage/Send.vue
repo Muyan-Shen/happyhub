@@ -6,6 +6,7 @@
       <!-- 隐藏的文件输入元素 -->
       <input type="file" ref="fileInput" @change="handleFileChange" style="display: none;"/>
     </div>
+    <el-divider direction="vertical" style="height: 320px"/>
     <div class="left">
       <el-form ref="eventForm"
                :model="eventInfo"
@@ -49,13 +50,16 @@
                            :max="5">
           </el-input-number>
         </el-form-item>
-        <el-form-item>
-          <el-button native-type="submit">
-            提交修改
-          </el-button>
-        </el-form-item>
+        <div class="btns">
+          <el-form-item>
+            <el-button native-type="submit">
+              提交修改
+            </el-button>
+          </el-form-item>
+        </div>
       </el-form>
     </div>
+    <el-divider direction="vertical" style="height: 320px"/>
     <div class="right">
       <span>活动描述</span>
       <div class="joditArea">
@@ -67,7 +71,7 @@
     <div class="dialog">
       <el-dialog
           v-model="dialogVisible"
-          width="30%"
+          width="50%"
           title="Tips"
           :show-close="false"
           :close-on-click-modal="false"
@@ -104,9 +108,11 @@
             <el-input-number v-model="seatInfo.maxCol"
                              :min="1"></el-input-number>
           </el-form-item>
-          <el-form-item>
-            <el-button native-type="submit">生成</el-button>
-          </el-form-item>
+          <div class="btns">
+            <el-form-item>
+              <el-button native-type="submit">生成</el-button>
+            </el-form-item>
+          </div>
         </el-form>
       </el-dialog>
     </div>
@@ -166,33 +172,34 @@ const eventId = ref(-1);
 const fileInput = ref()
 const send = (e, form) => {
   e.preventDefault();
-  form.validate((valid) => {
-    if (valid) {
-      eventInfo.description = jodit.value.value
-      $http.post('event/create', eventInfo).then(resp => {
-        console.log(resp)
-        if (resp.code === 200) {
-          eventId.value = resp.eventId;
-          ElMessage.success({
-            message: "创建成功",
-            duration: 750
-          })
-          // 打开创建座位的弹窗
-          getSeatInfo()
-        } else {
-          ElMessage.error({
-            message: "创建失败:"+resp.msg,
-            duration: 1250
-          })
-        }
-      })
-    } else {
-      ElMessage.error({
-        message: "创建失败，请按要求填写表单",
-        duration: 1000
-      })
-    }
-  })
+  getSeatInfo()
+  // form.validate((valid) => {
+  //   if (valid) {
+  //     eventInfo.description = jodit.value.value
+  //     $http.post('event/create', eventInfo).then(resp => {
+  //       console.log(resp)
+  //       if (resp.code === 200) {
+  //         eventId.value = resp.eventId;
+  //         ElMessage.success({
+  //           message: "创建成功",
+  //           duration: 750
+  //         })
+  //         // 打开创建座位的弹窗
+  //         getSeatInfo()
+  //       } else {
+  //         ElMessage.error({
+  //           message: "创建失败:" + resp.msg,
+  //           duration: 1250
+  //         })
+  //       }
+  //     })
+  //   } else {
+  //     ElMessage.error({
+  //       message: "创建失败，请按要求填写表单",
+  //       duration: 1000
+  //     })
+  //   }
+  // })
 }
 const triggerFileInput = () => {
   fileInput.value.click();
@@ -212,7 +219,9 @@ const getSeatInfo = () => {
   if (eventId.value > 0) {
     seatInfo.eventId = eventId.value;
     dialogVisible.value = true;
+    seatInfo.topGear = eventInfo.topGear;
   }
+  dialogVisible.value = true;
   seatInfo.eventId = eventId.value;
   seatInfo.topGear = eventInfo.topGear;
 }
@@ -227,10 +236,10 @@ const generateSeat = (e, form) => {
             duration: 1000
           })
           dialogVisible.value = false;
-          router.push("/home")
+          router.push("/eventUpdate")
         } else {
           ElMessage.error({
-            message: "生成失败:"+resp.message,
+            message: "生成失败:" + resp.message,
             duration: 1250
           })
         }
@@ -273,14 +282,18 @@ onMounted(() => {
 <style scoped lang="scss">
 .send {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 
   .pic {
     width: 240px;
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
+    justify-content: center;
 
     span {
+      margin-bottom: 1%;
     }
 
     .el-image {
@@ -288,30 +301,46 @@ onMounted(() => {
   }
 
   .left {
+    margin-top: 2%;
     width: 40%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 
+    .el-form-item {
+      .el-button {
+        margin-top: 5%;
+      }
+    }
   }
 
   .right {
     width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+
+    span {
+      margin-bottom: 1%;
+    }
 
     .joditArea {
     }
   }
 
   .dialog {
-    .el-dialog {
+    .el-dialog{
       .el-form {
+        width: 100%;
         display: flex;
         flex-wrap: wrap;
-        align-items: center;
+        align-items: flex-start;
         justify-content: flex-start;
 
         .el-form-item {
+          width: 100%;
           .el-input {
             width: 90px;
             margin-bottom: 4px;
@@ -320,6 +349,13 @@ onMounted(() => {
         }
       }
     }
+  }
+
+  .btns {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 </style>

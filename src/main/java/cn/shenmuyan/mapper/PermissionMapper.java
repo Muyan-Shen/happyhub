@@ -23,12 +23,13 @@ public interface PermissionMapper {
 
     Permission selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(Permission record);
+    boolean updateByPrimaryKeySelective(Permission permission);
 
     int updateByPrimaryKey(Permission record);
 
-    List<Permission> selectAll(@Param("name")String name, @Param("code")String code);
+    List<Permission> selectAll(@Param("id") String id,@Param("name") String name, @Param("code") String code);
 
-    void deleteByIds(Integer[] ids);
+    boolean deleteByIds(Integer[] ids);
+    boolean deleteById(@Param("id") Integer id);
     Permission selectByCode(String code);
 }
