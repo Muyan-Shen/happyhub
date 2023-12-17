@@ -42,6 +42,12 @@ const routes = [
         component:() => import('../pages/event/EventInfo.vue'),
     },
     {
+        path:'/ticket/',
+        name:'ticket',
+        props:true,
+        component:() => import('../pages/event/Ticket.vue'),
+    },
+    {
         path:'/eventOrderCreate/:eventId?/:price?',
         name:'eventOrderCreate',
         component:() => import('../pages/event/EventOrderCreate.vue'),

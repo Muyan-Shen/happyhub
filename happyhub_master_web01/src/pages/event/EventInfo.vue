@@ -190,7 +190,7 @@ import {useProfileStore} from "../../stores/useProfile.js";
 import index from "pinia-plugin-persist";
 
 const route = useRoute();
-const index1 = [2,5,8]
+const index1 =ref([])
 const useProfileStore1 = useProfileStore();
 
 const eventInfo = ref(
@@ -249,9 +249,7 @@ const scrollToLine = ()=> {
 
 
 function change() {
-  price.value=gears.value[gear1.value.value]
-  console.log(gear1.value.value)
-  // console.log(price.value)
+  price.value=gears.value[gear1.value.value-1]
 }
 
 const eventId = route.params.eventId;
@@ -260,9 +258,11 @@ const $http = getCurrentInstance().appContext.config.globalProperties.$http
 const getEventInfo = (eventId) => {
   titleOffsetTop.value=479;
   $http.get('/event/' + eventId)
+
       .then(res => {
         gears.value = res.gearPrices;
         eventInfo.value = res.data;
+        index1.value= res.index;
         // console.log(gears.value)
       }).catch(err => {
     console.error('获取活动信息时出错：', err);
@@ -282,21 +282,19 @@ const reBack= () => {
      name:"home",
    })
 }
-const getOrder = (eventId, price) => {
+const getOrder = (eventId) => {
   if(price==null||price.value==''){
     ElMessage("档位未选择");
     price.value=''
     return
   }
-
   useProfileStore1.gear=gear1.value.value
-  console.log(price.value)
   // ElMessage("发起订单");
   router.push({
     name:"eventOrderCreate",
     params:{
       "eventId":eventId,
-      "price": gears.value[gear1.value.value]
+      "price": price.value
     }
   })
 }

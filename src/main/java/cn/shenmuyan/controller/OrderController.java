@@ -215,7 +215,7 @@ public class OrderController {
     }
 
     @PostMapping("/paymentConfirmed")
-    public SaResult PaymentConfirmed(@Validated PaymentConfirmedVO paymentConfirmedVO) {
+    public SaResult PaymentConfirmed(@RequestBody @Validated PaymentConfirmedVO paymentConfirmedVO) {
         if(paymentConfirmedVO.getCouponsId()!=null) {
             //通过couponsId查到使用的优惠券
             Coupons coupon = couponService.selectCouponById(paymentConfirmedVO.getCouponsId());

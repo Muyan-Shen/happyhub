@@ -6,7 +6,8 @@ export const useProfileStore = defineStore("profile", {
         roles:[],
         permissions:[],
         profile:{},
-        eventList:[]
+        eventList:[],
+        gear:-1
     }),
     getters:{
         IsLogin(){

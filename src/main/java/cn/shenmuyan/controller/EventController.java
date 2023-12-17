@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -82,7 +83,12 @@ public class EventController {
         }
         event.setOrganizerUsername(organizerUsername);
         BigDecimal[] gearPrices = seatService.getGearPrices(eventId);
-        return SaResult.ok().setData(event).set("gearPrices",gearPrices);
+        List<Integer> index=new ArrayList<>();
+        for (int i = 1; i <=gearPrices.length; i++) {
+            index.add(i);
+        }
+        System.out.println(index);
+        return SaResult.ok().setData(event).set("gearPrices",gearPrices).set("index",index);
     }
 
     /**

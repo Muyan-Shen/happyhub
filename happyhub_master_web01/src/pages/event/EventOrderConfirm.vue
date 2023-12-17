@@ -62,7 +62,10 @@ import {useRoute} from "vue-router";
 import {getCurrentInstance} from "vue";
 import {Clock, Paperclip} from "@element-plus/icons-vue";
 import topHeader from '../component/header.vue'
-import {ElAlert} from "element-plus";
+import {ElAlert, ElMessage} from "element-plus";
+import {useProfileStore} from "../../stores/useProfile.js";
+
+const useProfileStore1 = useProfileStore();
 
 const centerDialogVisible = ref(false)
 const dialogFormVisible = ref(false)
@@ -94,13 +97,29 @@ const paymentCancel1 = (paymentId) => {
     console.log(res.msg)
   })
 }
-const paymentConfirm1 = () => {
-  $http.post("/pay/paymentConfirmed/",{"paymentId":payment.value.id
-    , "couponsId":couponsId,"price":payment.value.amount,"gear":}).then((res) => {
 
+const ticket=ref({
+  "title": '',
+  "username": '',
+  "gear":'',
+  "seatNumber":'',
+  "direction":'',
+  "row":'',
+  "col":''
+})
+const paymentConfirm1 = () => {
+  if(useProfileStore1.gear==null||useProfileStore1.gear==''){
+    console.log("未获取到档位")
+    return
+  }
+  $http.post("/pay/paymentConfirmed/",{"paymentId":payment.value.id
+    , "couponsId":couponsId.value,"price":payment.value.amount,"gear":useProfileStore1.gear}).then((res) => {
+           ElMessage(res.msg)
+          useProfileStore1.gear=''
   })
   router.push({
-    name: "home"
+    name: "ticket",
+    params: ticket
   })
 }
 
