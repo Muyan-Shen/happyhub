@@ -31,7 +31,7 @@
 
             <!-- 提交按钮的容器 -->
             <div class="submit-button-container">
-                <el-button type="submit" class="submit-button">添加</el-button>
+                <el-button @click="submitForm" class="submit-button">添加</el-button>
             </div>
         </el-form>
     </div>
@@ -39,7 +39,7 @@
 
 <script setup>
 
-import {reactive, ref} from "vue";
+import {getCurrentInstance, reactive, ref} from "vue";
 
 import {ElMessage} from "element-plus";
 
@@ -83,6 +83,7 @@ const triggerFileInput = () => {
 
 // 提交表单，注册用户信息
 const submitForm = async () => {
+    console.log(11111111)
     if (!userForm.value) {
         console.log("表单引用未获得");
         return;
@@ -93,7 +94,7 @@ const submitForm = async () => {
             try {
                 // 发送POST请求到后端注册账号的URL
                 const accountResponse = await $http.post('/user/register', form);
-
+                console.log(222222)
                 // 假设后端返回的accountResponse包含用户信息和账户创建的状态
                 if (accountResponse && accountResponse.data) {
                     ElMessage.success('账户创建成功，头像上传中...');

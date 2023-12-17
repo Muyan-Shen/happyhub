@@ -102,8 +102,8 @@
                , #{passwordHash,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
                , #{isDelete,jdbcType=OTHER})
     </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.shenmuyan.bean.User"
-            useGeneratedKeys="true">
+    <insert id="insertSelective"  parameterType="cn.shenmuyan.bean.User"
+            >
         insert into user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
