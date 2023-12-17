@@ -47,9 +47,8 @@ const routes = [
         component:() => import('../pages/event/EventInfo.vue'),
     },
     {
-        path:'/ticket/',
-        name:'ticket',
-        props:true,
+        path:'/ticketPage',
+        name:'ticketPage',
         component:() => import('../pages/event/Ticket.vue'),
     },
     {

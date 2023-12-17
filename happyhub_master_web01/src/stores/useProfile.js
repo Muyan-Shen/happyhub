@@ -7,7 +7,8 @@ export const useProfileStore = defineStore("profile", {
         permissions:[],
         profile:{},
         eventList:[],
-        gear:-1
+        gear:-1,
+        ticket:''
     }),
     getters:{
         IsLogin(){

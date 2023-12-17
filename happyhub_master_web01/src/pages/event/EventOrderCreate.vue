@@ -86,7 +86,7 @@ const orderCancel1=()=>{
 
 
 onMounted(()=>{
-  getOrder(eventId,price);
+ getOrder(eventId,price);
 })
 </script>
 

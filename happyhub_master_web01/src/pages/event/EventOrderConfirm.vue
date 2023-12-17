@@ -17,7 +17,7 @@
           <div>支付状态：{{ payment.status }}</div>
           <div>创建时间：{{ payment.processedAt }}</div>
           <el-button @click="dialogFormVisible = true">使用优惠券</el-button><br>
-          <el-button @click="paymentConfirm1">确认支付 </el-button>
+          <el-button @click="paymentConfirm1" >确认支付 </el-button>
           <el-button @click="paymentCancel1(payment.id)">取消支付</el-button>
         </el-card>
       </div>
@@ -57,7 +57,7 @@
 
 <script setup>
 import router from "../../config/router.config.js";
-import {onBeforeMount, onMounted, reactive, ref, watch} from "vue";
+import {computed, onBeforeMount, onMounted, reactive, ref, watch} from "vue";
 import {useRoute} from "vue-router";
 import {getCurrentInstance} from "vue";
 import {Clock, Paperclip} from "@element-plus/icons-vue";
@@ -94,11 +94,12 @@ const getPayment =  (orderId) => {
 }
 const paymentCancel1 = (paymentId) => {
   $http.get("/pay/paymentCanceled/" + paymentId).then((res) => {
+    useProfileStore1.gear=''
     console.log(res.msg)
   })
 }
 
-const ticket=ref({
+const ticket1=ref({
   "title": '',
   "username": '',
   "gear":'',
@@ -114,12 +115,16 @@ const paymentConfirm1 = () => {
   }
   $http.post("/pay/paymentConfirmed/",{"paymentId":payment.value.id
     , "couponsId":couponsId.value,"price":payment.value.amount,"gear":useProfileStore1.gear}).then((res) => {
-           ElMessage(res.msg)
+          ElMessage(res.msg)
+          ticket1.value=res.data
+          console.log(ticket.value)
           useProfileStore1.gear=''
+          useProfileStore1.ticket=ticket1.value
+    console.log(useProfileStore1.ticket)
   })
+  const ticket=JSON.stringify(ticket1)
   router.push({
-    name: "ticket",
-    params: ticket
+    name: "ticketPage",
   })
 }
 

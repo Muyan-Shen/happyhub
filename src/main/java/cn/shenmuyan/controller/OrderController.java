@@ -251,13 +251,15 @@ public class OrderController {
                 TicketVO ticketVO=new TicketVO();
                 ticketVO.setTitle(event.getTitle());
                 ticketVO.setUsername(user.getUsername());
-                ticketVO.setSeatNumber(1);
+
                 for (Seats s : seat) {
                     ticketVO.setGear(s.getGears());
                     ticketVO.setDirection(s.getDirection());
                     ticketVO.setRow(s.getRow());
                     ticketVO.setCol(s.getCol());
+                    ticketVO.setSeatNumber(Integer.parseInt(s.getSeatNumber()));
                 }
+                System.out.println(ticketVO);
                 return SaResult.ok("支付成功").setData(ticketVO);
             }
         }
