@@ -40,7 +40,7 @@
 <script setup>
 
 import {reactive, ref} from "vue";
-import * as $http from "../../config/http.config.js";
+
 import {ElMessage} from "element-plus";
 
 
@@ -51,7 +51,7 @@ const form = reactive({
     passwordHash: '',
     picPath: ''
 });
-
+const $http  = getCurrentInstance().appContext.config.globalProperties.$http
 const rules = {
     username: [
         {required: true, message: "请输入用户名", trigger: "blur"},
