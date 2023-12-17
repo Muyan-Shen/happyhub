@@ -29,6 +29,9 @@ import {getCurrentInstance, onMounted, reactive, ref} from "vue";
 import {useRoute} from "vue-router";
 import {Clock} from   "@element-plus/icons-vue";
 import topHeader from '../component/header.vue'
+import {useProfileStore} from "../../stores/useProfile.js";
+
+const useProfileStore1 = useProfileStore();
 
 const route = useRoute();
 const order= ref({
@@ -69,6 +72,7 @@ const orderCancel1=()=>{
   //异步请求
   $http.get("/pay/orderCancel/"+orderId.value).then((res)=>{
     ElMessage(res.msg);
+    useProfileStore1.gear=''
     router.push({
       name:"home"
     })
@@ -82,7 +86,7 @@ const orderCancel1=()=>{
 
 
 onMounted(()=>{
-  getOrder(eventId,price);
+ getOrder(eventId,price);
 })
 </script>
 
