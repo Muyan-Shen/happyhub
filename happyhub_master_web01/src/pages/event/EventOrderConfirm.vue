@@ -17,7 +17,7 @@
           <div>支付状态：{{ payment.status }}</div>
           <div>创建时间：{{ payment.processedAt }}</div>
           <el-button @click="dialogFormVisible = true">使用优惠券</el-button><br>
-          <el-button @click="paymentConfirm1" >确认支付 </el-button>
+          <el-button @click="paymentConfirm1" style="background-color: red">确认支付 </el-button>
           <el-button @click="paymentCancel1(payment.id)">取消支付</el-button>
         </el-card>
       </div>
@@ -33,7 +33,7 @@
           :value="coupon.id"
           :label="coupon.discountAmount!=null?'优惠券编号: '+coupon.id+'       ￥折扣额: '+coupon.discountAmount+'元':'优惠券编号: '+coupon.id+'       ￥折扣额: '+coupon.discount"
       ><span v-if="coupon.discountAmount!=null"><el-icon><Paperclip/></el-icon>优惠券编号: {{ coupon.id }}       ￥折扣额:{{ coupon.discountAmount }}元</span>
-        <span v-else><el-icon><Paperclip/></el-icon>优惠券编号: {{ coupon.id }}       ￥折扣额:{{ coupon.discount}}</span>
+        <span v-else><el-icon><Paperclip/></el-icon>优惠券编号: {{ coupon.id }}       ￥折扣:{{ coupon.discount}}</span>
       </el-option>
     </el-select>
     <span class="dialog-footer1">
@@ -95,7 +95,10 @@ const getPayment =  (orderId) => {
 const paymentCancel1 = (paymentId) => {
   $http.get("/pay/paymentCanceled/" + paymentId).then((res) => {
     useProfileStore1.gear=''
-    console.log(res.msg)
+    ElMessage(res.msg)
+    router.push({
+      name:"home"
+    })
   })
 }
 
