@@ -18,10 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 账号controller
@@ -159,15 +156,23 @@ public class UserController {
 
     @PostMapping("/update")
     public SaResult update(@RequestBody@Validated UserUpdateVO vo){
-        System.out.println(vo);
         User user = BeanUtil.copyProperties(vo, User.class);
-        userService.updateUser(user);
-        return SaResult.ok("修改成功");
+        System.out.println(user.getPasswordHash());
+        System.out.println(userService.findById(user.getId()).getPasswordHash());
+        if(!Objects.equals(user.getPasswordHash(), userService.findById(user.getId()).getPasswordHash())){
+            return SaResult.error()
+                    .setCode(400)
+                    .set("message","修改失败");
+        }else {
+            userService.updateUser(user);
+            return SaResult.ok("修改成功");
+        }
     }
 
     @GetMapping("/getById")
     public SaResult getByid(@RequestParam(value = "id") Integer id){
         User user = userService.findById(id);
+        System.out.println(user);
         return SaResult.ok().setData(user);
     }
 

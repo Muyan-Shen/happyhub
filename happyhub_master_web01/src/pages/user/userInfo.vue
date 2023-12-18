@@ -22,7 +22,7 @@
         <el-form :model="form" label-width="120px" style="margin-left: 80px;">
           <br>
           <el-form-item>
-            <img :src="profileStore.profile.photoUrl" style="border-radius: 50%;width: 100px;height: 100px;" alt="">
+            <img :src="user.photoUrl" style="border-radius: 50%;width: 100px;height: 100px;" alt="">
           </el-form-item>
           <el-form-item label="用户名：">
             <label style="width: 200px;height: 25px; padding: 0 0 10px 0">{{user.username}}</label>
@@ -34,14 +34,17 @@
             <label style="width: 200px;height: 25px; padding: 0 0 10px 0">{{user.createdAt}}</label>
           </el-form-item>
           <br>
-          <el-form-item>
+          <el-form-item style="margin-left: 50px">
             <el-button type="primary" @click="onSubmit" style="margin-left: -80px;">修改信息</el-button>
             <el-button type="primary" @click="dialogFormVisible=true">修改密码</el-button>
           </el-form-item>
         </el-form>
             <el-button @click="logout" style="margin-left: 600px;margin-top: -700px;">注销账号</el-button>
-        <el-dialog class="custom-dialog" v-model="dialogFormVisible" title="修改密码">
-          <el-form :model="form" class="oo">
+        <el-dialog class="custom-dialog"  v-model="dialogFormVisible" >
+          <div style="margin-left:320px ;font-size: large ">修改密码</div>
+          <br>
+          <br>
+          <el-form class="oo">
           <el-form-item label="请输入旧密码">
             <el-input type="password" v-model="password3" style="width: 200px;height: 25px;" />
           </el-form-item>
@@ -51,7 +54,8 @@
           <el-form-item label="请确认新密码">
             <el-input type="password" v-model="password2" style="width: 200px;height: 25px;"/>
           </el-form-item>
-          <el-form-item>
+            <br>
+          <el-form-item style="margin-left: 100px">
             <el-button type="primary" @click="updatePassword()">
               确定
             </el-button>
@@ -96,12 +100,9 @@ const updatePassword=()=>{
     alert("两次密码不一致");
     return;
   }
-  if (password3.value!=='1'){
-    alert("密码错误");
-    return;
-  }
-  user.value.password=password1.value;
-  $http.post("/user/update",user.value).then(()=>{
+  user.value.passwordHash=password1.value;
+  $http.post("/user/update",user.value).then(resp=>{
+    alert(resp.message)
     password1.value='';
     password2.value='';
     password3.value='';
@@ -123,5 +124,8 @@ onMounted(()=>{
 }
 .w{
   float: left;
+}
+.oo{
+  margin-left: 200px;
 }
 </style>
