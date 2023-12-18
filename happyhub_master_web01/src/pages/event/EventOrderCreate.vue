@@ -13,6 +13,7 @@
       <div>活动编号：{{order.eventId}}</div>
       <div>活动状态：{{order.status}}</div>
       <div>订单创建时间：{{order.createAt}}</div>
+      <el-divider></el-divider>
       <el-button @click="orderConfirm1">确认</el-button>
       <el-button @click="orderCancel1">取消</el-button>
     </el-card>
