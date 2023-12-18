@@ -17,7 +17,7 @@
           <div>支付状态：{{ payment.status }}</div>
           <div>创建时间：{{ payment.processedAt }}</div>
           <el-button @click="dialogFormVisible = true">使用优惠券</el-button><br>
-          <el-button @click="paymentConfirm1" >确认支付 </el-button>
+          <el-button @click="paymentConfirm1" style="background-color: red">确认支付 </el-button>
           <el-button @click="paymentCancel1(payment.id)">取消支付</el-button>
         </el-card>
       </div>
