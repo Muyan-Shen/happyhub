@@ -93,7 +93,7 @@ const editDialogData = ref({
     description: ''
 });
 const id = ref('');
-// 获取角色权限数据
+
 const fetchRolePermissions = async () => {
     try {
         let form = {
@@ -115,7 +115,6 @@ const fetchRolePermissions = async () => {
     }
 };
 
-// 打开编辑对话框
 const openEditDialog = (role) => {
     id.value = role.id
     editDialogData.value = {
@@ -125,8 +124,6 @@ const openEditDialog = (role) => {
     }
     editDialogVisible.value = true;
 };
-
-// 删除角色
 const deletePermission = async (role) => {
     try {
 
@@ -144,13 +141,11 @@ const deletePermission = async (role) => {
     }
 };
 
-// 处理分页大小变化
 const handleSizeChange = (newSize) => {
     pageSize.value = newSize;
     fetchRolePermissions();
 };
 
-// 处理当前页码变化
 const handleCurrentChange = (newPage) => {
     currentPage.value = newPage;
     fetchRolePermissions();
@@ -163,7 +158,7 @@ const addDialogData = reactive({
     description: ''
 });
 
-// 打开添加对话框
+
 const openAddDialog = () => {
     addDialogData.name = '';
     addDialogData.code = '';
@@ -174,28 +169,25 @@ const updatePermission = async () => {
 
     try {
         const form = editDialogData;
-        // 将表单数��发送到服务器
         await $http.post("/permission/"+id.value, form.value).then(response => {
             if (!response.msg==="success") throw new Error('Network response was not ok');
             ElMessage.success('权限添加成功');
             editDialogVisible.value = false;
-            fetchRolePermissions(); // 重新获取权限列表
+            fetchRolePermissions();
         })
     } catch (error) {
         console.error('Update error:', error);
         ElMessage.error('修改权限失败');
     }
 };
-// 添加权限逻辑
 const addPermission = async () => {
     try {
         const form = addDialogData;
-        // 将表单数��发送到服务器
         await $http.put("/permission", form).then(response => {
             if (!response.msg==="success") throw new Error('Network response was not ok');
             ElMessage.success('权限添加成功');
             addDialogVisible.value = false;
-            fetchRolePermissions(); // 重新获取权限列表
+            fetchRolePermissions();
         })
     } catch (error) {
         console.error('Add error:', error);
@@ -248,14 +240,13 @@ $font-color: #2c3e50; // 深色字体以提高可读性
     gap: 1rem;
 
     .el-button {
-      // 省略未编辑的部分...
       box-shadow: 0 2px 6px rgb(0 0 0 / 10%);
       border-radius: 4px;
 
-      @include transition-default; // 使用一个 mixin 来定义复用的过渡效果
+      @include transition-default;
 
       &:active {
-        transform: translateY(1px); // 活动状态时的按钮按下效果
+        transform: translateY(1px);
         box-shadow: none;
       }
     }
@@ -273,7 +264,6 @@ $font-color: #2c3e50; // 深色字体以提高可读性
 
   }
 
-  // 表格样式调整
   .el-table {
     thead {
       th {
@@ -287,7 +277,6 @@ $font-color: #2c3e50; // 深色字体以提高可读性
       }
     }
 
-    // 行悬浮效果
     tbody {
       tr {
         transition: background-color 0.3s ease;
@@ -299,7 +288,6 @@ $font-color: #2c3e50; // 深色字体以提高可读性
     }
   }
 
-  // 分页器样式调整
   .el-pagination {
     margin-top: 1rem;
 
@@ -312,7 +300,6 @@ $font-color: #2c3e50; // 深色字体以提高可读性
     }
   }
 
-  // 分页器和表格的微妙动画效果
   .el-table, .el-pagination {
     .el-pager li:not(.disabled).active,
     .el-pager li:hover {
@@ -321,7 +308,6 @@ $font-color: #2c3e50; // 深色字体以提高可读性
     }
   }
 
-  // 对话框样式调整
   .el-dialog {
     .el-dialog__header {
       background-color: lighten($background-color, 10%);
@@ -343,7 +329,7 @@ $font-color: #2c3e50; // 深色字体以提高可读性
       transition: opacity 0.5s, transform 0.5s;
     }
 
-    &.fade-enter, &.fade-leave-to /* .fade-leave-active 在 Vue 2.x 中 */
+    &.fade-enter, &.fade-leave-to
     {
       opacity: 0;
       transform: translateY(-20px);

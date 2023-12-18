@@ -94,36 +94,11 @@
                                         :icon="isFullscreen ? 'Exit-FullScreen' : 'FullScreen'"/>
                             </div>
                             <div class="mr-3">
-
-                                <!-- 头像，点击时触发 fileInput 的点击事件 -->
                                 <el-avatar :size="96" :src="form.picPath" @click="triggerFileInput"/>
-
-                                <!-- 隐藏的文件输入元素 -->
                                 <input type="file" ref="fileInput" @change="handleFileChange" style="display: none;"/>
-
                             </div>
 
                         </div>
-
-                        <!--                        <div class="broad">-->
-                        <!--                            <el-breadcrumb class="breadcrumb" separator="/">-->
-                        <!--                                <transition-group name="breadcrumb">-->
-                        <!--                                    <el-breadcrumb-item-->
-                        <!--                                            v-for="(item, index) in breadcrumbData"-->
-                        <!--                                            :key="item.path"-->
-                        <!--                                    >-->
-
-                        <!--                                        &lt;!&ndash; 不可点击项 &ndash;&gt;-->
-                        <!--                                        <span v-if="index === breadcrumbData.length - 1"-->
-                        <!--                                              class="no-redirect">{{ item.meta.title }}</span>-->
-                        <!--                                        &lt;!&ndash; 可点击项 &ndash;&gt;-->
-                        <!--                                        <a v-else class="redirect"-->
-                        <!--                                           @click.prevent="onLinkClick(item)">{{ item.meta.title }}</a>-->
-                        <!--                                    </el-breadcrumb-item>-->
-                        <!--                                </transition-group>-->
-                        <!--                            </el-breadcrumb>-->
-                        <!--                        </div>-->
-                        <!--                    </div>-->
                     </div>
                 </el-col>
             </el-row>
@@ -211,18 +186,11 @@ const drawer = ref(false)
 router.afterEach((to) => {
     defaultActive.value = to.path;
 })
-
 // ----------------------------------------------头像文件
-
-
 const fileInput = ref(null);
-
-// 触发文件输入元素的点击事件
 const triggerFileInput = () => {
     fileInput.value.click();
 };
-
-// 处理文件选择
 const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -230,14 +198,11 @@ const handleFileChange = async (event) => {
         formData.append('avatar', file);
         formData.append('userId', profileStore.profile.id)
         try {
-            // 发送 POST 请求到后端
             const response = await $http.post('/upload-avatar', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-
-            // 更新图片路径
             form.picPath = response.url
         } catch (error) {
             console.error('上传失败', error);
@@ -246,7 +211,6 @@ const handleFileChange = async (event) => {
 };
 
 //----------------------------------------------设置全屏-------------------------------------------
-// 是否全屏
 const isFullscreen = ref(false)
 
 function handleFullScreen() {
@@ -254,30 +218,6 @@ function handleFullScreen() {
     screenfull.toggle()
 }
 
-// // 生成数组数据
-// const breadcrumbData = ref([])
-// const getBreadcrumbData = () => {
-//
-//     breadcrumbData.value = route.matched.filter(
-//         item => item.meta && item.meta.title
-//     )
-//
-// }
-// // 监听路由变化时触发
-// watch(
-//     route,
-//     () => {
-//         getBreadcrumbData()
-//     },
-//     {
-//         immediate: true
-//     }
-// )
-//
-// // 处理点击事件
-// const onLinkClick = item => {
-//     router.push(item.path)
-// }
 const change1 = () => {
     isFullscreen.value = screenfull.isFullscreen
 }
@@ -286,9 +226,6 @@ const change1 = () => {
 
 const dialogFormVisible = ref(false)
 const formLabelWidth = '140px'
-
-
-
 function loadForm() {
     $http.get('/user/profile').then(res => {
         form.username = res.data.username
@@ -392,8 +329,8 @@ onUnmounted(() => {
         .items-center {
           width: 100%;
           display: flex;
-          justify-content: right; //水平
-          align-items: center; //垂直
+          justify-content: right;
+          align-items: center;
           .postcard {
             margin-right: 20px;
 
@@ -414,24 +351,7 @@ onUnmounted(() => {
             }
           }
         }
-
-        //.broad {
-        //  display: flex;
-        //  justify-content: left; //水平
-        //  margin-left: 10px;
-        //  align-items: center; //垂直
-        //  height: 100%;
-        //  width: 100%;
-        //
-        //  .no-redirect {
-        //
-        //    font-size: 20px;
-        //    margin-top: 5px;
-        //    text-align: center;
-        //  }
-        //}
       }
-
     }
 
     .el-aside {

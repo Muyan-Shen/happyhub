@@ -87,7 +87,6 @@ const onSave = async () => {
     });
 };
 
-// Handle the dialog close event
 const handleClose = () => {
     emit('update:modelValue', false);
 };

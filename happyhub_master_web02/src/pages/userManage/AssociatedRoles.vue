@@ -54,9 +54,7 @@ const visibleDialog = computed(
     () => props.visible,
     val => emit('update:visible', val)
 )
-// 查询出所有角色额
 const roles = reactive([]);
-// 获取当前账号已关联的角色
 const loadRoles = () => {
   $http.get('/role').then(res => {
     roles.length = 0;
@@ -68,10 +66,7 @@ const loadRoles = () => {
         checked: false
       })
     }
-    // 查询当前账号已关联的角色
-    // 问号达标roles存在就执行循环
     props.user.roles?.forEach(role => {
-      //将已关联的角色设置为选中状态
       let index = roles.findIndex(item => item.id === role.id)
       if (index !== -1) {
         roles[index].checked = true
@@ -80,10 +75,7 @@ const loadRoles = () => {
   })
 }
 const onSave = () => {
-//   获取所有选中的角色
   const roleIds = roles.filter(role => role.checked).map(role => role.id);
-//   发送请求，保存关联关系；
-//   直接传值（后端用requestBody接收）防止浏览器吧这个请求变成复杂请求，导致不能跨域
   $http.post(`/user/${props.user.id}/role`, roleIds).then(res => {
     // 关闭对话框
     ElMessage.success(({

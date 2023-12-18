@@ -141,7 +141,7 @@ const onSubmit = () => {
             });
         })
         .finally(() => {
-            loadingInstance.close(); // 确保在任何情况下关闭加载指示器
+            loadingInstance.close();
         });
 }
 

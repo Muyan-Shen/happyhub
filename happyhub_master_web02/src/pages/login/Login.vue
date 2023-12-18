@@ -47,11 +47,10 @@ const rules = reactive({
 })
 
 const onLogin = async (e, form) => {
-    e.preventDefault(); // 阻止默认刷新界面
+    e.preventDefault();
     try {
         await form.validate(async (valid) => {
             if (valid) {
-                // 提交表单
                 let service = ElLoading.service({
                     lock: true,
                     text: 'Loading...',
@@ -60,17 +59,12 @@ const onLogin = async (e, form) => {
 
                 try {
                     const loginResponse = await $http.post('/user/login2', user);
-                    if (loginResponse.code === 200) { // 登录成功
+                    if (loginResponse.code === 200) {
                         resetRouters();
-
-                        // 保存登录状态，跳转到首页
                         profileStore.login(loginResponse.token, loginResponse.user.roles, loginResponse.user.roles.permissions, loginResponse.user);
                         const menuResponse = await $http.get('/menu/' + loginResponse.user.username);
-                        // 存储菜单
                         serverMenus.value = menuResponse.data.menuTree;
-                        // 添加路由
                         addServerRoutes(menuResponse.data.routeList);
-                        // 跳转主页
                         router.push({ name: 'home' });
                     }
                 } catch (error) {

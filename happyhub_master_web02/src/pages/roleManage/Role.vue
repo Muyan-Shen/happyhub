@@ -1,9 +1,7 @@
 <template>
   <div class="account">
       <div class="search">
-          <!-- 对搜索表单加上阴影效果，增加立体感 -->
           <el-form @submit.native.prevent="onSearch" inline class="search-form">
-              <!-- 将label和input放在同一行显示，以节省空间 -->
               <el-form-item>
                   <el-input v-model="searchForm.name" placeholder="请输入角色名称" prefix-icon="Search"></el-input>
               </el-form-item>
@@ -12,7 +10,6 @@
               </el-form-item>
               <el-form-item>
                   <el-button type="primary" native-type="submit" icon="Search">搜索</el-button>
-                  <!-- 增加了一些左边距 -->
                   <el-button type="success" @click="addRoleDialog = true" icon="CirclePlus" style="margin-left: 8px;">添加</el-button>
               </el-form-item>
           </el-form>
@@ -107,14 +104,14 @@ onActivated(loadRoles);
 
 <style scoped lang="scss">
 .search {
-  padding: 20px; // 增加padding
-  background-color: #f8f8f8; // 更改背景色
-  border-radius: 8px; // 增加圆角
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); // 增加阴影效果
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 
   .search-form {
     .el-form-item {
-      margin-right: 12px; // 增加间距
+      margin-right: 12px;
     }
   }
 }
@@ -123,7 +120,7 @@ onActivated(loadRoles);
   &:not(.el-table--border) {
     .el-table__body tr td,
     .el-table__header-wrapper tr th {
-      border-bottom: 1px solid #ebeef5; // 加底部边框线
+      border-bottom: 1px solid #ebeef5;
     }
   }
 }

@@ -173,33 +173,6 @@ const fileInput = ref()
 const send = (e, form) => {
   e.preventDefault();
   getSeatInfo()
-  // form.validate((valid) => {
-  //   if (valid) {
-  //     eventInfo.description = jodit.value.value
-  //     $http.post('event/create', eventInfo).then(resp => {
-  //       console.log(resp)
-  //       if (resp.code === 200) {
-  //         eventId.value = resp.eventId;
-  //         ElMessage.success({
-  //           message: "创建成功",
-  //           duration: 750
-  //         })
-  //         // 打开创建座位的弹窗
-  //         getSeatInfo()
-  //       } else {
-  //         ElMessage.error({
-  //           message: "创建失败:" + resp.msg,
-  //           duration: 1250
-  //         })
-  //       }
-  //     })
-  //   } else {
-  //     ElMessage.error({
-  //       message: "创建失败，请按要求填写表单",
-  //       duration: 1000
-  //     })
-  //   }
-  // })
 }
 const triggerFileInput = () => {
   fileInput.value.click();
@@ -209,7 +182,6 @@ const handleFileChange = (event) => {
   if (file) {
     const formData = new FormData();
     formData.append('photo', file);
-    // 发送 POST 请求到后端
     $http.post('/upload-event', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(resp => {
       eventInfo.photoUrl = resp.url
     });

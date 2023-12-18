@@ -16,8 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class BigModelNew extends WebSocketListener {
-    // 地址与鉴权信息  https://spark-api.xf-yun.com/v1.1/chat   1.5地址  domain参数为general
-    // 地址与鉴权信息  https://spark-api.xf-yun.com/v2.1/chat   2.0地址  domain参数为generalv2
     public static final String hostUrl = "https://spark-api.xf-yun.com/v3.1/chat";
     public static final String appid = "640f368d";
     public static final String apiSecret = "MjU2Njk2NDQ5Y2MxZDBmZGRiNGVmNGMw";

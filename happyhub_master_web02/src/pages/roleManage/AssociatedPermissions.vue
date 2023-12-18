@@ -89,8 +89,7 @@ const defaultProps = reactive({
   label: 'name',
 })
 
-// 1.查询出所有权限
-// 2.获取当前账号已关联的角色
+
 const loadRoles = () => {
   $http.get('/permission?limit=0').then(res => {
     permissions.length = 0
@@ -125,12 +124,8 @@ const loadRoles = () => {
   })
 }
 const onSave = () => {
-//   获取所有选中的权限
   const permissionIds = treeRef.value?.getCheckedKeys(false);
-//   发送请求，保存关联关系；
-//   直接传值（后端用requestBody接收）防止浏览器吧这个请求变成复杂请求，导致不能跨域
   $http.post(`/role/${props.role.id}/permission`, permissionIds).then(res => {
-    // 关闭对话框
     ElMessage.success(({
       message: '保存成功',
       duration: 750,
@@ -145,8 +140,6 @@ watch(() => props.visible, (val) => {
     loadRoles();
   }
 })
-// onMounted(loadRoles);
-// onActivated(loadRoles);
 
 
 const saving = ref(false);
@@ -159,7 +152,6 @@ const handleClose = () => {
 
 <style scoped lang="scss">
 .associated-permissions {
-  // 自定义滚动条
   .permissions-scrollbar {
     height: 300px;
     width: 100%;
@@ -177,7 +169,6 @@ const handleClose = () => {
     }
   }
 
-  // 调整按钮样式
   .dialog-footer {
     display: flex;
     justify-content: flex-end;

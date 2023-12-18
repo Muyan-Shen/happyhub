@@ -44,8 +44,7 @@ addServerRoutes(serverRoutes.value)
 //重置路由
 export function resetRouters() {
     for(const route of clientRoutes){
-        //参数1：路由对象，（原始的路由对象）
-        router.addRoute(route)//替换掉同名的路由对象
+        router.addRoute(route)
     }
     serverRoutes.value = null;
 }
@@ -53,8 +52,6 @@ export function resetRouters() {
 
 export function addServerRoutes(routerList) {
     for(const r of routerList){
-        //参数1:父路由的名字
-        //参数2:路由对象
         router.addRoute(r.parentName,{
             path:r.path,
             name:r.name,
