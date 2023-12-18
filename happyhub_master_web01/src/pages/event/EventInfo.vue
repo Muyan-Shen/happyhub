@@ -329,6 +329,7 @@ const getOrder = (eventId) => {
         flex-direction: row;
         overflow: hidden;
         .titles{
+          width:58.5%;
           position: fixed;
           top: v-bind("titleOffsetTop");
         }
