@@ -7,7 +7,7 @@
       <span class="a">交易中心</span>
       <div>
       <a href="/#/orderInfo">
-        <span class="a1">订单管理</span>
+        <span class="a1">>订单管理</span>
       </a>
       </div>
     </div>
@@ -15,7 +15,7 @@
       <span class="a">账户中心</span>
       <div>
         <a href="/#/userInfo">
-          <span class="a1">个人信息</span>
+          <span class="a1">>个人信息</span>
         </a>
       </div>
     </div>
@@ -30,10 +30,10 @@
     margin-top: 10px;
     margin-left: 200px;
     width: 203px;
+  height:180px;
 }
 div {
-  background-color: #f5f5f5;
-  border: 1px solid #e5e5e5;
+  background-color: white;
   .title {
     width: 203px;
     height: 33px;
@@ -51,7 +51,9 @@ div {
   .subheading1{
     width: 199.6px;
     height: 40px;
+    border: 1px solid #efefef;
     div{
+      margin-top: 12px;
       a{
         text-decoration: none;
       }
@@ -60,7 +62,12 @@ div {
   .subheading2{
     width: 199.6px;
     height: 40px;
+    margin-top: 24px;
+    border-left: 2px solid #efefef;
+    border-right: 2px solid #efefef;
+    border-top: 2px solid #efefef;
     div{
+      margin-top: 12px;
       a{
         text-decoration: none;
       }
@@ -70,10 +77,12 @@ div {
       font-size: 14px;
       font-weight:  bolder;
       padding: 0 0 0 20px;
+
   }
   .a1{
     font-size: 14px;
     padding: 0 0 0 20px;
+
   }
 }
 </style>

@@ -102,7 +102,6 @@ public class UserController {
      */
     @PostMapping("/login2")
     public SaResult login2(@Validated @RequestBody UserWhereVO userWhereVO) {
-
         User user = userService.findByUsernameAndPassword(userWhereVO.getUsername(), userWhereVO.getPasswordHash());
         if (user == null) {
             return SaResult.error("用户名或者密码错误");
@@ -145,7 +144,6 @@ public class UserController {
 
     @PostMapping("/register")
     public SaResult register(@RequestBody @Validated UserInsertVO userInsertVO){
-        System.out.println(userInsertVO);
         User user = userService.findByUsernameAndPassword(userInsertVO.getUsername(), userInsertVO.getPasswordHash());
         if (user != null){
             return SaResult.error().setCode(400).setMsg("用户已存在");
@@ -161,10 +159,17 @@ public class UserController {
 
     @PostMapping("/update")
     public SaResult update(@RequestBody @Validated UserUpdateVO vo){
-        System.out.println(vo);
         User user = BeanUtil.copyProperties(vo, User.class);
-        userService.updateUser(user);
-        return SaResult.ok("修改成功");
+        System.out.println(user.getPasswordHash());
+        System.out.println(userService.findById(user.getId()).getPasswordHash());
+        if(!Objects.equals(user.getPasswordHash(), userService.findById(user.getId()).getPasswordHash())){
+            return SaResult.error()
+                    .setCode(400)
+                    .set("message","修改失败");
+        }else {
+            userService.updateUser(user);
+            return SaResult.ok("修改成功");
+        }
     }
 
     @GetMapping("/getById")
